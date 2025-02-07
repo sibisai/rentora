@@ -34,4 +34,4 @@ For traveling families & friends or land owners who want to utilize their unoccu
 2. High uptime above 99.99999% availability
 3. User friendly UI/UX
 4. Fast response time for listings and bookings
-5. RModular codebase for ease of updating and additional functionality
+5. Modular codebase for ease of updating and additional functionality
