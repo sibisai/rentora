@@ -35,3 +35,5 @@ For traveling families & friends or land owners who want to utilize their unoccu
 3. User friendly UI/UX
 4. Fast response time for listings and bookings
 5. Modular codebase for ease of updating and additional functionality
+
+![Requirement_Modeling](Requirement_Modeling.png)
