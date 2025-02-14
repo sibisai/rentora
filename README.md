@@ -36,10 +36,13 @@ For traveling families & friends or land owners who want to utilize their unoccu
 
 ### Nonfunctional Requirements
 
-1. Secure application for user account and user data
-2. High uptime above 99.99999% availability
-3. User friendly UI/UX
-4. Fast response time for listings and bookings
-5. Modular codebase for ease of updating and additional functionality
+|  ID #  |      Title      |  Description  |
+| :----- | :-----------    | :------------ |
+|   a.   |  Secure App.    | Application security ensures data and user information/account   |
+|   b.   |  High App.      | High uptime above 99.99999% availability
+|   c.   |  User welcoming | user friendly UI/UX; usable for everyone.
+|   d.   |  Response Time  | Fast response time for listings and bookings
+|   e.   |  Mod. Codebase  | Modular codebase for ease of updating and additional functionality
+
 
 ![Requirement_Modeling](Requirement_Modeling.png)
