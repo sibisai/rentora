@@ -22,7 +22,13 @@ For traveling families & friends or land owners who want to utilize their unoccu
 
 ### Functional Requirements
 
-1. User selects: search cozy home
+|  ID #  |      Title      |  Description  |
+| :----- | :-----------    | :------------ |
+|   1    |    Login Page   | Page that allows user to login to their accounts |
+|   2    | Account Details | Page that pulls details saved onto the account from database |
+|   3    |  Upload/Manage Property | Page that allows for users to manage properties they either rent or are renting out |
+
+2. User selects: search cozy home
 2. System displays: list of related homes with similar names
 3. User selects: rent a home
 4. System directs users to the calendar on which date they want to rent out the property
