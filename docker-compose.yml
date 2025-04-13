@@ -1,0 +1,13 @@
+services:
+  server:
+    build:
+      context: ./server
+    ports:
+      - "3001:3001"
+    env_file:
+      - ./server/.env
+  frontend:
+    build:
+      context: ./my-react-router-app
+    ports:
+      - "3000:3000"
