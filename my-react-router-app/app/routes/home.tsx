@@ -25,12 +25,19 @@ export default function Home() {
       </header>
 
       <main>
-        <div className="hero">
-          <div className="hero-overlay">
-            <h2>[placeholder]</h2>
-          </div>
-        </div>
-      </main>
+  <div className="hero">
+    <div className="hero-overlay">
+      <h2>[placeholder]</h2>
+      <div className="button-links">
+        <Link to="/account" className="nav-button">Account</Link>
+        <Link to="/cart" className="nav-button">Cart</Link>
+        <Link to="/property-details" className="nav-button">Property Details</Link>
+        <Link to="/search" className="nav-button">Search</Link>
+      </div>
+    </div>
+  </div>
+</main>
+
     </div>
   );
 }

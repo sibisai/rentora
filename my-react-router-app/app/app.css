@@ -115,3 +115,25 @@ nav ul li a:hover {
   font-size: 36px;
   text-align: center;
 }
+
+.button-links {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.nav-button {
+  background-color: #ff385c;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.nav-button:hover {
+  background-color: #e02e4d;
+}
