@@ -10,4 +10,4 @@ services:
     build:
       context: ./my-react-router-app
     ports:
-      - "3000:3000"
+      - "5173:5173"
