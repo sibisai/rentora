@@ -15,7 +15,7 @@ router.post('/bookings', async (req, res) => {
       return res.status(400).json({ message: 'All booking details are required.' });
     }
 
-    // Optionally, verify property and user exist
+    // Verify property and user exist
     const property = await Property.findById(propertyId);
     if (!property) {
       return res.status(404).json({ message: 'Property not found.' });
