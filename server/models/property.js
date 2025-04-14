@@ -10,7 +10,7 @@ const propertySchema = new mongoose.Schema(
       state: { type: String, required: true },
       zip: { type: String, required: true },
       country: { type: String, required: true },
-      // Optionally, you can uncomment these if needed:
+      // In case of Maps SDK
       // latitude: { type: Number },
       // longitude: { type: Number },
     },
@@ -19,7 +19,6 @@ const propertySchema = new mongoose.Schema(
     amenities: [{ type: String }], // Optional array of amenities
     propertyType: { type: String, required: true },
     rooms: { type: Number, required: true },
-    bathrooms: { type: Number, required: true },
     availability: { type: Boolean, default: true },
     hostId: { type: String } // Optional; could be changed later to an ObjectId reference if a User model is added.
   },
