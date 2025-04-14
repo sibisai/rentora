@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "jest --runInBand --watchAll --testEnvironment node --coverage"
+    "test": "NODE_ENV=test jest --runInBand --watchAll --testEnvironment node --coverage"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

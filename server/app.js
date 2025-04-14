@@ -6,8 +6,13 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Automatically switches to test DB when testing
+const uri = process.env.NODE_ENV === 'test' 
+  ? process.env.MONGO_URI_TEST 
+  : process.env.MONGO_URI;
+
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(uri)
 .then(() => console.log("Connected to MongoDB"))
 .catch(err => console.error("MongoDB connection error:", err));
 
