@@ -13,6 +13,10 @@ mongoose.connect(process.env.MONGO_URI)
 
 app.use(express.json());
 
+// Mount the auth routes
+const authRoutes = require('./auth');
+app.use('/auth', authRoutes);
+
 const Property = require('./models/property');
 
 // Create a new property

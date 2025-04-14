@@ -3,7 +3,7 @@ WORKDIR /app
 
 # Copy dependency files and install dependencies
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 # Copy the rest of the application code
 COPY . .
@@ -11,5 +11,5 @@ COPY . .
 # Expose the port your application listens on
 EXPOSE 3001
 
-# Start the application
-CMD ["node", "index.js"]
+# Start the application with dotenv preload
+CMD ["node", "-r", "dotenv/config", "index.js"]
