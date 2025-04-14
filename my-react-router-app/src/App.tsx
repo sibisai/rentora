@@ -1,6 +1,8 @@
 // app/App.tsx
 import React from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
+import Home from '../app/routes/home';
+import Login from '../app/routes/login';
 
 export default function App() {
   return (
@@ -11,8 +13,9 @@ export default function App() {
       </nav>
 
       <Routes>
-        <Route path="/" element={<h1>test1</h1>} />
+        <Route path="/" element={<Home />} />
         <Route path="/about" element={<h1>test2</h1>} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </div>
   );
