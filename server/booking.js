@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const Booking = require('./models/Booking');
 const Property = require('./models/property');
 const User = require('./models/User');
@@ -54,13 +55,35 @@ router.get('/bookings', async (req, res) => {
 
 // Retrieve bookings for a specific property
 router.get('/properties/:id/bookings', async (req, res) => {
+  const propertyId = req.params.id;
+
+  // 1. Validate Property ID Format
+  if (!mongoose.Types.ObjectId.isValid(propertyId)) {
+    // If the ID format is invalid, it's a client error (Bad Request)
+    return res.status(400).json({ message: 'Invalid property ID format.' });
+  }
+
   try {
-    const bookings = await Booking.find({ property: req.params.id })
-      .populate('user');
-    res.json(bookings);
+    // 2. Check if the Property Actually Exists
+    const property = await Property.findById(propertyId);
+    if (!property) {
+      // If the property is not found (valid ID format, but no match), return 404
+      return res.status(404).json({ message: 'Property not found.' });
+    }
+
+    // 3. Property exists, now find its associated bookings
+    const bookings = await Booking.find({ property: propertyId })
+      .populate('user'); // Continue populating user if needed
+
+    // 4. Return the found bookings (will be [] if none, which is correct)
+    res.status(200).json(bookings);
+
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    // 5. Handle other unexpected errors (e.g., database connection issue)
+    console.error("Error fetching bookings for property:", propertyId, err); // Log for debugging
+    res.status(500).json({ message: 'An error occurred while retrieving bookings.' });
   }
 });
+
 
 module.exports = router;
