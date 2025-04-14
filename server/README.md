@@ -95,6 +95,28 @@ node index.js
 
 Use Postman or any similar API tool to test the following endpoints:
 
+- **User Signup:**
+
+  ```
+  POST http://localhost:3001/auth/signup
+  Body (JSON):
+  {
+    "email": "user@example.com",
+    "password": "yourpassword"
+  }
+  ```
+
+- **User Login:**
+
+  ```
+  POST http://localhost:3001/auth/login
+  Body (JSON):
+  {
+    "email": "user@example.com",
+    "password": "yourpassword"
+  }
+  ```
+
 - **Create Property:**
 
   ```
