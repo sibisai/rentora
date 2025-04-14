@@ -157,3 +157,34 @@ Use Postman or any similar API tool to test the following endpoints:
   ```
 
 Replace `{{propertyId}}` with the actual property ID received from the create endpoint.
+
+---
+
+### Booking Endpoints
+
+#### Create a Booking
+
+```
+POST http://localhost:3001/bookings
+Body (JSON):
+{
+  "propertyId": "property_id_here",
+  "userId": "user_id_here",
+  "startDate": "2025-05-01",
+  "endDate": "2025-05-05"
+}
+```
+
+#### Get All Bookings
+
+```
+GET http://localhost:3001/bookings
+```
+
+#### Get Bookings for a Property
+
+```
+GET http://localhost:3001/properties/:id/bookings
+```
+
+Replace `:id` with the actual `propertyId`.
