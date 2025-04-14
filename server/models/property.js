@@ -10,17 +10,16 @@ const propertySchema = new mongoose.Schema(
       state: { type: String, required: true },
       zip: { type: String, required: true },
       country: { type: String, required: true },
-      // In case of Maps SDK
+      // For Maps SDK - Uncomment if needed:
       // latitude: { type: Number },
       // longitude: { type: Number },
     },
     price: { type: Number, required: true },
-    images: [{ type: String }], // Optional array of image URLs
-    amenities: [{ type: String }], // Optional array of amenities
+    images: [{ type: String }],       // Optional array of image URLs
+    amenities: [{ type: String }],      // Optional array of amenities
     propertyType: { type: String, required: true },
     rooms: { type: Number, required: true },
-    availability: { type: Boolean, default: true },
-    hostId: { type: String } // Optional; could be changed later to an ObjectId reference if a User model is added.
+    hostId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' } // Optional reference to User model
   },
   { timestamps: true }
 );

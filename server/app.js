@@ -79,4 +79,8 @@ app.delete('/properties/:id', async (req, res) => {
   }
 });
 
+// Mount booking routes
+const bookingRoutes = require('./booking');
+app.use('/', bookingRoutes);
+
 module.exports = app;
