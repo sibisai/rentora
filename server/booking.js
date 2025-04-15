@@ -26,6 +26,21 @@ router.post('/bookings', async (req, res) => {
       return res.status(404).json({ message: 'User not found.' });
     }
 
+    // 1. endDate must be after startDate
+    if (new Date(req.body.endDate) <= new Date(req.body.startDate)) {
+      return res.status(400).json({ error: 'endDate must be after startDate' });
+    }
+
+    // 2. prevent overlapping bookings for the same property
+    const clash = await Booking.findOne({
+      property: req.body.propertyId,
+      startDate: { $lt: req.body.endDate },
+      endDate:   { $gt: req.body.startDate },
+    });
+    if (clash) {
+      return res.status(409).json({ error: 'Dates overlap an existing booking' });
+    }
+
     // Create a new booking
     const newBooking = new Booking({
       property: propertyId,

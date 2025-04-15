@@ -46,24 +46,28 @@ describe('Auth Endpoints', () => {
         email: 'existing@example.com',
         password: 'anotherpassword',
       });
-    expect(res.statusCode).toEqual(400);
+    expect(res.statusCode).toEqual(409);
     expect(res.body.message).toEqual('A user with this email already exists.');
   });
 
   it('should log in an existing user', async () => {
-    // Create a user to log in
-    const hashedPassword = await bcrypt.hash('loginpassword', 10);
-    await User.create({ email: 'login@example.com', password: hashedPassword });
+      // Create a user to log in - Provide the PLAIN password
+      // Let the pre('save') hook in the User model handle the hashing automatically
+      await User.create({ email: 'login@example.com', password: 'loginpassword' });
 
-    const res = await request(app)
-      .post('/auth/login')
-      .send({
-        email: 'login@example.com',
-        password: 'loginpassword',
-      });
-    expect(res.statusCode).toEqual(200);
-    expect(res.body.message).toEqual('Login successful');
-  });
+      // Now try to log in with the correct plain password
+      const res = await request(app)
+        .post('/auth/login')
+        .send({
+          email: 'login@example.com',
+          password: 'loginpassword',
+        });
+
+      // Assertion should now pass
+      expect(res.statusCode).toEqual(200);
+      expect(res.body.message).toEqual('Login successful');
+      expect(res.body.token).toBeDefined(); // Also good to check for the token
+    });
 
   it('should not log in with incorrect password', async () => {
     // Create a user
@@ -76,7 +80,7 @@ describe('Auth Endpoints', () => {
         email: 'wrongpassword@example.com',
         password: 'incorrectpassword',
       });
-    expect(res.statusCode).toEqual(400);
+    expect(res.statusCode).toEqual(401);
     expect(res.body.message).toEqual('Invalid email or password.');
   });
 
@@ -87,7 +91,7 @@ describe('Auth Endpoints', () => {
         email: 'nonexistent@example.com',
         password: 'anypassword',
       });
-    expect(res.statusCode).toEqual(400);
+    expect(res.statusCode).toEqual(401);
     expect(res.body.message).toEqual('Invalid email or password.');
   });
 

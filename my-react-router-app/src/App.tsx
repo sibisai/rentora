@@ -71,6 +71,16 @@ export default function App() {
       {/* Manages scroll position on navigation */}
       <ScrollRestoration />
 
+            {/* Footer */}
+      <footer className="search-page-footer">
+        <p>© 2025 [Placeholder]. All rights reserved.</p>
+        <div className="footer-links">
+          <a href="#" className="footer-link">Privacy Policy</a>
+          <a href="#" className="footer-link">Terms of Service</a>
+          <a href="#" className="footer-link">Contact Us</a>
+        </div>
+      </footer>
+
     </div>
   );
 }
