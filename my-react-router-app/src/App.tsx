@@ -1,28 +1,77 @@
-// app/App.tsx
 import React from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
-import SearchPage from './pages/SearchPage';
+import {
+  Link,
+  Outlet,
+  ScrollRestoration,
+  isRouteErrorResponse, // Needed for ErrorBoundary
+  useRouteError, // Hook to get error info within ErrorBoundary component defined below
+} from 'react-router-dom';
 
-<Routes>
-  <Route path="/search" element={<SearchPage />} />
-</Routes>
-import Home from '../app/routes/home';
-import Login from '../app/routes/login';
+// Error Boundary Component - defined in the same file
+// This component catches rendering errors in child components, including route errors.
+export function AppErrorBoundary() {
+  const error = useRouteError(); // Hook to access the error
+  let message = "Oops!";
+  let details = "An unexpected error occurred.";
+  let stack: string | undefined;
 
-export default function App() {
+  if (isRouteErrorResponse(error)) {
+    // Handles errors thrown by react-router loaders/actions or 404s
+    message = error.status === 404 ? "Page Not Found (404)" : `Error ${error.status}`;
+    details = error.statusText || (error.data as any)?.message || details; // Try to get more specific message
+  } else if (error instanceof Error) {
+    // Handles standard JavaScript errors
+    details = error.message;
+    // Show stack trace only in development for debugging
+    if (import.meta.env.DEV) {
+       stack = error.stack;
+    }
+  }
+
   return (
-    <div className="p-6">
-      <nav className="mb-4">
-        <Link to="/" className="mr-4 text-blue-500">Home</Link>
-        <Link to="/about" className="text-blue-500">About</Link>
-        <Link to="/search" className="text-blue-500">Search</Link>
-      </nav>
-
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<h1>test2</h1>} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
+    <div className="p-6 text-center">
+      <h1 className="text-2xl font-bold text-red-600 mb-2">{message}</h1>
+      <p className="text-gray-700 mb-4">{details}</p>
+      {stack && (
+        <pre className="w-full max-w-2xl mx-auto p-4 overflow-x-auto bg-red-100 text-red-800 rounded text-left text-sm">
+          <code>{stack}</code>
+        </pre>
+      )}
+      <Link to="/" className="text-blue-600 hover:underline mt-4 inline-block">Go back home</Link>
     </div>
   );
 }
+
+
+// Main Application Component - provides layout and renders routes via Outlet
+export default function App() {
+  return (
+    <div className="flex flex-col min-h-screen">
+
+      {/* Navigation */}
+      <nav className="p-4 bg-gray-100 shadow-md">
+        <Link to="/" className="mr-4 text-blue-600 hover:text-blue-800">Home</Link>
+        <Link to="/search" className="mr-4 text-blue-600 hover:text-blue-800">Search</Link>
+        <Link to="/login" className="text-blue-600 hover:text-blue-800">Login</Link>
+        {/* Add other navigation links as needed */}
+      </nav>
+
+      {/* Main content area - Outlet renders the matched route component */}
+      <main className="flex-grow p-6">
+         {/* Note: The ErrorBoundary component itself is usually configured as
+             part of the route definition (using the `errorElement` prop on Route)
+             rather than wrapping the Outlet directly here for route-level errors.
+             However, wrapping Outlet can catch general rendering errors within pages.
+             For route-specific errors (loaders, 404s), configure `errorElement`
+             when defining your routes (likely in main.tsx or routes/index.ts).
+          */}
+         <Outlet />
+      </main>
+
+      {/* Manages scroll position on navigation */}
+      <ScrollRestoration />
+
+    </div>
+  );
+}
+

@@ -1,6 +1,6 @@
 import React from 'react';
-import '../app.css';
-import loginBg from '../assets/images/loginbg.jpg';
+import '../../styles/index.css';
+import loginBg from '../../assets/images/loginbg.jpg';
 
 export default function Login() {
   return (
