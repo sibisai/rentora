@@ -190,3 +190,26 @@ nav ul li a:hover {
   text-decoration: underline;
   cursor: pointer;
 }
+
+/* Footer styling */
+.search-page-footer {
+  background-color: #f8f9fa;
+  padding: 2rem 1.5rem;
+  border-top: 1px solid #eaeaea;
+  text-align: center;
+  color: #718096;
+  font-size: 0.875rem;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.footer-link {
+  color: #4a5568;
+  text-decoration: none;
+  transition: color 0.2s;
+}

@@ -129,7 +129,6 @@
 @media (max-width: 480px) {
   .search-bar {
     padding: 1.25rem;
-    margin: 10rem auto 1rem auto;
   }
 
   .search-button {
