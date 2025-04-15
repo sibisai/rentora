@@ -29,6 +29,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
   const [minPrice, setMinPrice] = useState(''); // Use strings for input values
   const [maxPrice, setMaxPrice] = useState('');
   const [propertyType, setPropertyType] = useState('');
+  const [isMaxPriceInvalid, setIsMaxPriceInvalid] = useState(false); // State to track invalid max price
 
   // --- State specifically for the location selected via Autocomplete ---
   const [selectedLocation, setSelectedLocation] = useState<{
@@ -202,15 +203,20 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
           type="text"
           name="maxPrice"
           placeholder="Any"
-          className="search-input"
+          // className="search-input"
           value={maxPrice}
           onChange={(e) => {
             const value = e.target.value;
             // Only allow positive numbers
             if (/^\d*$/.test(value)) {
               setMaxPrice(value);
+
+              const min = parseInt(minPrice || '0');
+              const max = parseInt(value || '0');
+              setIsMaxPriceInvalid(max < min);
             }
           }}
+          className={`search-input ${isMaxPriceInvalid ? 'input-error' : ''}`}
         />
       </div>
 

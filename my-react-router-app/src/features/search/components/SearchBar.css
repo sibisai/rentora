@@ -136,3 +136,9 @@
     /* Full width button on small screens */
   }
 }
+
+.input-error {
+  border-color: #dc2626 !important;
+  background-color: #fef2f2;
+  /* light red background */
+}
