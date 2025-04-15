@@ -1,4 +1,3 @@
-// src/pages/Login.tsx
 import React, { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import loginBg from '../../assets/images/loginbg.jpg';
@@ -11,22 +10,33 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [errorMsg, setErrorMsg] = useState<string>('');
+  const [successMsg, setSuccessMsg] = useState<string>('');
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorMsg('');
+    setSuccessMsg('');
+
+    // Only perform confirm password check in signup mode
+    if (!isLogin && password !== confirmPassword) {
+      setErrorMsg('Passwords do not match.');
+      return;
+    }
+
     try {
-      // Choose the appropriate endpoint based on the mode
       const authData = isLogin
         ? await login(email, password)
         : await signup(email, password);
-      
+
       // Store token in local storage
       localStorage.setItem('authToken', authData.token);
-      // Optionally, you can also store user info in context or state management
-      // Navigate to home or the protected route after successful login
-      navigate('/');
+
+      setSuccessMsg('Success! Redirecting...');
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
     } catch (err: any) {
       setErrorMsg(err.message || 'An error occurred during authentication.');
     }
@@ -68,12 +78,13 @@ const Login: React.FC = () => {
             />
           </div>
 
-          {/* Optionally add a reconfirm password field in signup mode */}
           {!isLogin && (
             <div className="input-group">
               <input
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Reconfirm Your Password"
+                value={confirmPassword}
+                onChange={e => setConfirmPassword(e.target.value)}
                 required
               />
             </div>
@@ -92,12 +103,17 @@ const Login: React.FC = () => {
           </div>
 
           {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}
+          {successMsg && <p style={{ color: 'green' }}>{successMsg}</p>}
 
           <button type="submit" className="login-btn">
             {isLogin ? 'Log in' : 'Sign up'}
           </button>
 
-          <p className="signup-link" onClick={() => setIsLogin(!isLogin)} style={{ cursor: 'pointer' }}>
+          <p className="signup-link" onClick={() => {
+              setIsLogin(!isLogin);
+              setErrorMsg('');
+              setSuccessMsg('');
+          }} style={{ cursor: 'pointer' }}>
             {isLogin ? 'Sign up' : 'Already have an account? Log in'}
           </p>
         </form>
