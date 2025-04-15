@@ -26,7 +26,7 @@ function freshAppNoTest() {
   process.env.MONGO_URI = process.env.MONGO_URI_TEST;
   // create a brand‑new mocked fetch for this app instance
   const app = require('../app');
-  
+  const fetch = global.fetch; 
   return { app, fetch };
 }
 
