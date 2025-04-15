@@ -37,7 +37,7 @@ const propertySchema = new mongoose.Schema({
     required: true 
   },
   price: { type: Number, required: true, min: 0 },
-  images: { type: [String], default: [] },
+  images: { type: [String], default: ["https://cs362.s3.us-east-2.amazonaws.com/1744751177337-property.jpg"] },
   amenities: { type: [String], default: [] },
   propertyType: { 
     type: String, 
