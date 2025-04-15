@@ -61,7 +61,7 @@ router.post('/login', async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) {
       // Generic message for security (don't reveal if email exists)
-      return res.status(401).json({ message: 'Invalid credentials.' }); // Use 401 Unauthorized
+      return res.status(401).json({ message: 'Invalid email or password.' }); // Use 401 Unauthorized
     }
 
     // Compare submitted password with hashed password in DB
@@ -70,7 +70,7 @@ router.post('/login', async (req, res) => {
     // Or directly if method not defined: const isValid = await bcrypt.compare(password, user.password);
 
     if (!isValid) {
-      return res.status(401).json({ message: 'Invalid credentials.' }); // Use 401 Unauthorized
+      return res.status(401).json({ message: 'Invalid email or password.' }); // Use 401 Unauthorized
     }
 
     // --- Credentials are valid, generate JWT ---

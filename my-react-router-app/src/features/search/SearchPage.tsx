@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import React, { useState } from 'react';
 import SearchBar, { type SearchParams } from './components/SearchBar';
-import './SearchPage.css'; // Import the new CSS file
+import './SearchPage.css';
 
 // --- Interfaces ---
 interface Property {
@@ -29,56 +28,18 @@ interface Property {
   updatedAt?: string;
 }
 
-// --- Map Configuration ---
-const mapContainerStyle = {
-  width: '100%',
-  height: '100%', // Map will fill its container height
-};
-
-const defaultCenter = {
-  lat: 33.6846, // Irvine, CA default
-  lng: -117.8265
-};
-
-// Define map options for a cleaner look
-const mapOptions: google.maps.MapOptions = {
-  streetViewControl: false,
-  mapTypeControl: false,
-  fullscreenControl: false,
-  zoomControl: true,
-};
-
-const libraries: ("places")[] = ['places'];
-
 const SearchPage: React.FC = () => {
   const [results, setResults] = useState<Property[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  
-  // --- Ref to store map instance ---
-  const mapRef = useRef<google.maps.Map | null>(null);
-
-  // --- Load Google Maps API ---
-  const { isLoaded, loadError: mapLoadError } = useJsApiLoader({
-    googleMapsApiKey: import.meta.env.VITE_Maps_API_KEY || "",
-    libraries,
-  });
-  
-  // --- Callback to get map instance ---
-  const onMapLoad = useCallback((map: google.maps.Map) => {
-    mapRef.current = map; // Store the map instance
-  }, []);
-
-  // --- Callback for map cleanup ---
-  const onMapUnmount = useCallback(() => {
-    mapRef.current = null;
-  }, []);
+  const [activeFilter, setActiveFilter] = useState<string>('all');
 
   // --- handleSearch function ---
   const handleSearch = async (params: SearchParams) => {
     setLoading(true);
     setError(null);
     setResults([]); // Clear previous results
+    setActiveFilter('all');
 
     const cleanParams = Object.entries(params).reduce((acc, [key, value]) => { 
       if (value !== undefined && value !== null && value !== '') { 
@@ -98,33 +59,6 @@ const SearchPage: React.FC = () => {
 
       console.log("Data received:", data);
       setResults(data as Property[]);
-
-      // --- Auto Zoom/Center Logic (Fit Bounds) ---
-      if (mapRef.current && data.length > 0) {
-        if (data.length === 1) {
-          // If only one result, center on it with a reasonable zoom
-          mapRef.current.setCenter({
-            lat: data[0].location.coordinates.coordinates[1],
-            lng: data[0].location.coordinates.coordinates[0]
-          });
-          mapRef.current.setZoom(14); // Zoom level for single result
-        } else {
-          // If multiple results, calculate bounds and fit
-          const bounds = new google.maps.LatLngBounds();
-          data.forEach((property: Property) => {
-            bounds.extend({
-              lat: property.location.coordinates.coordinates[1],
-              lng: property.location.coordinates.coordinates[0]
-            });
-          });
-          mapRef.current.fitBounds(bounds);
-        }
-      } else if (mapRef.current) {
-         // No results, reset map view
-         mapRef.current.setCenter(defaultCenter);
-         mapRef.current.setZoom(11); // Reset zoom
-      }
-
     } catch (err) {
       console.error("Failed to fetch properties:", err);
       setError(err instanceof Error ? err.message : "An unknown error occurred");
@@ -133,8 +67,13 @@ const SearchPage: React.FC = () => {
     }
   };
 
-  // --- State for selected marker (for InfoWindow) ---
-  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
+  // Filter results based on active filter
+  const filteredResults = activeFilter === 'all' 
+    ? results 
+    : results.filter(property => property.propertyType === activeFilter);
+
+  // Get unique property types for filter buttons
+  const propertyTypes = ['all', ...new Set(results.map(property => property.propertyType))];
 
   // --- Main Render ---
   return (
@@ -153,79 +92,94 @@ const SearchPage: React.FC = () => {
         <SearchBar onSearch={handleSearch} />
       </section>
 
-      {/* Main Content Area (Map + Results) */}
+      {/* Main Content Area (Results only) */}
       <main className="search-content">
-        {/* Map Container */}
-        <div className="map-container">
-          {mapLoadError && <div className="map-error">Error loading map.</div>}
-          {!isLoaded && !mapLoadError && <div className="map-loading">Loading Map...</div>}
-          {isLoaded && (
-            <GoogleMap
-              mapContainerStyle={mapContainerStyle}
-              center={defaultCenter}
-              zoom={11}
-              options={mapOptions}
-              onLoad={onMapLoad}
-              onUnmount={onMapUnmount}
-            >
-              {results.map((property) => (
-                <Marker
-                  key={property._id}
-                  position={{
-                    lat: property.location.coordinates.coordinates[1],
-                    lng: property.location.coordinates.coordinates[0]
-                  }}
-                  title={property.title}
-                  onClick={() => {
-                    setSelectedProperty(property);
-                    mapRef.current?.panTo({
-                      lat: property.location.coordinates.coordinates[1],
-                      lng: property.location.coordinates.coordinates[0]
-                    });
-                    console.log("Clicked property:", property.title);
-                  }}
-                />
-              ))}
-            </GoogleMap>
-          )}
-        </div>
-
         {/* Results Container */}
         <div className="results-container">
-          <h2 className="results-title">
-            {loading ? 'Searching...' : 
-             error ? 'Error' :
-             results.length > 0 ? `${results.length} Properties Found` : 'No Properties Found'}
-          </h2>
+          <div className="results-header">
+            <h2 className="results-title">
+              {loading ? 'Searching...' : 
+               error ? 'Error' :
+               filteredResults.length > 0 ? `${filteredResults.length} Properties Found` : 'No Properties Found'}
+            </h2>
+            
+            {/* Property type filters - only show when we have results */}
+            {results.length > 0 && (
+              <div className="filter-container">
+                <p className="filter-label">Filter by:</p>
+                <div className="filter-buttons">
+                  {propertyTypes.map(type => (
+                    <button 
+                      key={type} 
+                      className={`filter-button ${activeFilter === type ? 'active' : ''}`}
+                      onClick={() => setActiveFilter(type)}
+                    >
+                      {type === 'all' ? 'All Types' : type}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
           
           {error && <p className="error-message">Error: {error}</p>}
           
           {!loading && !error && results.length === 0 && (
-            <p className="no-results-message">No properties found matching your criteria. Try adjusting your search filters.</p>
+            <div className="empty-state">
+              <div className="empty-state-icon">🏠</div>
+              <p className="no-results-message">No properties found matching your criteria.</p>
+              <p className="no-results-suggestion">Try adjusting your search filters or exploring different locations.</p>
+            </div>
           )}
           
-          {!loading && !error && results.length > 0 && (
+          {loading && (
+            <div className="loading-container">
+              <div className="loading-spinner"></div>
+              <p>Searching for properties...</p>
+            </div>
+          )}
+          
+          {!loading && !error && filteredResults.length > 0 && (
             <div className="results-grid">
-              {results.map((property) => (
+              {filteredResults.map((property) => (
                 <div 
                   key={property._id} 
                   className="property-card"
-                  onClick={() => {
-                    setSelectedProperty(property);
-                    mapRef.current?.panTo({
-                      lat: property.location.coordinates.coordinates[1],
-                      lng: property.location.coordinates.coordinates[0]
-                    });
-                  }}
                 >
-                  {property.images && property.images.length > 0 && (
-                    <img src={property.images[0]} alt={property.title} className="property-image"/>
-                  )}
+                  <div className="property-image-container">
+                    {property.images && property.images.length > 0 ? (
+                      <img src={property.images[0]} alt={property.title} className="property-image"/>
+                    ) : (
+                      <div className="property-image-placeholder">No image available</div>
+                    )}
+                    <div className="property-type-badge">{property.propertyType}</div>
+                  </div>
                   <div className="property-details">
                     <h3 className="property-title">{property.title}</h3>
                     <p className="property-location">{property.location.city}, {property.location.state}</p>
-                    <p className="property-price">${property.price} <span className="price-period">/ night</span></p>
-                    <p className="property-type">{property.propertyType} · {property.rooms} Rooms</p>
+                    <div className="property-info">
+                      <p className="property-rooms">{property.rooms} {property.rooms === 1 ? 'Room' : 'Rooms'}</p>
+                      {property.description && (
+                        <p className="property-description">{property.description.substring(0, 100)}...</p>
+                      )}
+                    </div>
+                    <div className="property-footer">
+                      <p className="property-price">${property.price} <span className="price-period">/ night</span></p>
+                      <button className="view-details-button">View Details</button>
+                    </div>
+                    {property.amenities && property.amenities.length > 0 && (
+                      <div className="property-amenities">
+                        <p className="amenities-title">Top amenities</p>
+                        <div className="amenities-list">
+                          {property.amenities.slice(0, 3).map((amenity, index) => (
+                            <span key={index} className="amenity-tag">{amenity}</span>
+                          ))}
+                          {property.amenities.length > 3 && (
+                            <span className="amenity-tag more-tag">+{property.amenities.length - 3} more</span>
+                          )}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
