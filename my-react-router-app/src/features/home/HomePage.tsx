@@ -20,9 +20,9 @@ export default function Home() {
           </nav>
         </div>
 
-        <div className="search-bar">
+        {/* <div className="search-bar">
           <input type="text" placeholder="Search for places..." />
-        </div>
+        </div> */}
       </header>
 
       <main>
