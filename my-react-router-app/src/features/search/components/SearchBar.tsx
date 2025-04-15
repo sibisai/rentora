@@ -28,6 +28,7 @@ export default function SearchBar({ onSearch }: { onSearch: (filters: SearchFilt
     onSearch(filters);
   };
 
+// 
   return (
     <div className="p-4 bg-white rounded-xl shadow-md space-y-4">
       <div className="flex flex-col md:flex-row md:space-x-4">
@@ -85,6 +86,10 @@ export default function SearchBar({ onSearch }: { onSearch: (filters: SearchFilt
           <option value="apartment">Apartment</option>
           <option value="cabin">Cabin</option>
           <option value="studio">Studio</option>
+          <option value="villa">Villa</option>
+          <option value="townhouse">Townhouse</option>
+          <option value="condo">Condo</option>
+          <option value="loft">Mansion</option>
         </select>
       </div>
       <button
