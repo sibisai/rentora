@@ -85,6 +85,11 @@ export default function SearchBar({ onSearch }: { onSearch: (filters: SearchFilt
           <option value="apartment">Apartment</option>
           <option value="cabin">Cabin</option>
           <option value="studio">Studio</option>
+          <option value="villa">Villa</option>
+          <option value="townhouse">Townhouse</option>
+          <option value="condo">Condo</option>
+          <option value="loft">Loft</option>
+          <option value="bungalow">Mansion</option>
         </select>
       </div>
       <button
