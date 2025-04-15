@@ -177,33 +177,42 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
       </div>
 
       <div className="search-row">
-        {/* Min Price */}
-        <div className="search-field">
-          <label className="search-label">Min Price ($)</label>
-          <input
-            type="number"
-            name="minPrice"
-            placeholder="0"
-            className="search-input"
-            value={minPrice}
-            onChange={(e) => setMinPrice(e.target.value)}
-            min="0"
-          />
-        </div>
+        {/* Min Price(only positive numbers (and only nubmers) */}
+      <div className="search-field">
+        <label className="search-label">Min Price ($)</label>
+        <input
+          type="text"
+          name="minPrice"
+          placeholder="0"
+          className="search-input"
+          value={minPrice}
+          onChange={(e) => {
+            const value = e.target.value;
+            if (/^\d*$/.test(value)) {
+              setMinPrice(value);
+            }
+          }}
+        />
+      </div>
 
-        {/* Max Price */}
-        <div className="search-field">
-          <label className="search-label">Max Price ($)</label>
-          <input
-            type="number"
-            name="maxPrice"
-            placeholder="Any"
-            className="search-input"
-            value={maxPrice}
-            onChange={(e) => setMaxPrice(e.target.value)}
-            min={minPrice || "0"} // Max price shouldn't be less than min price
-          />
-        </div>
+      {/* Max Price (only positive numbers (and only nubmers)) */}
+      <div className="search-field">
+        <label className="search-label">Max Price ($)</label>
+        <input
+          type="text"
+          name="maxPrice"
+          placeholder="Any"
+          className="search-input"
+          value={maxPrice}
+          onChange={(e) => {
+            const value = e.target.value;
+            // Only allow positive numbers
+            if (/^\d*$/.test(value)) {
+              setMaxPrice(value);
+            }
+          }}
+        />
+      </div>
 
         {/* Property Type */}
         <div className="search-field">
