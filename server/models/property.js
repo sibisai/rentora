@@ -42,7 +42,7 @@ const propertySchema = new mongoose.Schema({
   propertyType: { 
     type: String, 
     required: true,
-    enum: ['House', 'Apartment', 'Condo', 'Villa', 'Cabin', 'Other']
+    enum: ['House', 'Apartment', 'Cabin', 'Studio', 'Villa', 'Townhouse', 'Condo', 'Loft', 'Mansion', 'Other'],
   },
   rooms: { type: Number, required: true, min: 1 },
   hostId: { 

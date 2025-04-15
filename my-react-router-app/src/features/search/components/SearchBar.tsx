@@ -215,7 +215,6 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
             onChange={(e) => setPropertyType(e.target.value)}
           >
             <option value="">Any</option>
-            {/* Ensure these values exactly match backend expectations if filtering by type */}
             <option value="House">House</option>
             <option value="Apartment">Apartment</option>
             <option value="Cabin">Cabin</option>
@@ -225,6 +224,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
             <option value="Condo">Condo</option>
             <option value="Loft">Loft</option>
             <option value="Mansion">Mansion</option>
+            <option value="Other">Other</option>
           </select>
         </div>
       </div>
