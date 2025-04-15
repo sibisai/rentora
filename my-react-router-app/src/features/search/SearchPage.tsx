@@ -28,6 +28,21 @@ interface Property {
   updatedAt?: string;
 }
 
+function formatLocation(location: Property["location"]): string {
+  const { city, state, country } = location;
+  const cityTrimmed = city.trim().toLowerCase();
+  const stateTrimmed = state.trim().toLowerCase();
+  
+  if (cityTrimmed === stateTrimmed) {
+    if (country) {
+      const countryTrimmed = country.trim().toLowerCase();
+      return countryTrimmed === cityTrimmed ? city : `${city}, ${country}`;
+    }
+    return city;
+  }
+  return `${city}, ${state}`;
+}
+
 const SearchPage: React.FC = () => {
   const [results, setResults] = useState<Property[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -156,7 +171,9 @@ const SearchPage: React.FC = () => {
                   </div>
                   <div className="property-details">
                     <h3 className="property-title">{property.title}</h3>
-                    <p className="property-location">{property.location.city}, {property.location.state}</p>
+                    <p className="property-location">
+                      {formatLocation(property.location)}
+                    </p>
                     <div className="property-info">
                       <p className="property-rooms">{property.rooms} {property.rooms === 1 ? 'Room' : 'Rooms'}</p>
                       {property.description && (
