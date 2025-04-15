@@ -1,0 +1,66 @@
+.login-page {
+    font-family: 'Inter', sans-serif;
+  }  
+
+.login-container {
+    width: 300px;
+    padding: 40px 30px;
+    border-radius: 12px;
+    background: rgba(223, 220, 220, 0.74); /* Slightly more translucent */
+    backdrop-filter: blur(2px); /* Glass effect */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); /* Softer shadow */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .login-container h2 {
+    color: #595959;
+    font-family: Inter;
+    padding-bottom: 15%;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+  
+  .input-group {
+    width: 100%;
+    margin-bottom: 15px;
+    opacity: 0.6;
+  }
+  
+  .input-group input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 14px;
+  }
+  
+  .login-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #F24E4E;
+    color: white;
+    font-weight: 300px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .login-btn:hover {
+    background-color: #e02e4d;
+  }
+  
+  .signup-link {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+  }
+  

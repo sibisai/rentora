@@ -97,12 +97,15 @@ nav ul li a:hover {
 .hero {
   position: relative;
   width: 100%;
-  height: 60vh;
-  background: url('../assets/images/bg2.jpg') center/cover no-repeat;
+  height: 50vh;
+  background: url('../assets/images/bg2.jpg') center center no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 
 .hero-overlay {
   background: rgba(0, 0, 0, 0.5);
@@ -138,55 +141,60 @@ nav ul li a:hover {
   background-color: #e02e4d;
 }
 
-.login-container {
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 40px 30px;
-  border-radius: 20px;
-  width: 300px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.property-section {
+  padding: 60px 40px;
+  background-color: #fff;
 }
 
-.login-container h2 {
-  font-size: 28px;
-  margin-bottom: 20px;
+.property-section h2 {
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 30px;
 }
 
-.input-group {
+.property-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+}
+
+.property-card img {
   width: 100%;
-  margin-bottom: 15px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 15px;
 }
 
-.input-group input {
-  width: 100%;
-  padding: 10px 15px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  font-size: 14px;
+
+.property-card:hover {
+  transform: translateY(-5px);
 }
 
-.login-btn {
+.property-card img {
   width: 100%;
-  padding: 10px;
-  background-color: #ff385c;
-  color: white;
+  height: 180px;
+  object-fit: cover;
+}
+
+.property-info {
+  padding: 15px;
+}
+
+.property-info h3 {
+  font-size: 18px;
+  margin: 5px 0;
+}
+
+.property-info p {
+  color: #555;
+  margin: 4px 0;
+}
+
+.property-info .price {
+  color: #ff385c;
+}
+
+.price-amount {
   font-weight: bold;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: background-color 0.3s ease;
-}
-
-.login-btn:hover {
-  background-color: #e02e4d;
-}
-
-.signup-link {
-  margin-top: 15px;
-  font-size: 14px;
-  color: #333;
   text-decoration: underline;
-  cursor: pointer;
 }
