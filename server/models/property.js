@@ -10,9 +10,17 @@ const propertySchema = new mongoose.Schema(
       state: { type: String, required: true },
       zip: { type: String, required: true },
       country: { type: String, required: true },
-      // For Maps SDK - Uncomment if needed:
-      // latitude: { type: Number },
-      // longitude: { type: Number },
+      coordinates: {
+        type: {
+          type: String,
+          enum: ['Point'], // Only 'Point' type for coordinates
+          required: true
+        },
+        coordinates: {
+          type: [Number], // Array of numbers for longitude, latitude
+          required: true
+        }
+      }
     },
     price: { type: Number, required: true },
     images: [{ type: String }],       // Optional array of image URLs
@@ -23,5 +31,5 @@ const propertySchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
+propertySchema.index({ 'location.coordinates': '2dsphere' });
 module.exports = mongoose.model('Property', propertySchema);
