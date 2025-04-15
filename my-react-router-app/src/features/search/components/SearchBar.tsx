@@ -210,7 +210,6 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
             // Only allow positive numbers
             if (/^\d*$/.test(value)) {
               setMaxPrice(value);
-
               const min = parseInt(minPrice || '0');
               const max = parseInt(value || '0');
               setIsMaxPriceInvalid(max < min);
