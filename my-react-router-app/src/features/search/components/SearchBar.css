@@ -7,7 +7,7 @@
   flex-direction: column;
   gap: 1.25rem;
   font-family: 'Arial', sans-serif;
-  margin: 2rem auto;
+  margin: 10rem auto 2rem auto;
   max-width: 1000px;
   position: relative;
   /* Changed from fixed/sticky positioning */
@@ -129,7 +129,7 @@
 @media (max-width: 480px) {
   .search-bar {
     padding: 1.25rem;
-    margin: 1rem auto;
+    margin: 10rem auto 1rem auto;
   }
 
   .search-button {
