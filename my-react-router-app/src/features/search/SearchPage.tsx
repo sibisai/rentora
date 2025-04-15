@@ -1,48 +1,194 @@
 import React, { useState } from 'react';
-import SearchBar from './components/SearchBar';
+import SearchBar, { type SearchParams } from './components/SearchBar';
+import './SearchPage.css';
 
+// --- Interfaces ---
 interface Property {
-  id: number;
+  _id: string;
   title: string;
-  location: string;
+  description: string;
+  location: {
+    address?: string;
+    city: string;
+    state: string;
+    zip?: string;
+    country?: string;
+    coordinates: {
+      type: 'Point';
+      coordinates: [number, number]; // [longitude, latitude]
+    };
+  };
   price: number;
+  images?: string[];
+  amenities?: string[];
   propertyType: string;
+  rooms: number;
+  hostId?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
-export default function SearchPage() {
+const SearchPage: React.FC = () => {
   const [results, setResults] = useState<Property[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [activeFilter, setActiveFilter] = useState<string>('all');
 
-  const handleSearch = async (filters: any) => {
+  // --- handleSearch function ---
+  const handleSearch = async (params: SearchParams) => {
     setLoading(true);
-    const query = new URLSearchParams(filters).toString();
-    // Replace with your actual API endpoint
-    // For example: `http://localhost:3001/api/properties?${query}`
-    // Make sure to handle CORS if you're calling a different domain or port
-    const res = await fetch(`http://localhost:3001/api/properties?${query}`);
-    const data = await res.json();
-    setResults(data);
-    setLoading(false);
+    setError(null);
+    setResults([]); // Clear previous results
+    setActiveFilter('all');
+
+    const cleanParams = Object.entries(params).reduce((acc, [key, value]) => { 
+      if (value !== undefined && value !== null && value !== '') { 
+        acc[key] = value; 
+      } 
+      return acc; 
+    }, {} as Record<string, any>);
+    
+    const query = new URLSearchParams(cleanParams).toString();
+    console.log("Frontend sending query:", query);
+
+    try {
+      const res = await fetch(`http://localhost:3001/properties?${query}`);
+      if (!res.ok) { throw new Error('Fetch failed'); }
+      const data = await res.json();
+      if (!Array.isArray(data)) { throw new Error('Invalid data'); }
+
+      console.log("Data received:", data);
+      setResults(data as Property[]);
+    } catch (err) {
+      console.error("Failed to fetch properties:", err);
+      setError(err instanceof Error ? err.message : "An unknown error occurred");
+    } finally {
+      setLoading(false);
+    }
   };
 
+  // Filter results based on active filter
+  const filteredResults = activeFilter === 'all' 
+    ? results 
+    : results.filter(property => property.propertyType === activeFilter);
+
+  // Get unique property types for filter buttons
+  const propertyTypes = ['all', ...new Set(results.map(property => property.propertyType))];
+
+  // --- Main Render ---
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">Find your stay 🏡</h1>
-      <SearchBar onSearch={handleSearch} />
+    <div className="search-page-container">
+      {/* Header with navigation */}
+      <header className="search-page-header">
+        <nav className="search-page-nav">
+          <a href="/" className="nav-link">Home</a>
+          <a href="/search" className="nav-link active">Search</a>
+          <a href="/login" className="nav-link">Login</a>
+        </nav>
+      </header>
 
-      {loading && <p className="mt-4">Searching...</p>}
+      {/* Search Bar Section */}
+      <section className="search-bar-container">
+        <SearchBar onSearch={handleSearch} />
+      </section>
 
-      <div className="mt-6 space-y-4">
-        {results.map((property) => (
-          <div key={property.id} className="border p-4 rounded shadow-sm bg-white">
-            <h2 className="text-xl font-semibold">{property.title}</h2>
-            <p className="text-sm text-gray-600">{property.location}</p>
-            <p className="text-sm text-gray-800">${property.price} / night</p>
-            <p className="text-sm text-gray-500 italic">{property.propertyType}</p>
+      {/* Main Content Area (Results only) */}
+      <main className="search-content">
+        {/* Results Container */}
+        <div className="results-container">
+          <div className="results-header">
+            <h2 className="results-title">
+              {loading ? 'Searching...' : 
+               error ? 'Error' :
+               filteredResults.length > 0 ? `${filteredResults.length} Properties Found` : 'No Properties Found'}
+            </h2>
+            
+            {/* Property type filters - only show when we have results */}
+            {results.length > 0 && (
+              <div className="filter-container">
+                <p className="filter-label">Filter by:</p>
+                <div className="filter-buttons">
+                  {propertyTypes.map(type => (
+                    <button 
+                      key={type} 
+                      className={`filter-button ${activeFilter === type ? 'active' : ''}`}
+                      onClick={() => setActiveFilter(type)}
+                    >
+                      {type === 'all' ? 'All Types' : type}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
-        ))}
-      </div>
+          
+          {error && <p className="error-message">Error: {error}</p>}
+          
+          {!loading && !error && results.length === 0 && (
+            <div className="empty-state">
+              <div className="empty-state-icon">🏠</div>
+              <p className="no-results-message">No properties found matching your criteria.</p>
+              <p className="no-results-suggestion">Try adjusting your search filters or exploring different locations.</p>
+            </div>
+          )}
+          
+          {loading && (
+            <div className="loading-container">
+              <div className="loading-spinner"></div>
+              <p>Searching for properties...</p>
+            </div>
+          )}
+          
+          {!loading && !error && filteredResults.length > 0 && (
+            <div className="results-grid">
+              {filteredResults.map((property) => (
+                <div 
+                  key={property._id} 
+                  className="property-card"
+                >
+                  <div className="property-image-container">
+                    {property.images && property.images.length > 0 ? (
+                      <img src={property.images[0]} alt={property.title} className="property-image"/>
+                    ) : (
+                      <div className="property-image-placeholder">No image available</div>
+                    )}
+                    <div className="property-type-badge">{property.propertyType}</div>
+                  </div>
+                  <div className="property-details">
+                    <h3 className="property-title">{property.title}</h3>
+                    <p className="property-location">{property.location.city}, {property.location.state}</p>
+                    <div className="property-info">
+                      <p className="property-rooms">{property.rooms} {property.rooms === 1 ? 'Room' : 'Rooms'}</p>
+                      {property.description && (
+                        <p className="property-description">{property.description.substring(0, 100)}...</p>
+                      )}
+                    </div>
+                    <div className="property-footer">
+                      <p className="property-price">${property.price} <span className="price-period">/ night</span></p>
+                      <button className="view-details-button">View Details</button>
+                    </div>
+                    {property.amenities && property.amenities.length > 0 && (
+                      <div className="property-amenities">
+                        <p className="amenities-title">Top amenities</p>
+                        <div className="amenities-list">
+                          {property.amenities.slice(0, 3).map((amenity, index) => (
+                            <span key={index} className="amenity-tag">{amenity}</span>
+                          ))}
+                          {property.amenities.length > 3 && (
+                            <span className="amenity-tag more-tag">+{property.amenities.length - 3} more</span>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </main>
     </div>
   );
-}
+};
 
+export default SearchPage;

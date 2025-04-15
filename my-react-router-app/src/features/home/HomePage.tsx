@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../../styles/index.css';
+import propertyImage from '../../assets/images/property.jpg';
 
 export default function Home() {
   return (
@@ -19,15 +20,15 @@ export default function Home() {
           </nav>
         </div>
 
-        <div className="search-bar">
+        {/* <div className="search-bar">
           <input type="text" placeholder="Search for places..." />
-        </div>
+        </div> */}
       </header>
 
       <main>
   <div className="hero">
     <div className="hero-overlay">
-      <h2>Your Pefect Stay</h2>
+      <h2>Your Perfect Stay</h2>
       <div className="button-links">
         <Link to="/account" className="nav-button">Account</Link>
         <Link to="/cart" className="nav-button">Cart</Link>
@@ -36,6 +37,25 @@ export default function Home() {
       </div>
     </div>
   </div>
+
+  <section className="property-section">
+  <h2>Browse your spots</h2>
+  <div className="property-grid">
+  {[...Array(20)].map((_, i) => (
+  <div key={i} className="property-card">
+    <img src={propertyImage} alt={`Property ${i}`} />
+    <div className="property-info">
+      <h3>City Name, State</h3>
+      <p>Mountain and garden views</p>
+      <p className="price">
+  <span className="price-amount">${(500 + i * 50).toLocaleString()}</span> per 5 nights
+</p>
+    </div>
+  </div>
+))}
+</div>
+</section>
+
 </main>
 
     </div>
