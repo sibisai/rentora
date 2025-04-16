@@ -58,7 +58,7 @@ async function getCoordinatesForAddress(locationData) {
     const response = await fetch(url, {
       method: 'GET',
       headers: {
-        // IMPORTANT: Set a descriptive User-Agent per Nominatim policy
+        // TO-DO: Set a descriptive User-Agent per Nominatim policy
         'User-Agent': 'YourAppName/1.0 (Contact: your-email@example.com)',
         'Accept': 'application/json'
       }
@@ -349,7 +349,7 @@ app.delete('/properties/:id', async (req, res) => {
     if (!property) {
       return res.status(404).json({ error: 'Property not found' });
     }
-    // Consider deleting associated bookings here too
+    // Might need to deleting associated bookings here too
     // await Booking.deleteMany({ property: req.params.id });
     res.status(204).send();
   } catch (err) {
@@ -364,7 +364,11 @@ app.use('/auth', authRoutes);
 
 // --- Mount Booking Routes ---
 const bookingRoutes = require('./booking');
-app.use('/', bookingRoutes);  // Changed from '/api' to '/' to match test expectations
+app.use('/', bookingRoutes);
+
+// --- Mount Upload Routes ---
+const uploadRoute = require('./imageUpload');
+app.use('/image', uploadRoute);
 
 // --- Basic Not Found Handler ---
 app.use((req, res, next) => {
