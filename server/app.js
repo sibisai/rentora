@@ -10,7 +10,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // --- CORS Configuration ---
-const frontendURL = process.env.FRONTEND_URL || 'http://localhost:5173';
+// const frontendURL = process.env.FRONTEND_URL || 'http://localhost:5173';
+const frontendURL = process.env.FRONTEND_URL;
 app.use(cors({
     origin: frontendURL,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],

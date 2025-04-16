@@ -1,8 +1,3 @@
-/**
- * test/edge‑cases.test.js
- * Extra branch tests that push coverage ≥ 90 %.
- */
-
 process.env.NODE_ENV  = 'test';
 process.env.MONGO_URI = process.env.MONGO_URI_TEST;
 
