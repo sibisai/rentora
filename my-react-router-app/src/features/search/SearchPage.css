@@ -59,7 +59,7 @@ body {
   padding: 1.5rem;
   background-color: white;
   border-bottom: 1px solid #eaeaea;
-  position: sticky;
+  /* position: sticky; */
   top: 60px;
   /* Adjust based on header height */
   z-index: 50;
