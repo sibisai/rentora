@@ -1,10 +1,12 @@
 const express = require('express');
 const { S3Client } = require('@aws-sdk/client-s3');
 const multer = require('multer');
-const multerS3 = require('multer-s3-v3');  // Note the changed package name
+const multerS3 = require('multer-s3-v3');
+const mongoose = require('mongoose');
+const Property = require('./models/property');
 require('dotenv').config();
 
-const app = express();
+const router = express.Router();
 
 // Configure the S3 client (AWS SDK v3)
 const s3 = new S3Client({
@@ -38,12 +40,39 @@ const upload = multer({
   },
 });
 
-// Define a POST route to upload an image
-app.post('/upload', upload.single('image'), (req, res) => {
-  res.json({
-    imageUrl: req.file.location, // S3 returns the file URL here
-    message: 'Image uploaded successfully!',
-  });
+// This route uploads an image and then updates the property with the new image URL.
+router.post('/upload/:propertyId', upload.single('image'), async (req, res) => {
+  const propertyId = req.params.propertyId;
+  if (!mongoose.Types.ObjectId.isValid(propertyId)) {
+    return res.status(400).json({ error: 'Invalid property ID format' });
+  }
+
+  if (!req.file || !req.file.location) {
+    return res.status(400).json({ error: 'Image upload failed, no file received.' });
+  }
+
+  try {
+    const imageUrl = req.file.location;
+    
+    // Update the property: push the new image URL into the images array
+    const updatedProperty = await Property.findByIdAndUpdate(
+      propertyId,
+      { $push: { images: imageUrl } },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedProperty) {
+      return res.status(404).json({ error: 'Property not found.' });
+    }
+
+    res.json({
+      message: 'Image uploaded and property updated successfully.',
+      property: updatedProperty,
+    });
+  } catch (err) {
+    console.error('Error updating property with image: ', err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
-app.listen(3001, () => console.log("Server running on port 3001"));
+module.exports = router;
