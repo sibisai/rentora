@@ -16,6 +16,12 @@
   /* Add width constraint for better appearance */
 }
 
+/* Search bar shadow effect */
+.results-container {
+  margin-top: 3rem;
+}
+
+
 /* Search title if needed */
 .search-title {
   font-size: 1.5rem;
@@ -141,4 +147,16 @@
   border-color: #dc2626 !important;
   background-color: #fef2f2;
   /* light red background */
+}
+
+/* renders once */
+.page-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.results-container {
+  margin-top: 2rem;
+  overflow-y: auto;
 }

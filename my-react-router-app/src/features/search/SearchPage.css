@@ -59,11 +59,17 @@ body {
   padding: 1.5rem;
   background-color: white;
   border-bottom: 1px solid #eaeaea;
-  position: sticky;
-  top: 60px;
+  /* position: sticky; */
+  /* top: 60px; */
+  position: relative; /* Changed to relative for better layout control */
   /* Adjust based on header height */
   z-index: 50;
 }
+/*maybe delete later  */
+.search-bar-container {
+  margin-bottom: 2rem;
+}
+
 
 /* Results container */
 .results-container {
