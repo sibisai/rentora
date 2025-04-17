@@ -16,7 +16,7 @@ const EditPropertyPage: React.FC = () => {
   const [loading,    setLoading]     = useState(true)
   const [error,      setError]       = useState<string>()
 
-// put this just above the useEffect (or in ../types if you prefer)
+
 type LocationFromAPI = {
   address?:  string
   city?:     string
