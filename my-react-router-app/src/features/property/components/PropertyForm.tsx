@@ -7,6 +7,7 @@ import LocationPicker   from './LocationPicker'
 import ImageUploader    from './ImageUploader'
 import { useAuth }      from '../../auth/AuthContext'
 import type { FormValues } from '../types'
+import '../styles/property-forms.css'
 
 type Props = {
   initialValues?: FormValues & { _id?: string }
@@ -89,97 +90,87 @@ export default function PropertyForm({ initialValues, onSubmit }: Props) {
   })
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="grid gap-6 md:grid-cols-2">
-      {/* — left column — */}
-      <div className="space-y-4">
-        {/* Title */}
-        <div>
-          <label className="block font-medium">Title</label>
-          <input {...register('title')} className="input w-full" />
-          {errors.title && <p className="text-red-500">{errors.title.message}</p>}
-        </div>
-
-        {/* Description */}
-        <div>
-          <label className="block font-medium">Description</label>
-          <textarea {...register('description')} rows={4} className="input w-full" />
-          {errors.description && <p className="text-red-500">{errors.description.message}</p>}
-        </div>
-
-        {/* Price & Rooms */}
-        <div className="flex space-x-4">
-          <div className="flex-1">
-            <label className="block font-medium">Price (USD)</label>
-            <input type="number" {...register('price')} className="input w-full" />
-            {errors.price && <p className="text-red-500">{errors.price.message}</p>}
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="form-grid">
+        <div className="form-col">
+          <div className="form-group">
+            <label>Title</label>
+            <input {...register('title')} type="text" />
+            {errors.title && <p className="error">{errors.title.message}</p>}
           </div>
-          <div className="w-32">
-            <label className="block font-medium">Rooms</label>
-            <input type="number" {...register('rooms')} className="input w-full" />
-            {errors.rooms && <p className="text-red-500">{errors.rooms.message}</p>}
+          <div className="form-group">
+            <label>Description</label>
+            <textarea {...register('description')} rows={4} />
+            {errors.description && <p className="error">{errors.description.message}</p>}
+          </div>
+          <div className="form-group">
+            <label>Price (USD)</label>
+            <input {...register('price')} type="number" />
+            {errors.price && <p className="error">{errors.price.message}</p>}
+          </div>
+          <div className="form-group">
+            <label>Rooms</label>
+            <input {...register('rooms')} type="number" />
+            {errors.rooms && <p className="error">{errors.rooms.message}</p>}
+          </div>
+          <div className="form-group">
+            <label>Property Type</label>
+            <select {...register('propertyType')}>
+              <option value="">Select…</option>
+              {['House','Apartment','Cabin','Studio','Villa','Townhouse','Condo','Loft','Mansion','Other']
+                .map(t => <option key={t} value={t}>{t}</option>)}
+            </select>
+            {errors.propertyType && <p className="error">{errors.propertyType.message}</p>}
+          </div>
+          <div className="form-group">
+            <label>Amenities</label>
+            <div className="checkbox-grid">
+              {['Wi‑Fi','Kitchen','Washer','Dryer','Free parking','Air conditioning','Pool','Hot tub','EV charger']
+                .map(a => (
+                  <label key={a}>
+                    <input type="checkbox" value={a} {...register('amenities')} /> {a}
+                  </label>
+                ))}
+            </div>
+            {errors.amenities && <p className="error">{errors.amenities.message}</p>}
           </div>
         </div>
 
-        {/* Property Type */}
-        <div>
-          <label className="block font-medium">Property Type</label>
-          <select {...register('propertyType')} className="input w-full">
-            <option value="">Select…</option>
-            {['House','Apartment','Cabin','Studio','Villa','Townhouse','Condo','Loft','Mansion','Other']
-             .map(t => <option key={t} value={t}>{t}</option>)}
-          </select>
-          {errors.propertyType && <p className="text-red-500">{errors.propertyType.message}</p>}
-        </div>
-
-        {/* Amenities */}
-        <div>
-          <label className="block font-medium mb-1">Amenities</label>
-          <div className="grid grid-cols-2 gap-1">
-            {['Wi‑Fi','Kitchen','Washer','Dryer','Free parking','Air conditioning','Pool','Hot tub','EV charger']
-             .map(a => (
-               <label key={a} className="flex items-center space-x-1 text-sm">
-                 <input type="checkbox" value={a} {...register('amenities')} />
-                 <span>{a}</span>
-               </label>
-             ))}
-          </div>
-          {errors.amenities && <p className="text-red-500">{errors.amenities.message}</p>}
-        </div>
-      </div>
-
-      {/* — right column — */}
-      <div className="space-y-6">
-        <Controller
-          name="location"
-          control={control}
-          render={({ field }) => (
-            <LocationPicker value={field.value} onChange={field.onChange} />
-          )}
-        />
-        {errors.location && <p className="text-red-500">Please complete the address</p>}
-
-        <Controller
-          name="images"
-          control={control}
-          render={({ field }) => (
-            <ImageUploader
-              propertyId={initialValues?._id}
-              value={field.value}
-              onChange={field.onChange}
+        <div className="form-col">
+          <div className="form-group">
+            <Controller
+              name="location"
+              control={control}
+              render={({ field }) => (
+                <LocationPicker value={field.value} onChange={field.onChange} />
+              )}
             />
-          )}
-        />
-        {errors.images && <p className="text-red-500">{errors.images.message}</p>}
+            {errors.location && <p className="error">Please complete the address</p>}
+          </div>
+          <div className="form-group">
+            <Controller
+              name="images"
+              control={control}
+              render={({ field }) => (
+                <ImageUploader
+                  propertyId={initialValues?._id}
+                  value={field.value}
+                  onChange={field.onChange}
+                />
+              )}
+            />
+            {errors.images && <p className="error">{errors.images.message}</p>}
+          </div>
+        </div>
       </div>
 
-      {/* — submit — */}
-      <div className="md:col-span-2">
+      <div className="form-footer">
         <button
           type="submit"
-          // disabled={isSubmitting}
-          className="btn-primary w-full md:w-auto"
+          disabled={isSubmitting}
+          className="btn btn-primary"
         >
-          {isSubmitting ? 'Saving…' : 'Save Listing'}
+          {isSubmitting ? 'Saving…' : isEdit ? 'Save Changes' : 'Create Listing'}
         </button>
       </div>
     </form>

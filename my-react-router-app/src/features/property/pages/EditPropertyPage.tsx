@@ -5,6 +5,7 @@ import PropertyForm                   from '../components/PropertyForm'
 import { getProperty, updateProperty }from '../propertyService'
 import type { FormValues }            from '../types'
 import { useAuth }                    from '../../auth/AuthContext'
+import '../styles/property-forms.css'
 
 const EditPropertyPage: React.FC = () => {
   const { id }   = useParams<{ id: string }>()
@@ -78,12 +79,11 @@ useEffect(() => {
   if (!initialData) return null
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">Edit Listing</h1>
-      <PropertyForm
-        initialValues={initialData}
-        onSubmit={handleSave}
-      />
+    <div className="page-container">
+      <div className="card">
+        <h1>Edit Listing</h1>
+        <PropertyForm initialValues={initialData} onSubmit={handleSave} />
+      </div>
     </div>
   )
 }

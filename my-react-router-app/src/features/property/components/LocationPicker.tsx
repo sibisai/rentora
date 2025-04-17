@@ -13,8 +13,8 @@ export default function LocationPicker({ value, onChange }: Props) {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_KEY,
     libraries: ['places'],
-    id: 'places-only', 
-    version: 'weekly'
+    // id: 'places-only', 
+    // version: 'weekly'
   });
 
   const searchRef = useRef<google.maps.places.SearchBox | null>(null);

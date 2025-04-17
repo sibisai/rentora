@@ -85,108 +85,82 @@ export default function CreateStepDetails({ onSubmit }: Props) {
     resolver: yupResolver(schema),
     mode:     'onChange',
   })
-
-  return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      
-      className="space-y-4 max-w-2xl"
-    >
-      {/* Title */}
-      <div>
-        <label className="block font-medium">Title</label>
-        <input {...register('title')} className="input w-full" />
-        {errors.title && (
-          <p className="text-red-500">{errors.title.message}</p>
-        )}
-      </div>
-
-      {/* Description */}
-      <div>
-        <label className="block font-medium">Description</label>
-        <textarea
-          {...register('description')}
-          rows={4}
-          className="input w-full"
-        />
-        {errors.description && (
-          <p className="text-red-500">{errors.description.message}</p>
-        )}
-      </div>
-
-      {/* Price & Rooms */}
-      <div className="flex space-x-4">
-        <div className="flex-1">
-          <label className="block font-medium">Price (USD)</label>
-          <input type="number" {...register('price')} className="input w-full" />
-          {errors.price && (
-            <p className="text-red-500">{errors.price.message}</p>
-          )}
+  
+   return (
+    <form onSubmit={handleSubmit(onSubmit)} className="form-grid">
+      {/* left column */}
+      <div className="form-col">
+        <div className="form-group">
+          <label>Title</label>
+          <input {...register('title')} />
+          {errors.title  && <div className="error">{errors.title.message}</div>}
         </div>
-        <div className="w-28">
-          <label className="block font-medium">Rooms</label>
-          <input type="number" {...register('rooms')} className="input w-full" />
-          {errors.rooms && (
-            <p className="text-red-500">{errors.rooms.message}</p>
-          )}
+
+        <div className="form-group">
+          <label>Description</label>
+          <textarea {...register('description')} rows={4} />
+          {errors.description && <div className="error">{errors.description.message}</div>}
+        </div>
+
+        <div className="form-group">
+          <label>Price (USD)</label>
+          <input type="number" {...register('price')} />
+          {errors.price && <div className="error">{errors.price.message}</div>}
+        </div>
+
+        <div className="form-group">
+          <label>Rooms</label>
+          <input type="number" {...register('rooms')} />
+          {errors.rooms && <div className="error">{errors.rooms.message}</div>}
         </div>
       </div>
 
-      {/* Property Type */}
-      <div>
-        <label className="block font-medium">Property Type</label>
-        <select {...register('propertyType')} className="input w-full">
-          <option value="">Select…</option>
-          {[
-            'House','Apartment','Cabin','Studio','Villa',
-            'Townhouse','Condo','Loft','Mansion','Other',
-          ].map((t) => (
-            <option key={t} value={t}>{t}</option>
-          ))}
-        </select>
-        {errors.propertyType && (
-          <p className="text-red-500">{errors.propertyType.message}</p>
-        )}
-      </div>
-
-      {/* Amenities */}
-      <div>
-        <label className="block font-medium mb-1">Amenities</label>
-        <div className="grid grid-cols-2 gap-1">
-          {[
-            'Wi‑Fi','Kitchen','Washer','Dryer','Free parking',
-            'Air conditioning','Pool','Hot tub','EV charger',
-          ].map((a) => (
-            <label key={a} className="flex items-center space-x-1 text-sm">
-              <input type="checkbox" value={a} {...register('amenities')} />
-              <span>{a}</span>
-            </label>
-          ))}
+      {/* right column */}
+      <div className="form-col">
+        <div className="form-group">
+          <label>Property Type</label>
+          <select {...register('propertyType')}>
+            <option value="">Select…</option>
+            {['House','Apartment','Cabin','Studio','Villa','Townhouse','Condo','Loft','Mansion','Other']
+              .map(t => <option key={t} value={t}>{t}</option>)}
+          </select>
+          {errors.propertyType && <div className="error">{errors.propertyType.message}</div>}
         </div>
-        {errors.amenities && (
-          <p className="text-red-500">{errors.amenities.message}</p>
-        )}
+
+        <div className="form-group">
+          <label>Amenities</label>
+          <div className="checkbox-grid">
+            {['Wi‑Fi','Kitchen','Washer','Dryer','Free parking','Air conditioning','Pool','Hot tub','EV charger']
+              .map(a => (
+                <label key={a}>
+                  <input type="checkbox" value={a} {...register('amenities')} /> {a}
+                </label>
+            ))}
+          </div>
+        </div>
+
+        <div className="form-group">
+          <label>Location</label>
+          <Controller
+            name="location"
+            control={control}
+            render={({ field }) =>
+              <LocationPicker value={field.value} onChange={field.onChange} />
+            }
+          />
+          {errors.location && <div className="error">Address required</div>}
+        </div>
       </div>
 
-      {/* Location */}
-      <Controller
-        name="location"
-        control={control}
-        render={({ field }) => (
-          <LocationPicker value={field.value} onChange={field.onChange} />
-        )}
-      />
-      {errors.location && (
-        <p className="text-red-500">Please complete the address</p>
-      )}
-
-      <button
-        type="submit"
-        className="btn-primary"
-        disabled={!isValid || isSubmitting}
-      >
-        {isSubmitting ? 'Saving…' : 'Continue to photos'}
-      </button>
+      <div className="form-footer" style={{ flexBasis: '100%' }}>
+        <button
+          type="submit"
+          className="btn btn-primary"
+          disabled={!isValid || isSubmitting}
+        >
+          Continue to photos
+        </button>
+      </div>
     </form>
   )
 }

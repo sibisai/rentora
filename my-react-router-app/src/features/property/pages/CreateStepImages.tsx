@@ -61,32 +61,36 @@ any>(schema),
     // console.log('Form images:', watchedImages)
     // console.log('Form isValid:', isValid)
   }, [watchedImages, isValid])
-
+  
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)} 
-className="space-y-4 max-w-2xl">
+    <form onSubmit={handleSubmit(onSubmit)} className="form-grid">
+      <div className="form-col" style={{ flexBasis: '100%' }}>
         <Controller
           name="images"
           control={control}
-          render={({ field }) => (
-            <ImageUploader propertyId={propertyId} 
-value={field.value} onChange={field.onChange} />
-          )}
+          render={({ field }) =>
+            <ImageUploader
+              propertyId={propertyId}
+              value={field.value}
+              onChange={field.onChange}
+            />
+          }
         />
-        {errors.images && <p 
-className="text-red-500">{errors.images.message}</p>}
-        <div className="flex justify-between">
-          <button type="button" onClick={onBack} 
-className="btn-secondary">
-            ← Back
-          </button>
-          <button type="submit" disabled={!isValid || 
-isSubmitting} className="btn-primary">
-            {isSubmitting ? 'Saving…' : 'Save Listing'}
-          </button>
-        </div>
-      </form>
-    </>
+        {errors.images && <div className="error">{errors.images.message}</div>}
+      </div>
+
+      <div className="form-footer" style={{ flexBasis: '100%' }}>
+        <button type="button" className="btn btn-secondary" onClick={onBack}>
+          ← Back
+        </button>
+        <button
+          type="submit"
+          className="btn btn-primary"
+          disabled={!isValid || isSubmitting}
+        >
+          {isSubmitting ? 'Saving…' : 'Save Listing'}
+        </button>
+      </div>
+    </form>
   )
 }

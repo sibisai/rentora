@@ -1,14 +1,12 @@
-// src/features/property/components/ImageUploader.tsx
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
+import '../styles/property-forms.css';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3001';
 
 type Props = {
-  /** Mongo ID – undefined on the “Create” page */
   propertyId?: string;
-  /** Controlled array of image URLs */
   value: string[];
   onChange: (urls: string[]) => void;
 };
@@ -16,19 +14,18 @@ type Props = {
 export default function ImageUploader({ propertyId, value, onChange }: Props) {
   const [previews, setPreviews] = useState<string[]>([]);
 
-  // Remove any previews that have since been uploaded
+  // remove any previews that are now in `value`
   useEffect(() => {
     setPreviews((curr) => curr.filter((p) => !value.includes(p)));
   }, [value]);
 
-  // Keep a ref so we can build incremental arrays
   const currentImagesRef = useRef<string[]>(value);
   useEffect(() => {
     currentImagesRef.current = value;
   }, [value]);
 
   const onDrop = useCallback(async (files: File[]) => {
-    // 1) Create base‑64 previews immediately
+    // 1) generate local previews
     const newPreviews = await Promise.all(
       files.map(
         (file) =>
@@ -41,7 +38,7 @@ export default function ImageUploader({ propertyId, value, onChange }: Props) {
     );
     setPreviews((curr) => [...curr, ...newPreviews]);
 
-    // 2) If we’re still on “create” (no propertyId), just merge into value
+    // 2) if no propertyId, just merge previews into value
     if (!propertyId) {
       const merged = [...currentImagesRef.current, ...newPreviews];
       onChange(merged);
@@ -49,25 +46,26 @@ export default function ImageUploader({ propertyId, value, onChange }: Props) {
       return;
     }
 
-    // 3) Otherwise upload each file to your backend S3 endpoint
+    // 3) otherwise upload to server
     let updatedUrls = [...currentImagesRef.current];
     await Promise.all(
       files.map(async (file, idx) => {
         try {
           const formData = new FormData();
-          formData.append('images', file); // multer.array('images')
+          formData.append('images', file);
           const { data } = await axios.post<{ location: string }>(
             `${API_BASE}/image/upload/${propertyId}`,
             formData
           );
-          // remove this one preview
+          // drop that preview
           setPreviews((curr) => curr.filter((p) => p !== newPreviews[idx]));
           updatedUrls.push(data.location);
         } catch (err) {
-          console.error('Image upload failed:', err);
+          console.error('Upload failed:', err);
         }
       })
     );
+
     onChange(updatedUrls);
     currentImagesRef.current = updatedUrls;
   }, [propertyId, onChange]);
@@ -79,20 +77,19 @@ export default function ImageUploader({ propertyId, value, onChange }: Props) {
 
   return (
     <div>
-      <div
-        {...getRootProps()}
-        className="border-2 border-dashed rounded p-6 text-center cursor-pointer"
-      >
+      {/* dropzone using your CSS */}
+      <div {...getRootProps()} className="dropzone">
         <input {...getInputProps()} />
         {isDragActive
-          ? 'Drop images here…'
-          : 'Drag & drop or click to select'}
+          ? 'Release to upload images'
+          : 'Drag & drop images here, or click to select'}
       </div>
 
-      <div className="mt-4 grid grid-cols-3 gap-2">
+      {/* thumbnails using your CSS */}
+      <div className="preview-container">
         {[...previews, ...value].map((src) => (
-          <div key={src} className="relative">
-            <img src={src} alt="preview" className="h-24 w-full object-cover rounded" />
+          <div key={src} style={{ position: 'relative' }}>
+            <img src={src} alt="preview" />
             {value.includes(src) && (
               <button
                 type="button"
@@ -101,7 +98,17 @@ export default function ImageUploader({ propertyId, value, onChange }: Props) {
                   onChange(filtered);
                   currentImagesRef.current = filtered;
                 }}
-                className="absolute top-1 right-1 bg-white rounded-full px-2"
+                style={{
+                  position: 'absolute',
+                  top: 4,
+                  right: 4,
+                  background: 'rgba(255,255,255,0.8)',
+                  border: 'none',
+                  borderRadius: '50%',
+                  width: 24,
+                  height: 24,
+                  cursor: 'pointer',
+                }}
                 aria-label="Remove image"
               >
                 ×

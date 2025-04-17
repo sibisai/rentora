@@ -1,0 +1,138 @@
+/* form layout */
+.page-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* two‑column form */
+.form-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.form-col {
+  flex: 1 1 300px;
+  min-width: 280px;
+}
+
+/* form elements */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #CBD5E0;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.error {
+  color: #e53e3e;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* form footer */
+.form-footer {
+  text-align: right;
+  margin-top: 2rem;
+}
+
+/* buttons */
+.btn {
+  display: inline-block;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-primary {
+  background-color: #ff385c;
+  color: #fff;
+  padding: 0.6rem 1.4rem;
+}
+
+.btn-primary:hover {
+  background-color: #e02e4d;
+}
+
+.btn-secondary {
+  background-color: #f3f4f6;
+  color: #374151;
+  padding: 0.5rem 1rem;
+}
+
+.btn-secondary:hover {
+  background-color: #e5e7eb;
+}
+
+/* make the dropzone obvious & clickable */
+.dropzone {
+  border: 2px dashed #CBD5E0;
+  border-radius: 6px;
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+  background-color: #FAFAFA;
+}
+
+.dropzone:hover {
+  border-color: #A0AEC0;
+  background-color: #F0F4F8;
+}
+
+/* hide the native file input */
+.dropzone input[type="file"] {
+  display: none;
+}
+
+/* container for all thumbnails */
+.preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+/* thumbnails */
+.preview-container img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
