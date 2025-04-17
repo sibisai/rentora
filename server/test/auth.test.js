@@ -118,4 +118,46 @@ describe('Auth Endpoints', () => {
     expect(res2.statusCode).toBe(400);
     expect(res2.body.message).toBe('Email and password are required.');
   });
+
+  // mount a dummy protected route to exercise the middleware
+  const { authenticate } = require('../routes/auth');
+  app.get('/auth/protected', authenticate, (_req, res) => {
+    res.json({ ok: true });
+  });
+
+  describe('Additional Auth edge cases', () => {
+    it('returns 401 when no Authorization header is present', async () => {
+      const res = await request(app).get('/auth/protected');
+      expect(res.status).toBe(401);
+      expect(res.body.error).toBe('Missing or invalid Authorization header');
+    });
+
+    it('returns 500 when JWT_SECRET is not set on login', async () => {
+      // create a user to log in
+      await User.create({ email: 'noenv@mail.com', password: 'pass123' });
+      // remove the secret
+      const original = process.env.JWT_SECRET;
+      delete process.env.JWT_SECRET;
+
+      const res = await request(app)
+        .post('/auth/login')
+        .send({ email: 'noenv@mail.com', password: 'pass123' });
+
+      expect(res.status).toBe(500);
+      expect(res.body.message).toBe('Server configuration error.');
+
+      // restore
+      process.env.JWT_SECRET = original;
+    });
+
+    it('returns 400 Validation Error when signup data fails schema validation', async () => {
+      const res = await request(app)
+        .post('/auth/signup')
+        .send({ email: 'not-an-email', password: 'short' });
+
+      expect(res.status).toBe(400);
+      expect(res.body.message).toBe('Validation Error');
+      expect(res.body.details).toBeDefined();
+    });
+  });
 });

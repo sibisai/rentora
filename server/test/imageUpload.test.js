@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 
 const Property = require('../models/property');
-const uploadRouter = require('../imageUpload');
+const uploadRouter = require('../routes/imageUpload');
 
 // Mock the Property model
 jest.mock('../models/property'); 
