@@ -1,55 +1,76 @@
-import React, { useCallback } from 'react';
+// src/features/property/components/ImageUploader.tsx
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { v4 as uuid } from 'uuid';
 import axios from 'axios';
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3001';
+
 type Props = {
+  /** Mongo ID – undefined on the “Create” page */
   propertyId?: string;
+  /** Controlled array of image URLs */
   value: string[];
   onChange: (urls: string[]) => void;
 };
 
 export default function ImageUploader({ propertyId, value, onChange }: Props) {
-  const onDrop = useCallback(async (files: File[]) => {
-    // 1️⃣ optimistic previews
-    const previews = await Promise.all(
-      files.map(
-        f =>
-          new Promise<string>(res => {
-            const reader = new FileReader();
-            reader.onload = () => res(reader.result as string);
-            reader.readAsDataURL(f);
-          }),
-      ),
-    );
-    onChange([...value, ...previews]);
+  const [previews, setPreviews] = useState<string[]>([]);
 
-    // 2️⃣ upload each file (skip if no propertyId yet)
+  // Remove any previews that have since been uploaded
+  useEffect(() => {
+    setPreviews((curr) => curr.filter((p) => !value.includes(p)));
+  }, [value]);
+
+  // Keep a ref so we can build incremental arrays
+  const currentImagesRef = useRef<string[]>(value);
+  useEffect(() => {
+    currentImagesRef.current = value;
+  }, [value]);
+
+  const onDrop = useCallback(async (files: File[]) => {
+    // 1) Create base‑64 previews immediately
+    const newPreviews = await Promise.all(
+      files.map(
+        (file) =>
+          new Promise<string>((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.readAsDataURL(file);
+          })
+      )
+    );
+    setPreviews((curr) => [...curr, ...newPreviews]);
+
+    // 2) If we’re still on “create” (no propertyId), just merge into value
+    if (!propertyId) {
+      const merged = [...currentImagesRef.current, ...newPreviews];
+      onChange(merged);
+      currentImagesRef.current = merged;
+      return;
+    }
+
+    // 3) Otherwise upload each file to your backend S3 endpoint
+    let updatedUrls = [...currentImagesRef.current];
     await Promise.all(
       files.map(async (file, idx) => {
-        if (!propertyId) return; // create‑page: wait until after save
-
-        const fd = new FormData();
-        fd.append('image', file);
-
         try {
+          const formData = new FormData();
+          formData.append('images', file); // multer.array('images')
           const { data } = await axios.post<{ location: string }>(
-            `/image/upload/${propertyId}`,
-            fd,
+            `${API_BASE}/image/upload/${propertyId}`,
+            formData
           );
-
-          const next = value
-            .filter(u => u !== previews[idx]) // remove just this preview
-            .concat(data.location);
-
-          onChange(next);
+          // remove this one preview
+          setPreviews((curr) => curr.filter((p) => p !== newPreviews[idx]));
+          updatedUrls.push(data.location);
         } catch (err) {
           console.error('Image upload failed:', err);
-          // TODO: toast + maybe remove the preview
         }
-      }),
+      })
     );
-  }, [propertyId, value, onChange]);
+    onChange(updatedUrls);
+    currentImagesRef.current = updatedUrls;
+  }, [propertyId, onChange]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: { 'image/*': [] },
@@ -68,18 +89,24 @@ export default function ImageUploader({ propertyId, value, onChange }: Props) {
           : 'Drag & drop or click to select'}
       </div>
 
-      {/* thumbnails */}
       <div className="mt-4 grid grid-cols-3 gap-2">
-        {value.map(src => (
-          <div key={uuid()} className="relative">
-            <img src={src} className="h-24 w-full object-cover rounded" />
-            <button
-              type="button"
-              onClick={() => onChange(value.filter(u => u !== src))}
-              className="absolute top-1 right-1 bg-white rounded-full px-2"
-            >
-              ×
-            </button>
+        {[...previews, ...value].map((src) => (
+          <div key={src} className="relative">
+            <img src={src} alt="preview" className="h-24 w-full object-cover rounded" />
+            {value.includes(src) && (
+              <button
+                type="button"
+                onClick={() => {
+                  const filtered = value.filter((u) => u !== src);
+                  onChange(filtered);
+                  currentImagesRef.current = filtered;
+                }}
+                className="absolute top-1 right-1 bg-white rounded-full px-2"
+                aria-label="Remove image"
+              >
+                ×
+              </button>
+            )}
           </div>
         ))}
       </div>

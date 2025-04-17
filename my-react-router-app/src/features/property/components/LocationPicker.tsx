@@ -1,11 +1,6 @@
 // src/features/property/components/LocationPicker.tsx
 import React, { useRef } from 'react';
-import {
-  GoogleMap,
-  Marker,
-  StandaloneSearchBox,
-  useJsApiLoader,
-} from '@react-google-maps/api';
+import { StandaloneSearchBox, useJsApiLoader } from '@react-google-maps/api';
 import type { Location } from '../types';
 
 type Props = {
@@ -13,41 +8,26 @@ type Props = {
   onChange: (loc: Location) => void;
 };
 
-const containerStyle = { width: '100%', height: '250px' };
-
 export default function LocationPicker({ value, onChange }: Props) {
-  /* -------------------------------------------------- */
-  /*  load Maps JS API + Places library                 */
-  /* -------------------------------------------------- */
+  /* load the **Places** library only – no Maps JavaScript */
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_KEY!,
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_KEY,
     libraries: ['places'],
+    id: 'places-only', 
+    version: 'weekly'
   });
 
-  /* reference to the <StandaloneSearchBox /> instance */
   const searchRef = useRef<google.maps.places.SearchBox | null>(null);
 
-  /* -------------------------------------------------- */
-  /*  when the user selects an address                  */
-  /* -------------------------------------------------- */
   const onPlacesChanged = () => {
     if (!searchRef.current) return;
+    const [place] = searchRef.current.getPlaces() ?? [];
+    if (!place?.geometry?.location) return;
 
-    const places = searchRef.current.getPlaces();           // PlaceResult[] | undefined
-    if (!places || !places.length) return;
-
-    const place = places[0];                                // safe to index now
-    const loc   = place.geometry?.location;
-    if (!loc) return;
-
-    const [lng, lat] = [loc.lng(), loc.lat()];
-
+    const loc  = place.geometry.location;
     const comps = place.address_components ?? [];
-
-    const get = (type: string) =>
-      comps.find((c: google.maps.GeocoderAddressComponent) =>
-        c.types.includes(type),
-      )?.long_name ?? '';
+    const get = (t: string) =>
+      comps.find(c => c.types.includes(t))?.long_name ?? '';
 
     onChange({
       address:  `${get('street_number')} ${get('route')}`.trim(),
@@ -55,43 +35,22 @@ export default function LocationPicker({ value, onChange }: Props) {
       state:    get('administrative_area_level_1'),
       zip:      get('postal_code'),
       country:  get('country'),
-      coordinates: [lng, lat],
+      coordinates: [loc.lng(), loc.lat()],
     });
   };
 
-  /* -------------------------------------------------- */
-  /*  render                                            */
-  /* -------------------------------------------------- */
-  if (!isLoaded) return <p>Loading map…</p>;
+  if (!isLoaded) return <p>Loading address picker…</p>;
 
   return (
-    <div className="space-y-2">
-      <StandaloneSearchBox
-        onLoad={ref => (searchRef.current = ref)}
-        onPlacesChanged={onPlacesChanged}
-      >
-        <input
-          className="input w-full"
-          placeholder="Start typing an address…"
-          defaultValue={value.address}
-        />
-      </StandaloneSearchBox>
-
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={{ lat: value.coordinates[1], lng: value.coordinates[0] }}
-        zoom={13}
-        onClick={e =>
-          onChange({
-            ...value,
-            coordinates: [e.latLng!.lng(), e.latLng!.lat()],
-          })
-        }
-      >
-        <Marker
-          position={{ lat: value.coordinates[1], lng: value.coordinates[0] }}
-        />
-      </GoogleMap>
-    </div>
+    <StandaloneSearchBox
+      onLoad={ref => (searchRef.current = ref)}
+      onPlacesChanged={onPlacesChanged}
+    >
+      <input
+        className="input w-full"
+        placeholder="Start typing an address…"
+        defaultValue={value.address}
+      />
+    </StandaloneSearchBox>
   );
 }

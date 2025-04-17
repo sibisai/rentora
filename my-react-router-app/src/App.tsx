@@ -35,7 +35,7 @@ export default function App() {
       </main>
 
       <ScrollRestoration />
-
+      
       <footer className="p-4 text-center text-sm text-gray-500 border-t">
         © 2025 [Placeholder]. All rights reserved.
       </footer>

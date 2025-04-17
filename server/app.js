@@ -15,7 +15,7 @@ app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:5173',
   methods: ['GET','POST','PUT','DELETE'],
 }));
-
+app.use(express.json({ limit: '5mb' }));
 // DB
 mongoose.connect(
   process.env.NODE_ENV==='test'
