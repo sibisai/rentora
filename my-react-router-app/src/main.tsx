@@ -1,4 +1,3 @@
-// src/main.tsx
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {
@@ -11,7 +10,6 @@ import { AuthProvider, useAuth } from './features/auth/AuthContext';
 import App, { AppErrorBoundary } from './App';
 
 /* ---------- pages ---------- */
-
 import HomePage            from './features/home/HomePage';
 import LoginPage           from './features/auth/LoginPage';
 import SearchPage          from './features/search/SearchPage';
@@ -24,27 +22,16 @@ import CreatePropertyPage  from './features/property/pages/CreatePropertyPage';
 import EditPropertyPage    from './features/property/pages/EditPropertyPage';
 
 import NotFoundPage        from './pages/NotFoundPage';
-
 import './styles/index.css';
 
-/* ---------- simple auth‑guard wrappers ---------- */
-
+/* ---------- simple auth‑guard ---------- */
 function RequireAuth({ children }: { children: JSX.Element }) {
   const { user, loading } = useAuth();
   if (loading) return <p>Loading…</p>;
   return user ? children : <Navigate to="/login" replace />;
 }
 
-function RequireHost({ children }: { children: JSX.Element }) {
-  const { user, loading } = useAuth();
-  if (loading) return <p>Loading…</p>;
-  return user?.role === 'host'
-    ? children
-    : <Navigate to="/" replace />;
-}
-
 /* ---------- router ---------- */
-
 const router = createBrowserRouter([
   {
     path: '/',
@@ -57,18 +44,18 @@ const router = createBrowserRouter([
       { path: 'account', element: <RequireAuth><AccountPage /></RequireAuth> },
       { path: 'cart',   element: <CartPage /> },
 
-      /* ---- host dashboard ---- */
+      /* ---- host dashboard (now just RequireAuth) ---- */
       {
         path: 'host/properties',
-        element: <RequireHost><PropertyListPage /></RequireHost>,
+        element: <RequireAuth><PropertyListPage /></RequireAuth>,
       },
       {
         path: 'host/properties/new',
-        element: <RequireHost><CreatePropertyPage /></RequireHost>,
+        element: <RequireAuth><CreatePropertyPage /></RequireAuth>,
       },
       {
         path: 'host/properties/:id/edit',
-        element: <RequireHost><EditPropertyPage /></RequireHost>,
+        element: <RequireAuth><EditPropertyPage /></RequireAuth>,
       },
 
       /* public property details */
@@ -81,7 +68,6 @@ const router = createBrowserRouter([
 ]);
 
 /* ---------- bootstrap ---------- */
-
 const root = document.getElementById('root')!;
 ReactDOM.createRoot(root).render(
   <React.StrictMode>

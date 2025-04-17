@@ -1,47 +1,50 @@
 import React, { useState, type FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
-import loginBg from '../../assets/images/loginbg.jpg';
-import './components/login.css';
+import { useNavigate }   from 'react-router-dom';
+import { useAuth }       from './AuthContext';
 import { login, signup } from '../../services/authService';
+import loginBg           from '../../assets/images/loginbg.jpg';
+import './components/login.css';
 
-const Login: React.FC = () => {
+/* ---------- component ---------- */
+
+export default function LoginPage() {
+  /* KEEP ALL HOOKS AT THE TOP LEVEL */
+  const auth     = useAuth();
   const navigate = useNavigate();
-  const [isLogin, setIsLogin] = useState<boolean>(true);
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [confirmPassword, setConfirmPassword] = useState<string>('');
-  const [errorMsg, setErrorMsg] = useState<string>('');
-  const [successMsg, setSuccessMsg] = useState<string>('');
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const [isLogin,   setIsLogin]   = useState(true);
+  const [showPwd,   setShowPwd]   = useState(false);
+  const [email,     setEmail]     = useState('');
+  const [password,  setPassword]  = useState('');
+  const [confirm,   setConfirm]   = useState('');
+  const [error,     setError]     = useState('');
+  const [success,   setSuccess]   = useState('');
+
+  /* ---------- submit ---------- */
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setErrorMsg('');
-    setSuccessMsg('');
+    setError(''); setSuccess('');
 
-    // Only perform confirm password check in signup mode
-    if (!isLogin && password !== confirmPassword) {
-      setErrorMsg('Passwords do not match.');
-      return;
+    if (!isLogin && password !== confirm) {
+      setError('Passwords do not match'); return;
     }
 
     try {
-      const authData = isLogin
+      const { token, userId, email: savedEmail } = isLogin
         ? await login(email, password)
         : await signup(email, password);
 
-      // Store token in local storage
-      localStorage.setItem('authToken', authData.token);
+      /* Save in context (AND localStorage inside AuthContext) */
+      auth.login(token, { id: userId, email: savedEmail });
 
-      setSuccessMsg('Success! Redirecting...');
-      setTimeout(() => {
-        navigate('/');
-      }, 2000);
+      setSuccess('Success! Redirecting…');
+      navigate('/host/properties', { replace: true });
     } catch (err: any) {
-      setErrorMsg(err.message || 'An error occurred during authentication.');
+      setError(err.message ?? 'Authentication failed');
     }
   };
 
+  /* ---------- JSX ---------- */
   return (
     <div
       className="login-page"
@@ -56,70 +59,69 @@ const Login: React.FC = () => {
       }}
     >
       <div className="login-container">
-        <h2>{isLogin ? 'Login' : 'Sign up'}</h2>
+        <h2>{isLogin ? 'Login' : 'Sign up'}</h2>
+
         <form onSubmit={handleSubmit}>
+          {/* email */}
           <div className="input-group">
             <input
-              type="email"
+              type="email" required
               placeholder="Email"
               value={email}
               onChange={e => setEmail(e.target.value)}
-              required
             />
           </div>
 
+          {/* password */}
           <div className="input-group">
             <input
-              type={showPassword ? 'text' : 'password'}
-              placeholder={isLogin ? 'Password' : 'Enter a Password'}
+              type={showPwd ? 'text' : 'password'} required
+              placeholder={isLogin ? 'Password' : 'Enter a password'}
               value={password}
               onChange={e => setPassword(e.target.value)}
-              required
             />
           </div>
 
+          {/* confirm pwd (signup only) */}
           {!isLogin && (
             <div className="input-group">
               <input
-                type={showPassword ? 'text' : 'password'}
-                placeholder="Reconfirm Your Password"
-                value={confirmPassword}
-                onChange={e => setConfirmPassword(e.target.value)}
-                required
+                type={showPwd ? 'text' : 'password'} required
+                placeholder="Re‑enter password"
+                value={confirm}
+                onChange={e => setConfirm(e.target.value)}
               />
             </div>
           )}
 
-          <div style={{ alignSelf: 'flex-start', marginTop: '8px', marginBottom: '12px' }}>
-            <label style={{ fontSize: '14px' }}>
-              <input
-                type="checkbox"
-                checked={showPassword}
-                onChange={() => setShowPassword(!showPassword)}
-                style={{ marginRight: '6px' }}
-              />
-              Show password
-            </label>
-          </div>
+          {/* show/hide toggle */}
+          <label style={{ fontSize: 14 }}>
+            <input
+              type="checkbox"
+              checked={showPwd}
+              onChange={() => setShowPwd(p => !p)}
+              style={{ marginRight: 6 }}
+            />
+            Show password
+          </label>
 
-          {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}
-          {successMsg && <p style={{ color: 'green' }}>{successMsg}</p>}
+          {/* messages */}
+          {error   && <p style={{ color: 'red'   }}>{error}</p>}
+          {success && <p style={{ color: 'green' }}>{success}</p>}
 
           <button type="submit" className="login-btn">
-            {isLogin ? 'Log in' : 'Sign up'}
+            {isLogin ? 'Log in' : 'Sign up'}
           </button>
 
-          <p className="signup-link" onClick={() => {
-              setIsLogin(!isLogin);
-              setErrorMsg('');
-              setSuccessMsg('');
-          }} style={{ cursor: 'pointer' }}>
-            {isLogin ? 'Sign up' : 'Already have an account? Log in'}
+          <p
+            className="signup-link"
+            style={{ cursor: 'pointer' }}
+            onClick={() => { setIsLogin(!isLogin); setError(''); setSuccess(''); }}
+          >
+            {isLogin ? 'Create an account' : 'Already registered? Log in'}
           </p>
         </form>
       </div>
     </div>
   );
-};
-
-export default Login;
+}

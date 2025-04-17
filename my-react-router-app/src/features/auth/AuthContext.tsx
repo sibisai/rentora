@@ -2,19 +2,16 @@ import axios from 'axios';
 import React, {
   createContext,
   useContext,
-  useState,
   useEffect,
+  useState,
   type PropsWithChildren,
 } from 'react';
 
 /* ---------- types ---------- */
 
-export type Role = 'guest' | 'host' | 'admin';
-
 export interface User {
   id:    string;
   email: string;
-  role:  Role;
 }
 
 interface AuthContextValue {
