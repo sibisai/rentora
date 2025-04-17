@@ -1,97 +1,96 @@
-import React            from 'react';
-import {
-  useForm, Controller, type SubmitHandler,
-}                       from 'react-hook-form';
-import { yupResolver }  from '@hookform/resolvers/yup';
-import * as yup         from 'yup';
+import React from 'react'
+import { useForm, Controller, type SubmitHandler } from 'react-hook-form'
+import { yupResolver }  from '@hookform/resolvers/yup'
+import * as yup         from 'yup'
 
-import LocationPicker   from './LocationPicker';
-import ImageUploader    from './ImageUploader';
-import { useAuth } from 'src/features/auth/AuthContext';
-import type { FormValues } from '../types';
+import LocationPicker   from './LocationPicker'
+import ImageUploader    from './ImageUploader'
+import { useAuth }      from '../../auth/AuthContext'
+import type { FormValues } from '../types'
 
-/* ─────────────────── helpers ─────────────────── */
-const coordinates = yup
-  .tuple([yup.number().required(), yup.number().required()])
-  .required()          as yup.Schema<[number, number]>;
-
-const stringArray = yup
-  .array()
-  .of(yup.string().required())
-  .default([])          // <= ensures [] instead of undefined
-  .defined(); 
-
-/* ─────────────────── schema ─────────────────────
-   Images are **optional on create** but **required on edit**           */
-export const schema: yup.ObjectSchema<FormValues> = yup.object({
-  title: yup.string().required('Title is required'),
-  description: yup.string().required('Description is required'),
-  price: yup.number().min(0).required('Price is required'),
-
-  location: yup.object({
-    address: yup.string().required(),
-    city:    yup.string().required(),
-    state:   yup.string().required(),
-    zip:     yup.string().required(),
-    country: yup.string().required(),
-    coordinates,
-  }),
-
-  images: stringArray.when('$isEdit', (isEdit, s) =>
-           isEdit ? s.min(1, 'Upload at least one image') : s),
-
-  amenities: stringArray,
-
-  propertyType: yup.string().required(),
-  rooms:        yup.number().min(1).required(),
-  hostId:       yup.string().required(),
-}).required();
-
-/* ─────────────────── constants ────────────────── */
-const PROPERTY_TYPES = [
-  'House','Apartment','Cabin','Studio','Villa',
-  'Townhouse','Condo','Loft','Mansion','Other',
-] as const;
-
-const AMENITIES = [
-  'Wi‑Fi','Kitchen','Washer','Dryer','Free parking',
-  'Air conditioning','Pool','Hot tub','EV charger',
-];
-
-/* ─────────────────── component ────────────────── */
 type Props = {
-  initialValues?: (FormValues & { _id?: string });
-  onSubmit:       SubmitHandler<FormValues>;
-};
+  initialValues?: FormValues & { _id?: string }
+  onSubmit:      SubmitHandler<FormValues>
+}
 
 export default function PropertyForm({ initialValues, onSubmit }: Props) {
-  const { user } = useAuth();
+  const { user } = useAuth()
+  const isEdit   = Boolean(initialValues?._id)
 
-  const isEdit = Boolean(initialValues?._id);
+  // ————— coordinate tuple —————
+  const coordinatesSchema = yup
+    .tuple([yup.number().required(), yup.number().required()])
+    .required() as yup.Schema<[number,number]>
 
+  // ————— strongly‑typed string[] schema —————
+  const stringArraySchema = yup
+    .array()
+    .of(yup.string().required())
+    .default(() => [])
+    .ensure()
+    .defined() as yup.ArraySchema<string[], yup.AnyObject>
+
+  // on create, enforce ≥1; on edit allow zero
+  const imagesSchema: yup.ArraySchema<string[], yup.AnyObject> = isEdit
+    ? stringArraySchema
+    : stringArraySchema.min(1, 'Upload at least one image')
+
+  const amenitiesSchema: yup.ArraySchema<string[], yup.AnyObject> = isEdit
+    ? stringArraySchema
+    : stringArraySchema.min(1, 'Select at least one amenity')
+
+  // ————— full form schema —————
+  const schema: yup.ObjectSchema<FormValues> = yup.object({
+    title:        yup.string().required('Title is required'),
+    description:  yup.string().required('Description is required'),
+    price:        yup.number().min(0, 'Price must be ≥ 0').required('Price is required'),
+    rooms:        yup.number().min(1, 'At least one room').required('Rooms is required'),
+    propertyType: yup.string().required('Type is required'),
+    images:       imagesSchema,
+    amenities:    amenitiesSchema,
+    location: yup.object({
+      address:     yup.string().required(),
+      city:        yup.string().required(),
+      state:       yup.string().required(),
+      zip:         yup.string().required(),
+      country:     yup.string().required(),
+      coordinates: coordinatesSchema,
+    }).required(),
+    hostId: yup.string().required(),
+  }).required()
+
+  // ————— hook‑form setup —————
   const {
-    register, handleSubmit, control,
-    formState: { errors, isValid, isSubmitting },
+    register,
+    handleSubmit,
+    control,
+    formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     defaultValues: initialValues ?? {
-      title: '', description: '', price: 0,
-      location:   { address:'', city:'', state:'', zip:'', country:'', coordinates:[0,0] },
-      images:     [],            // ← REAL values, no schema here!
-      amenities:  [],
-      propertyType:'', rooms:1,
-      hostId:      user?.id ?? '',
+      title:        '',
+      description:  '',
+      price:        0,
+      rooms:        1,
+      propertyType: '',
+      images:       [],  // strictly string[]
+      amenities:    [],  // strictly string[]
+      location:     {
+        address:     '',
+        city:        '',
+        state:       '',
+        zip:         '',
+        country:     '',
+        coordinates: [0,0],
+      },
+      hostId:       user?.id ?? '',
     },
     resolver: yupResolver(schema),
-    context:  { isEdit },        // let Yup know which branch to use
-    mode:     'onChange',
-  });
+    mode:     'all',  // validate on mount so edit form is valid immediately
+  })
 
-  /* ----------- render (same layout as before) ----------- */
   return (
-    <form onSubmit={handleSubmit(onSubmit)}
-          className="grid gap-6 md:grid-cols-2">
-
-      {/* ——— left column ——— */}
+    <form onSubmit={handleSubmit(onSubmit)} className="grid gap-6 md:grid-cols-2">
+      {/* — left column — */}
       <div className="space-y-4">
         {/* Title */}
         <div>
@@ -103,8 +102,7 @@ export default function PropertyForm({ initialValues, onSubmit }: Props) {
         {/* Description */}
         <div>
           <label className="block font-medium">Description</label>
-          <textarea {...register('description')}
-                    rows={4} className="input w-full" />
+          <textarea {...register('description')} rows={4} className="input w-full" />
           {errors.description && <p className="text-red-500">{errors.description.message}</p>}
         </div>
 
@@ -122,12 +120,13 @@ export default function PropertyForm({ initialValues, onSubmit }: Props) {
           </div>
         </div>
 
-        {/* Property type */}
+        {/* Property Type */}
         <div>
           <label className="block font-medium">Property Type</label>
           <select {...register('propertyType')} className="input w-full">
             <option value="">Select…</option>
-            {PROPERTY_TYPES.map(t => <option key={t}>{t}</option>)}
+            {['House','Apartment','Cabin','Studio','Villa','Townhouse','Condo','Loft','Mansion','Other']
+             .map(t => <option key={t} value={t}>{t}</option>)}
           </select>
           {errors.propertyType && <p className="text-red-500">{errors.propertyType.message}</p>}
         </div>
@@ -136,48 +135,53 @@ export default function PropertyForm({ initialValues, onSubmit }: Props) {
         <div>
           <label className="block font-medium mb-1">Amenities</label>
           <div className="grid grid-cols-2 gap-1">
-            {AMENITIES.map(a => (
-              <label key={a} className="flex items-center space-x-1 text-sm">
-                <input type="checkbox" value={a} {...register('amenities')} />
-                <span>{a}</span>
-              </label>
-            ))}
+            {['Wi‑Fi','Kitchen','Washer','Dryer','Free parking','Air conditioning','Pool','Hot tub','EV charger']
+             .map(a => (
+               <label key={a} className="flex items-center space-x-1 text-sm">
+                 <input type="checkbox" value={a} {...register('amenities')} />
+                 <span>{a}</span>
+               </label>
+             ))}
           </div>
           {errors.amenities && <p className="text-red-500">{errors.amenities.message}</p>}
         </div>
       </div>
 
-      {/* ——— right column ——— */}
+      {/* — right column — */}
       <div className="space-y-6">
         <Controller
           name="location"
           control={control}
-          render={({ field }) =>
-            <LocationPicker value={field.value} onChange={field.onChange} />}
+          render={({ field }) => (
+            <LocationPicker value={field.value} onChange={field.onChange} />
+          )}
         />
+        {errors.location && <p className="text-red-500">Please complete the address</p>}
 
         <Controller
           name="images"
           control={control}
-          render={({ field }) =>
+          render={({ field }) => (
             <ImageUploader
-              propertyId={initialValues?._id}  /* undefined on create */
+              propertyId={initialValues?._id}
               value={field.value}
               onChange={field.onChange}
-            />}
+            />
+          )}
         />
-
         {errors.images && <p className="text-red-500">{errors.images.message}</p>}
       </div>
 
-      {/* ——— submit ——— */}
+      {/* — submit — */}
       <div className="md:col-span-2">
-        <button type="submit"
-                disabled={!isValid || isSubmitting}
-                className="btn-primary w-full md:w-auto">
+        <button
+          type="submit"
+          // disabled={isSubmitting}
+          className="btn-primary w-full md:w-auto"
+        >
           {isSubmitting ? 'Saving…' : 'Save Listing'}
         </button>
       </div>
     </form>
-  );
+  )
 }

@@ -27,6 +27,21 @@ export async function updateProperty(
   id: string,
   payload: Partial<FormValues>
 ): Promise<Property> {
-  const { data } = await axios.put<Property>(`${BASE}/properties/${id}`, payload);
+  // wrap coords before sending
+  const toSend = {
+    ...payload,
+    location: payload.location && {
+      ...payload.location,
+      coordinates: {
+        type: 'Point',
+        coordinates: payload.location.coordinates,
+      },
+    },
+  };
+
+  const { data } = await axios.put<Property>(
+    `${BASE}/properties/${id}`,
+    toSend
+  );
   return data;
 }

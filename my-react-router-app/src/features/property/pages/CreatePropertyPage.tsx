@@ -1,3 +1,4 @@
+// src/features/property/pages/CreatePropertyPage.tsx
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -24,16 +25,16 @@ export default function CreatePropertyPage() {
   const handleImages = async ({ images }: { images: string[] }) => {
     if (!user || !details) return
     const payload: FormValues = { ...details, images, hostId: user.id }
-    const created = await createProperty(payload)
-    // go straight to edit so they can tweak if they want
-    navigate(`/host/properties/${created._id}/edit`)
+    await createProperty(payload)
+    // Redirect back to the host dashboard
+    navigate('/host/properties')
   }
 
   return (
     <div className="prose mx-auto py-8">
       <h1>Create New Listing</h1>
       {step === 'details' ? (
-        <CreateStepDetails onSubmit={(d) => handleDetails(d)} />
+        <CreateStepDetails onSubmit={handleDetails} />
       ) : (
         <CreateStepImages
           propertyId={undefined}
