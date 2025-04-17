@@ -1,8 +1,6 @@
 //  ─── src/App.tsx ───────────────────────────────────────────────
 import React from 'react';
 import { Outlet, ScrollRestoration, Link, isRouteErrorResponse, useRouteError } from 'react-router-dom';
-
-// *** adjust the import to wherever NavBar actually lives ***
 import NavBar from './layout/NavBar';      
 
 /* ------------ Error boundary (you removed it by mistake) ------------ */
@@ -28,7 +26,7 @@ export function AppErrorBoundary() {
 export default function App() {
   return (
     <div className="flex flex-col min-h-screen">
-      <NavBar />   {/* <‑‑ was “</NavBar>” before – that broke JSX */}
+      <NavBar /> 
 
       <main className="flex-grow p-6">
         <Outlet />
