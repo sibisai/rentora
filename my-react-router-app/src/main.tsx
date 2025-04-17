@@ -10,6 +10,7 @@ import App, { AppErrorBoundary } from './App';
 // Import your page components from their feature folders
 import HomePage from './features/home/HomePage';
 import LoginPage from './features/auth/LoginPage';
+import HostPage from './features/host/HostPage';
 import SearchPage from './features/search/SearchPage';
 import AccountPage from './features/account/AccountPage';
 import CartPage from './features/cart/CartPage';
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
         path: "login",
         element: <LoginPage />,
       },    
+      {
+        path: "host",
+        element: <HostPage />,
+      },
       {
         path: "search",
         element: <SearchPage />,

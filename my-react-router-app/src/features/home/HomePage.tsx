@@ -83,7 +83,6 @@ const Home: React.FC = () => {
           </nav>
         </div>
       </header>
-
       <main>
         <div className="hero">
           <div className="hero-overlay">
@@ -93,6 +92,7 @@ const Home: React.FC = () => {
               <Link to="/cart" className="nav-button">Cart</Link>
               <Link to="/property-details" className="nav-button">Property Details</Link>
               <Link to="/search" className="nav-button">Search</Link>
+              <Link to="/host" className="nav-button">Host</Link>
             </div>
           </div>
         </div>
