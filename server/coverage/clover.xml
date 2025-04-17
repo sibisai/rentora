@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1744859620971" clover="3.2.0">
-  <project timestamp="1744859620971" name="All files">
-    <metrics statements="308" coveredstatements="257" conditionals="171" coveredconditionals="130" methods="27" coveredmethods="20" elements="506" coveredelements="407" complexity="0" loc="308" ncloc="308" packages="3" files="8" classes="8"/>
+<coverage generated="1744860335949" clover="3.2.0">
+  <project timestamp="1744860335949" name="All files">
+    <metrics statements="310" coveredstatements="257" conditionals="173" coveredconditionals="130" methods="27" coveredmethods="20" elements="510" coveredelements="407" complexity="0" loc="310" ncloc="310" packages="3" files="8" classes="8"/>
     <package name="server">
-      <metrics statements="27" coveredstatements="22" conditionals="12" coveredconditionals="6" methods="4" coveredmethods="1"/>
+      <metrics statements="29" coveredstatements="22" conditionals="14" coveredconditionals="6" methods="4" coveredmethods="1"/>
       <file name="app.js" path="/Users/sibi/362/CPSC-362-Activity-1/server/app.js">
-        <metrics statements="27" coveredstatements="22" conditionals="12" coveredconditionals="6" methods="4" coveredmethods="1"/>
+        <metrics statements="29" coveredstatements="22" conditionals="14" coveredconditionals="6" methods="4" coveredmethods="1"/>
         <line num="1" count="7" type="stmt"/>
         <line num="2" count="7" type="stmt"/>
         <line num="3" count="7" type="stmt"/>
@@ -28,11 +28,13 @@
         <line num="42" count="7" type="stmt"/>
         <line num="44" count="7" type="cond" truecount="2" falsecount="0"/>
         <line num="46" count="3" type="stmt"/>
-        <line num="47" count="0" type="stmt"/>
-        <line num="51" count="3" type="stmt"/>
-        <line num="52" count="0" type="stmt"/>
-        <line num="53" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="59" count="7" type="stmt"/>
+        <line num="48" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="55" count="3" type="stmt"/>
+        <line num="56" count="0" type="stmt"/>
+        <line num="57" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="63" count="7" type="stmt"/>
       </file>
     </package>
     <package name="server.models">
@@ -43,6 +45,16 @@
         <line num="3" count="7" type="stmt"/>
         <line num="17" count="7" type="stmt"/>
         <line num="18" count="7" type="stmt"/>
+      </file>
+      <file name="Property.js" path="/Users/sibi/362/CPSC-362-Activity-1/server/models/Property.js">
+        <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="8" type="stmt"/>
+        <line num="4" count="8" type="stmt"/>
+        <line num="19" count="8" type="stmt"/>
+        <line num="27" count="10" type="stmt"/>
+        <line num="32" count="8" type="stmt"/>
+        <line num="55" count="8" type="stmt"/>
+        <line num="57" count="8" type="stmt"/>
       </file>
       <file name="User.js" path="/Users/sibi/362/CPSC-362-Activity-1/server/models/User.js">
         <metrics statements="13" coveredstatements="12" conditionals="2" coveredconditionals="1" methods="2" coveredmethods="2"/>
@@ -59,16 +71,6 @@
         <line num="34" count="7" type="stmt"/>
         <line num="35" count="4" type="stmt"/>
         <line num="38" count="7" type="stmt"/>
-      </file>
-      <file name="property.js" path="/Users/sibi/362/CPSC-362-Activity-1/server/models/property.js">
-        <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="1" count="8" type="stmt"/>
-        <line num="4" count="8" type="stmt"/>
-        <line num="19" count="8" type="stmt"/>
-        <line num="27" count="10" type="stmt"/>
-        <line num="32" count="8" type="stmt"/>
-        <line num="55" count="8" type="stmt"/>
-        <line num="57" count="8" type="stmt"/>
       </file>
     </package>
     <package name="server.routes">

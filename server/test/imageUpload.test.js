@@ -4,7 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 
-const Property = require('../models/property');
+const Property = require('../models/Property');
 const uploadRouter = require('../routes/imageUpload');
 
 // Mock the Property model
