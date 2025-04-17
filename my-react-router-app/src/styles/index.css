@@ -351,7 +351,16 @@ nav ul li a:hover {
   transition: background 0.2s;
 }
 
+.property-card .btn-secondary+.btn-danger {
+  margin-left: 0.5rem;
+}
+
 .btn-danger:hover {
   background: #ef4444;
 }
 
+.host-dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}

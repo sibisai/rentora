@@ -31,14 +31,17 @@ export default function PropertyListPage() {
   }
 
   return (
-    <div className="container mx-auto px-6 py-8">
-      <h1 className="text-3xl font-bold mb-6">Your Listings</h1>
+  <div className="host-dashboard" >
+    {/* ─── header + button ─── */}
+    <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
+      <h1 className="text-3xl font-bold">Your Listings</h1>
       <button
-        className="btn-primary mb-8"
+        className="btn-primary mt-4 md:mt-0"
         onClick={() => navigate('/host/properties/new')}
       >
-        + New Listing
+        + New Listing
       </button>
+    </div>
 
       {loading && <p>Loading…</p>}
       {error   && <p className="text-red-500">{error}</p>}
