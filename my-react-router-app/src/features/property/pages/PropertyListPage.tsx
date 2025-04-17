@@ -36,7 +36,7 @@ export default function PropertyListPage() {
     <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
       <h1 className="text-3xl font-bold">Your Listings</h1>
       <button
-        className="btn-primary mt-4 md:mt-0"
+        className="btn-primary"
         onClick={() => navigate('/host/properties/new')}
       >
         + New Listing
