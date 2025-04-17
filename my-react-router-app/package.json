@@ -9,17 +9,24 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.0.1",
     "@react-google-maps/api": "^2.20.6",
+    "axios": "^1.8.4",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.22.1"
+    "react-dropzone": "^14.3.8",
+    "react-hook-form": "^7.55.0",
+    "react-router-dom": "^6.22.1",
+    "uuid": "^11.1.0",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
+    "@types/yup": "^0.29.14",
     "@vitejs/plugin-react": "^4.1.0",
     "autoprefixer": "^10.4.17",
     "postcss": "^8.4.38",
