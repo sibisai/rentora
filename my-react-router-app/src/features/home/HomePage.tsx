@@ -69,20 +69,6 @@ const Home: React.FC = () => {
 
   return (
     <div>
-      <header>
-        <div className="top-banner">
-          <h1 className="title">[placeholder]</h1>
-          <nav>
-            <ul>
-              <li><Link to="#" className="nav-link">History</Link></li>
-              <li><Link to="#" className="nav-link">Contact</Link></li>
-              <li><Link to="#" className="nav-link">Services</Link></li>
-              <li><Link to="#" className="nav-link">Browse</Link></li>
-              <li><Link to="/login" className="login-button">Login</Link></li>
-            </ul>
-          </nav>
-        </div>
-      </header>
 
       <main>
         <div className="hero">

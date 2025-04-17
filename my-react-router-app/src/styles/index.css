@@ -221,3 +221,38 @@ nav ul li a:hover {
   text-decoration: none;
   transition: color 0.2s;
 }
+
+/* container for signed‑in user */
+.auth-info {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* keep the email from running away */
+.user-email {
+  font-weight: bold;
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* style only your logout button */
+.logout-button {
+  background-color: #e2e8f0;
+  color: #4a5568;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.logout-button:hover {
+  background-color: #cbd5e0;
+}
