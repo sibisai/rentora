@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@demark-pro/react-booking-calendar": "^4.0.3",
     "@react-google-maps/api": "^2.20.6",
     "cors": "^2.8.5",
     "express": "^5.1.0",

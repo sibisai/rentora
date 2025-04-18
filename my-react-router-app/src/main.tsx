@@ -9,6 +9,7 @@ import App, { AppErrorBoundary } from './App';
 
 // Import your page components from their feature folders
 import HomePage from './features/home/HomePage';
+import HostPage from './features/host/HostPage';
 import LoginPage from './features/auth/LoginPage';
 import SearchPage from './features/search/SearchPage';
 import AccountPage from './features/account/AccountPage';
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
       {
         path: "cart",
         element: <CartPage />,
+      },
+      {
+        path: "host",
+        element: <HostPage />,
       },
       {
         // Incase the property details page needs an ID parameter
