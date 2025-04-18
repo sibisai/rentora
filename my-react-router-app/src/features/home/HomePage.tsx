@@ -75,7 +75,7 @@ const Home: React.FC = () => {
           <nav>
             <ul>
               <li><Link to="#" className="nav-link">History</Link></li>
-              <li><Link to="#" className="nav-link">Contact</Link></li>
+              <li><Link to="/contact" className="nav-link">Contact</Link></li>
               <li><Link to="#" className="nav-link">Services</Link></li>
               <li><Link to="#" className="nav-link">Browse</Link></li>
               <li><Link to="/login" className="login-button">Login</Link></li>
