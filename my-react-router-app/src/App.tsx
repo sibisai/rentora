@@ -1,10 +1,12 @@
 import React from 'react';
+
 import {
   Link,
   Outlet,
   ScrollRestoration,
   isRouteErrorResponse, // Needed for ErrorBoundary
   useRouteError, // Hook to get error info within ErrorBoundary component defined below
+  Route, // Import Route to define routes
 } from 'react-router-dom';
 
 // Error Boundary Component - defined in the same file
@@ -53,6 +55,7 @@ export default function App() {
         <Link to="/" className="mr-4 text-blue-600 hover:text-blue-800">Home</Link>
         <Link to="/search" className="mr-4 text-blue-600 hover:text-blue-800">Search</Link>
         <Link to="/login" className="text-blue-600 hover:text-blue-800">Login</Link>
+        <Link to="/contact" className="text-blue-600 hover:text-blue-800">Contact</Link>
         {/* Add other navigation links as needed */}
       </nav>
 

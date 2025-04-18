@@ -15,6 +15,7 @@ import AccountPage from './features/account/AccountPage';
 import CartPage from './features/cart/CartPage';
 import PropertyDetailsPage from './features/property/PropertyDetailsPage';
 import NotFoundPage from './pages/NotFoundPage';
+import ContactPage from './features/contact/ContactPage';
 
 import './styles/index.css';
 
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
         path: "*",
         element: <NotFoundPage />,
       },
+      {
+        path: "/contact",
+        element: <ContactPage />
+      }
     ],
   },
 ]);
