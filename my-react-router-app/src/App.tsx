@@ -56,6 +56,9 @@ export default function App() {
         <Link to="/search" className="mr-4 text-blue-600 hover:text-blue-800">Search</Link>
         <Link to="/login" className="text-blue-600 hover:text-blue-800">Login</Link>
         <Link to="/contact" className="text-blue-600 hover:text-blue-800">Contact</Link>
+        <Link to="/cart" className="text-blue-600 hover:text-blue-800">Cart</Link>
+        <Link to="/services" className="text-blue-600 hover:text-blue-800">Services</Link>
+        
         {/* Add other navigation links as needed */}
       </nav>
 
