@@ -221,3 +221,7 @@ nav ul li a:hover {
   text-decoration: none;
   transition: color 0.2s;
 }
+
+html {
+  scroll-behavior: smooth;
+}
