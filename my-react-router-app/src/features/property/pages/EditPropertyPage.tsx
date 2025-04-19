@@ -5,6 +5,7 @@ import PropertyForm                   from '../components/PropertyForm'
 import { getProperty, updateProperty }from '../propertyService'
 import type { FormValues }            from '../types'
 import { useAuth }                    from '../../auth/AuthContext'
+import HostCalendar from 'src/features/host/components/HostCalendar'
 import '../styles/property-forms.css'
 
 const EditPropertyPage: React.FC = () => {
@@ -83,6 +84,7 @@ useEffect(() => {
       <div className="card">
         <h1>Edit Listing</h1>
         <PropertyForm initialValues={initialData} onSubmit={handleSave} />
+        <HostCalendar propertyId={initialData._id} />
       </div>
     </div>
   )
