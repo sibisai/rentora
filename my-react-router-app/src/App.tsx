@@ -1,6 +1,7 @@
 //  ─── src/App.tsx ───────────────────────────────────────────────
 import React from 'react';
-import { Outlet, ScrollRestoration, Link, isRouteErrorResponse, useRouteError } from 'react-router-dom';
+
+import { Outlet, ScrollRestoration, Link, isRouteErrorResponse, useRouteError, Route } from 'react-router-dom';
 import NavBar from './layout/NavBar';      
 
 /* ------------ Error boundary (you removed it by mistake) ------------ */
