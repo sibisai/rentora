@@ -3,86 +3,77 @@ import ReactDOM from 'react-dom/client';
 import {
   createBrowserRouter,
   RouterProvider,
+  Navigate,
 } from 'react-router-dom';
 
+import { AuthProvider, useAuth } from './features/auth/AuthContext';
 import App, { AppErrorBoundary } from './App';
 
-// Import your page components from their feature folders
-import HomePage from './features/home/HomePage';
+/* ---------- pages ---------- */
+import HomePage            from './features/home/HomePage';
 import HostPage from './features/host/HostPage';
-import LoginPage from './features/auth/LoginPage';
-import SearchPage from './features/search/SearchPage';
-import AccountPage from './features/account/AccountPage';
-import CartPage from './features/cart/CartPage';
+import LoginPage           from './features/auth/LoginPage';
+import SearchPage          from './features/search/SearchPage';
+import AccountPage         from './features/account/AccountPage';
+import CartPage            from './features/cart/CartPage';
 import PropertyDetailsPage from './features/property/PropertyDetailsPage';
-import NotFoundPage from './pages/NotFoundPage';
 
+import PropertyListPage    from './features/property/pages/PropertyListPage';
+import CreatePropertyPage  from './features/property/pages/CreatePropertyPage';
+import EditPropertyPage    from './features/property/pages/EditPropertyPage';
+
+import NotFoundPage        from './pages/NotFoundPage';
 import './styles/index.css';
 
-// Define the application routes using the createBrowserRouter API
+/* ---------- simple auth‑guard ---------- */
+function RequireAuth({ children }: { children: JSX.Element }) {
+  const { user, loading } = useAuth();
+  if (loading) return <p>Loading…</p>;
+  return user ? children : <Navigate to="/login" replace />;
+}
+
+/* ---------- router ---------- */
 const router = createBrowserRouter([
   {
-    // Root route: Uses App component for layout
-    path: "/",
+    path: '/',
     element: <App />,
-    // Sets the error boundary for the root layout and all child routes
     errorElement: <AppErrorBoundary />,
-    // Child routes that will render inside App's <Outlet />
     children: [
+      { index: true, element: <HomePage /> },
+      { path: 'login',  element: <LoginPage /> },
+      { path: 'search', element: <SearchPage /> },
+      { path: 'account', element: <RequireAuth><AccountPage /></RequireAuth> },
+      { path: 'cart',   element: <CartPage /> },
+
+      /* ---- host dashboard (now just RequireAuth) ---- */
       {
-        // Index route (renders at "/")
-        index: true,
-        element: <HomePage />,
+        path: 'host/properties',
+        element: <RequireAuth><PropertyListPage /></RequireAuth>,
       },
       {
-        path: "login",
-        element: <LoginPage />,
-      },    
-      {
-        path: "search",
-        element: <SearchPage />,
+        path: 'host/properties/new',
+        element: <RequireAuth><CreatePropertyPage /></RequireAuth>,
       },
       {
-        path: "account",
-        element: <AccountPage />,
+        path: 'host/properties/:id/edit',
+        element: <RequireAuth><EditPropertyPage /></RequireAuth>,
       },
-      {
-        path: "cart",
-        element: <CartPage />,
-      },
-      {
-        path: "host",
-        element: <HostPage />,
-      },
-      {
-        // Incase the property details page needs an ID parameter
-        // Adjust path and component as needed
-        path: "property-details/", // Example with URL param
-        element: <PropertyDetailsPage />,
-      },
-      // {
-      //   // Incase the property details page needs an ID parameter
-      //   // Adjust path and component as needed
-      //   path: "property-details/:propertyId", // Example with URL param
-      //   element: <PropertyDetailsPage />,
-      // },
-      // Add a catch-all route for 404 pages
-      {
-        path: "*",
-        element: <NotFoundPage />,
-      },
+
+      /* public property details */
+      { path: 'properties/:id', element: <PropertyDetailsPage /> },
+
+      /* 404 */
+      { path: '*', element: <NotFoundPage /> },
     ],
   },
 ]);
 
-// Render the application using the RouterProvider
-const rootElement = document.getElementById('root');
-if (rootElement) {
-  ReactDOM.createRoot(rootElement).render(
-    <React.StrictMode>
+/* ---------- bootstrap ---------- */
+const root = document.getElementById('root')!;
+ReactDOM.createRoot(root).render(
+  <React.StrictMode>
+    <AuthProvider>
       <RouterProvider router={router} />
-    </React.StrictMode>
-  );
-} else {
-  console.error("Failed to find the root element");
-}
+    </AuthProvider>
+  </React.StrictMode>,
+);

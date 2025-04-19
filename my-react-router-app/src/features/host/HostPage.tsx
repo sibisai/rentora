@@ -43,7 +43,7 @@ const Host: React.FC = () => {
                 <button className="submission-btn">Add Property</button>
             </form>
             <h2 className="property-text">Your Properties</h2>
-            <div key={property.id} className="test">
+            <div key={property.title} className="test">
                 <h2 className="property-title">{property.title}</h2>
                 <p>{property.location} - ${property.price} per day</p>
                 <HostCalendar propertyId={property.id} />
