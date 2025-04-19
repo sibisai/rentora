@@ -17,9 +17,9 @@ import CartPage from './features/cart/CartPage';
 import PropertyDetailsPage from './features/property/PropertyDetailsPage';
 import NotFoundPage from './pages/NotFoundPage';
 import ContactPage from './features/contact/ContactPage';
+import ServicesPage from './features/services/ServicesPage';
 
 import './styles/index.css';
-
 // Define the application routes using the createBrowserRouter API
 const router = createBrowserRouter([
   {
@@ -75,6 +75,10 @@ const router = createBrowserRouter([
       {
         path: "/contact",
         element: <ContactPage />
+      },
+      {
+        path: "/services",
+        element: <ServicesPage />
       }
     ],
   },

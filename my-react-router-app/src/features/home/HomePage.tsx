@@ -74,10 +74,10 @@ const Home: React.FC = () => {
           <h1 className="title">[placeholder]</h1>
           <nav>
             <ul>
-              <li><Link to="#" className="nav-link">History</Link></li>
+              <li><Link to="/history" className="nav-link">History</Link></li>
               <li><Link to="/contact" className="nav-link">Contact</Link></li>
-              <li><Link to="#" className="nav-link">Services</Link></li>
-              <li><Link to="#" className="nav-link">Browse</Link></li>
+              <li><Link to="/services" className="nav-link">Services</Link></li>
+              <li><a href="#browse" className="nav-link">Browse</a></li>
               <li><Link to="/login" className="login-button">Login</Link></li>
             </ul>
           </nav>
@@ -97,7 +97,7 @@ const Home: React.FC = () => {
           </div>
         </div>
 
-        <section className="property-section">
+        <section id="browse" className="property-section">
           <h2>Browse your spots</h2>
           {loading ? (
             <p>Loading properties...</p>
