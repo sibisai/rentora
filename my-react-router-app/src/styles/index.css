@@ -135,10 +135,20 @@ nav ul li a:hover {
   text-decoration: none;
   font-weight: bold;
   transition: background-color 0.3s ease;
+  border: none;
+  outline: none;
+  box-shadow: none;
 }
 
 .nav-button:hover {
   background-color: #e02e4d;
+}
+
+.nav-button:focus,
+.nav-button:active {
+  border: none;
+  outline: none;
+  box-shadow: none;
 }
 
 .property-section {
