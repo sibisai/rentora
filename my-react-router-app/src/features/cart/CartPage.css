@@ -82,3 +82,7 @@
     font-weight: bold;
   }
   
+  .cart-box input[type="radio"],
+  .cart-box input[type="checkbox"] {
+    margin-right: 0.5rem;
+  }

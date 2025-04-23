@@ -93,7 +93,7 @@ export default function CartPage() {
               type="checkbox"
               checked={insurance}
               onChange={() => setInsurance(!insurance)}
-            /> Yes, add for $256.41
+            />  Yes, add for $256.41
             <ul>
               <li>✓ Illness or injury</li>
               <li>✓ Weather disruptions</li>
@@ -119,7 +119,7 @@ export default function CartPage() {
                 {property.location.city}, {property.location.state}
               </p>
               <p>${property.price.toLocaleString()} × {nights} nights</p>
-              <p>${property.price.toLocaleString()} × {nights} nights</p>
+              {/* <p>${property.price.toLocaleString()} × {nights} nights</p> */}
               {insurance && <p>Travel Insurance: ${insuranceCost.toFixed(2)}</p>}
               <p className="summary-total">
                 Total: ${total.toLocaleString()}
@@ -133,10 +133,10 @@ export default function CartPage() {
                 </p>
               )}
             </div>
+          </div>
             <p className="cart-note">
               💎 This is a rare find. Usually booked.
             </p>
-          </div>
         </div>
       </div>
     </section>
