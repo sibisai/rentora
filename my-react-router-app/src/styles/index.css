@@ -9,12 +9,15 @@
 
 body {
   background-color: #f7f7f7;
+  padding-top: 80px;
 }
 
 header {
-  position: relative;
+  position: fixed;
+  top: 0;
   width: 100%;
   background: white;
+  z-index: 999;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
@@ -26,6 +29,7 @@ header {
   position: absolute;
   left: 20px;
   top: 50%;
+  margin: 2rem auto;
   transform: translateY(-50%);
 }
 
@@ -51,20 +55,6 @@ header {
 .top-banner .title {
   font-size: 28px;
   font-weight: bold;
-}
-
-.login-button {
-  text-decoration: none;
-  background-color: #ff385c;
-  color: white;
-  padding: 8px 15px;
-  border-radius: 20px;
-  font-weight: bold;
-  transition: 0.3s;
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
 }
 
 .login-button:hover {
@@ -97,7 +87,7 @@ nav ul li a:hover {
 .hero {
   position: relative;
   width: 100%;
-  height: 50vh;
+  height: 70vh;
   background: url('../assets/images/bg2.jpg') center center no-repeat;
   background-size: cover;
   background-attachment: fixed;
@@ -106,18 +96,15 @@ nav ul li a:hover {
   justify-content: center;
 }
 
-
 .hero-overlay {
-  background: rgba(0, 0, 0, 0.5);
+  background: transparent;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.hero-overlay h2 {
-  color: white;
-  font-size: 36px;
-  text-align: center;
-}
 
 .button-links {
   margin-top: 20px;
@@ -234,4 +221,95 @@ nav ul li a:hover {
 
 html {
   scroll-behavior: smooth;
+}
+button {
+  font-size: 16px;
+  position: relative;
+  margin: auto;
+  padding: 1em 2.5em 1em 2.5em;
+  border: none;
+  background: #fff;
+  transition: all 0.1s linear;
+  box-shadow: 0 0.4em 1em rgba(0, 0, 0, 0.1);
+ }
+ 
+ button:active {
+  transform: scale(0.95);
+ }
+ 
+ button span {
+  color: #ffffff;
+ }
+ 
+ button .border {
+  position: absolute;
+  border: 0.15em solid #fff;
+  transition: all 0.3s 0.08s linear;
+  top: 50%;
+  left: 50%;
+  width: 9em;
+  height: 3em;
+  transform: translate(-50%, -50%);
+ }
+ 
+ button:hover .border {
+  display: block;
+  width: 9.9em;
+  height: 3.7em;
+ }
+ 
+ .full-rounded {
+  border-radius: 2em;
+ }
+
+ .cssbuttons-io {
+  position: relative;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: 0.8em;
+  cursor: pointer;
+  border: none;
+  background: linear-gradient(to right, #27c39f, #40e495);
+  color: ghostwhite;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.cssbuttons-io svg {
+  width: 1.2em;
+  height: 1.2em;
+  margin-left: 0.7em;
+  stroke-width: 2px;
+}
+
+.cssbuttons-io span {
+  position: relative;
+  z-index: 10;
+  transition: color 0.4s;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.6em 0.9em 0.6em 1em;
+  text-decoration: none;
+}
+
+.cssbuttons-io::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -10%;
+  width: 120%;
+  height: 100%;
+  z-index: 0;
+  background: #000;
+  transform: skew(30deg);
+  transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
+}
+
+.cssbuttons-io:hover::before {
+  transform: translate3d(100%, 0, 0);
+}
+
+.cssbuttons-io:active {
+  transform: scale(0.95);
 }

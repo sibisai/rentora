@@ -1,0 +1,228 @@
+.top-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 999;
+    background-color: white;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 40px;
+    overflow-x: hidden;
+  }
+  
+  /* === Sections === */
+  .logo-container {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 8px;
+  }
+  
+  .nav-container {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .auth-container {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    padding-right: 8px;
+  }
+  
+  /* === Logo Button === */
+  .logo {
+    font-weight: bold;
+    font-size: 20px;
+    color: #222;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  /* === Nav === */
+  .nav-list {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .nav-link {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+  }
+  
+  /* === Auth === */
+  .login-button {
+    background-color: #ff385c;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 9999px;
+    font-weight: bold;
+    text-decoration: none;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #5c6b73;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+  /* === Logo Button Style === */
+  .button2 {
+    display: inline-block;
+    transition: all 0.2s ease-in;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    color: rgb(0, 0, 0);
+    padding: 0.7em 1.7em;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 0.5em;
+    background: #ffffff;
+  }
+  
+  .button2:active {
+    box-shadow: none;
+  }
+  
+  .button2:before,
+  .button2:after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    display: block;
+    transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+    z-index: -1;
+  }
+  
+  .button2:before {
+    left: 50%;
+    transform: translateX(-50%) scaleY(1) scaleX(1.25);
+    top: 100%;
+    width: 140%;
+    height: 180%;
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  
+  .button2:after {
+    left: 55%;
+    transform: translateX(-50%) scaleY(1) scaleX(1.45);
+    top: 180%;
+    width: 160%;
+    height: 190%;
+    background-color: #009087;
+  }
+  
+  .button2:hover {
+    color: white;
+    border: 1px solid #e02e4d;
+    background-color: #e02e4d;
+  }
+  
+  .button2:hover:before,
+  .button2:hover:after {
+    background-color: #e02e4d;
+  }
+  
+  .button2:hover:before {
+    top: -35%;
+    transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+  }
+  
+  .button2:hover:after {
+    top: -45%;
+    transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+  }
+  
+  /* === Cart Button === */
+/* From Uiverse.io by vinodjangid07 */ 
+.CartBtn {
+  width: 100px;
+  height: 36px;
+  border-radius: 12px;
+  border: none;
+  background-color: rgb(255, 208, 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition-duration: .5s;
+  overflow: hidden;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.103);
+  position: relative;
+  text-decoration: none;
+}
+
+.IconContainer {
+  position: absolute;
+  left: -40px;  
+  width: 30px;
+  height: 30px;
+  background-color: transparent;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 2;
+  transition-duration: .5s;
+}
+
+.icon {
+  border-radius: 1px;
+}
+
+.text {
+  height: 100%;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(0, 0, 0);
+  z-index: 1;
+  transition-duration: .5s;
+  font-size: 0.85em;   
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.CartBtn:hover .IconContainer {
+  transform: translateX(45px);
+  border-radius: 40px;
+  transition-duration: .5s;
+}
+
+.CartBtn:hover .text {
+  transform: translate(10px,0px);
+  transition-duration: .5s;
+}
+
+.CartBtn:active {
+  transform: scale(0.95);
+  transition-duration: .5s;
+}

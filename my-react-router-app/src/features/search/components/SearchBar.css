@@ -8,12 +8,10 @@
   gap: 1.25rem;
   font-family: 'Arial', sans-serif;
   margin: 10rem auto 2rem auto;
-  max-width: 1000px;
+  max-width: 1100px;
   position: relative;
-  /* Changed from fixed/sticky positioning */
   z-index: 10;
-  width: 90%;
-  /* Add width constraint for better appearance */
+  width: 95%;
 }
 
 /* Search bar shadow effect */
@@ -42,17 +40,17 @@
 /* Search row styling */
 .search-row {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 1rem;
-  width: 100%;
+  justify-content: space-between;
 }
 
 /* Search field styling */
 .search-field {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+  flex: 1 1 30%;
+  min-width: 200px;
 }
+
 
 .search-label {
   font-size: 0.9rem;
@@ -159,4 +157,21 @@
 .results-container {
   margin-top: 2rem;
   overflow-y: auto;
+}
+
+/* Smooth search expand/collapse */
+.search-toggle-wrapper {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+.search-toggle-wrapper.open {
+  max-height: 1200px;
+  opacity: 1;
+}
+
+.search-toggle-inner {
+  padding-top: 0.5rem;
 }

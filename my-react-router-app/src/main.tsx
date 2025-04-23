@@ -58,7 +58,7 @@ const router = createBrowserRouter([
       {
         // Incase the property details page needs an ID parameter
         // Adjust path and component as needed
-        path: "property-details/", // Example with URL param
+        path: "property-details/:propertyId",
         element: <PropertyDetailsPage />,
       },
       // {
