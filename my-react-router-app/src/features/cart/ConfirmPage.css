@@ -1,0 +1,43 @@
+.confirm-section {
+    padding: 60px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    background-color: #f8f9fa;
+}
+
+.confirm-box {
+    text-align: center;
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.confirm-title {
+    font-size: 28px;
+    color: #2d3748;
+    margin-bottom: 20px;
+}
+
+.confirm-message {
+    font-size: 16px;
+    color: #4a5568;
+    margin-bottom: 30px;
+}
+
+.nav-button {
+    background-color: #ff385c;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.nav-button:hover {
+    background-color: #e11d48;
+}
+  

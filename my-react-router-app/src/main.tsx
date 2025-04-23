@@ -22,6 +22,7 @@ import CreatePropertyPage  from './features/property/pages/CreatePropertyPage';
 import NotFoundPage from './pages/NotFoundPage';
 import ContactPage from './features/contact/ContactPage';
 import ServicesPage from './features/services/ServicesPage';
+import ConfirmPage from './features/cart/ConfirmPage'; // adjust path as needed
 
 import './styles/index.css';
 
@@ -91,7 +92,12 @@ const router = createBrowserRouter([
       {
         path: "/services",
         element: <ServicesPage />
+      },
+      {
+        path: "confirm",
+        element: <ConfirmPage />,
       }
+      
     ],
   },
 ]);
