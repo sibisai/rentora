@@ -1,17 +1,31 @@
-import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import React from 'react'
+import { useLocation, Link } from 'react-router-dom'
 import type { Property } from '../property/types'
 import './CartPage.css'
 
 export default function CartPage() {
   const { state } = useLocation()
-  // try to grab the passed-in property
+  // try routing state first
   const passed = (state as any)?.property as Property | undefined
+  // then fallback to localStorage
+  const stored = passed
+    ?? JSON.parse(localStorage.getItem('cart') || 'null') as Property | null
 
-  const [property, setProperty] = useState<Property | null>(passed ?? null)
+  if (!stored) {
+    return (
+      <section className="cart-section">
+        <h2 className="cart-title">Your Cart Is Empty</h2>
+        <p className="empty-note">
+          You haven’t reserved anything yet.{' '}
+          <Link to="/">Browse properties</Link>
+        </p>
+      </section>
+    )
+  }
 
-
-  if (!property) return <p className="text-center mt-8">Loading…</p>
+  const property = stored
+  const nights = 5
+  const total   = property.price * nights
 
   return (
     <section className="cart-section">
@@ -19,14 +33,13 @@ export default function CartPage() {
 
       <div className="cart-content">
         {/* LEFT: Payment options */}
-          <div className="cart-left">
-          <div className="cart-box">
-            <h3>Choose when to pay</h3>
-            <label><input type="radio" name="payment" defaultChecked /> Pay ${(property.price * 5).toLocaleString()} now</label>
-            <label><input type="radio" name="payment" /> Pay part now, part later</label>
-            <label><input type="radio" name="payment" /> Pay monthly with Klarna</label>
-          </div>
-
+        <div className="cart-left">
+        <div className="cart-box">
+          <h3>Choose when to pay</h3>
+          <label><input type="radio" name="payment" defaultChecked /> Pay ${(property.price * 5).toLocaleString()} now</label>
+          <label><input type="radio" name="payment" /> Pay part now, part later</label>
+          <label><input type="radio" name="payment" /> Pay monthly with Klarna</label>
+        </div>
 
           <div className="cart-box">
             <h3>Payment method</h3>
@@ -51,16 +64,18 @@ export default function CartPage() {
         {/* RIGHT: Property summary */}
         <div className="cart-right">
           <div className="cart-summary">
-            <img src={property.images?.[0] || '/fallback.jpg'} alt={property.title} />
+            <img
+              src={property.images?.[0] || '/fallback.jpg'}
+              alt={property.title}
+            />
             <div>
               <h4>{property.title}</h4>
               <p>
                 {property.location.city}, {property.location.state}
               </p>
-              {/* per-night price */}
-              <p>${property.price.toLocaleString()} × 5 nights</p>
+              <p>${property.price.toLocaleString()} × {nights} nights</p>
               <p className="summary-total">
-                Total: ${(property.price * 5).toLocaleString()}
+                Total: ${total.toLocaleString()}
               </p>
             </div>
           </div>

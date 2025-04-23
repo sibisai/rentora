@@ -22,7 +22,7 @@ export default function PropertyDetailsPage() {
       try {
         const p = await getProperty(id)
         setProperty(p)
-      } catch (err: any) {
+      } catch {
         setError('Could not load property.')
       } finally {
         setLoading(false)
@@ -40,8 +40,16 @@ export default function PropertyDetailsPage() {
     setIsGalleryOpen(false)
   }
 
-  if (loading) return <p className="text-center mt-8">Loading…</p>
-  if (error)   return <p className="text-center mt-8 text-red-500">{error}</p>
+  const handleReserve = () => {
+    if (!property) return
+    // save to localStorage
+    localStorage.setItem('cart', JSON.stringify(property))
+    // navigate without state
+    navigate('/cart')
+  }
+
+  if (loading)   return <p className="text-center mt-8">Loading…</p>
+  if (error)     return <p className="text-center mt-8 text-red-500">{error}</p>
   if (!property) return null
 
   const images = property.images?.length ? property.images : [property.images?.[0] || '']
@@ -84,20 +92,16 @@ export default function PropertyDetailsPage() {
           </div>
         </div>
 
-        {/* Single Image Modal */}
         {isSingleOpen && (
           <div className="modal-overlay" onClick={closeAll}>
             <img src={modalImg} alt="Full View" className="modal-img" />
           </div>
         )}
 
-        {/* Full Gallery Modal */}
         {isGalleryOpen && (
           <div className="gallery-overlay">
             <div className="gallery-header">
-              <button className="close-gallery" onClick={closeAll}>
-                ×
-              </button>
+              <button className="close-gallery" onClick={closeAll}>×</button>
             </div>
             <div className="gallery-grid">
               {images.map((img, idx) => (
@@ -116,9 +120,7 @@ export default function PropertyDetailsPage() {
 
           <strong>What this place offers:</strong>
           <ul>
-            {property.amenities?.map((a, i) => (
-              <li key={i}>{a}</li>
-            ))}
+            {property.amenities?.map((a, i) => <li key={i}>{a}</li>)}
           </ul>
 
           <div className="price-box">
@@ -127,9 +129,7 @@ export default function PropertyDetailsPage() {
 
           <button
             className="nav-button mt-4"
-            onClick={() =>
-              navigate('/cart', { state: { property } })
-            }
+            onClick={handleReserve}
           >
             Reserve
           </button>
