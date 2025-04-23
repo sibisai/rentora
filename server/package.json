@@ -6,7 +6,6 @@
     "start": "node index.js",
     "test": "NODE_ENV=test jest --runInBand --watchAll --testEnvironment node --coverage",
     "dev": "nodemon index.js"
-
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.787.0",
