@@ -1,6 +1,5 @@
-// src/features/property/pages/PropertyDetailsPage.tsx
 import React, { useState, useEffect } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import Header from '../../../components/Header'
 import { getProperty } from '../propertyService'
 import type { Property } from '../types'
@@ -8,6 +7,7 @@ import '../styles/PropertyDetailsPage.css'
 
 export default function PropertyDetailsPage() {
   const { id } = useParams<{ id: string }>()
+  const navigate = useNavigate()
   const [property, setProperty] = useState<Property | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string>()
@@ -15,7 +15,6 @@ export default function PropertyDetailsPage() {
   const [isGalleryOpen, setIsGalleryOpen] = useState(false)
   const [isSingleOpen, setIsSingleOpen] = useState(false)
   const [modalImg, setModalImg] = useState('')
-  const navigate = useNavigate()
 
   useEffect(() => {
     if (!id) return
@@ -110,15 +109,10 @@ export default function PropertyDetailsPage() {
 
         <div className="property-info">
           <h3>
-            Entire home in{' '}
-            {property.location.city}, {property.location.state}
+            Entire home in {property.location.city}, {property.location.state}
           </h3>
-          <h5>
-            {property.description}
-          </h5>
-          <p>
-            {property.rooms} rooms
-          </p>
+          <h5>{property.description}</h5>
+          <p>{property.rooms} rooms</p>
 
           <strong>What this place offers:</strong>
           <ul>
@@ -131,12 +125,14 @@ export default function PropertyDetailsPage() {
             ${property.price.toLocaleString()} per night
           </div>
 
-        <button
-          className="nav-button mt-4"
-          onClick={() => navigate('/cart', { state: { property } })}
-        >
-          Reserve
-        </button>
+          <button
+            className="nav-button mt-4"
+            onClick={() =>
+              navigate('/cart', { state: { property } })
+            }
+          >
+            Reserve
+          </button>
         </div>
       </section>
     </>
