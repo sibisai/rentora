@@ -1,21 +1,32 @@
-import React from "react";
-import "./CartPage.css";
-import propertyImg from "../../assets/images/property.jpg";
+import React, { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
+import type { Property } from '../property/types'
+import './CartPage.css'
 
 export default function CartPage() {
+  const { state } = useLocation()
+  // try to grab the passed-in property
+  const passed = (state as any)?.property as Property | undefined
+
+  const [property, setProperty] = useState<Property | null>(passed ?? null)
+
+
+  if (!property) return <p className="text-center mt-8">Loading…</p>
+
   return (
     <section className="cart-section">
       <h2 className="cart-title">Confirm and Pay</h2>
 
       <div className="cart-content">
         {/* LEFT: Payment options */}
-        <div className="cart-left">
+          <div className="cart-left">
           <div className="cart-box">
             <h3>Choose when to pay</h3>
-            <label><input type="radio" name="payment" defaultChecked /> Pay $4,102.53 now</label>
+            <label><input type="radio" name="payment" defaultChecked /> Pay ${(property.price * 5).toLocaleString()} now</label>
             <label><input type="radio" name="payment" /> Pay part now, part later</label>
             <label><input type="radio" name="payment" /> Pay monthly with Klarna</label>
           </div>
+
 
           <div className="cart-box">
             <h3>Payment method</h3>
@@ -40,17 +51,24 @@ export default function CartPage() {
         {/* RIGHT: Property summary */}
         <div className="cart-right">
           <div className="cart-summary">
-            <img src={propertyImg} alt="Property" />
+            <img src={property.images?.[0] || '/fallback.jpg'} alt={property.title} />
             <div>
-              <h4>Abalone Cove – Oceanfront Getaway</h4>
-              <p>May 26 – 31, 2025 · 1 adult</p>
-              <p>$820.51 × 5 nights</p>
-              <p className="summary-total">Total: $4,102.53</p>
+              <h4>{property.title}</h4>
+              <p>
+                {property.location.city}, {property.location.state}
+              </p>
+              {/* per-night price */}
+              <p>${property.price.toLocaleString()} × 5 nights</p>
+              <p className="summary-total">
+                Total: ${(property.price * 5).toLocaleString()}
+              </p>
             </div>
           </div>
-          <p className="cart-note">💎 This is a rare find. Usually booked.</p>
+          <p className="cart-note">
+            💎 This is a rare find. Usually booked.
+          </p>
         </div>
       </div>
     </section>
-  );
+  )
 }

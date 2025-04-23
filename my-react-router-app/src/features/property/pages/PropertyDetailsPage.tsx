@@ -1,6 +1,6 @@
 // src/features/property/pages/PropertyDetailsPage.tsx
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Header from '../../../components/Header'
 import { getProperty } from '../propertyService'
 import type { Property } from '../types'
@@ -15,6 +15,7 @@ export default function PropertyDetailsPage() {
   const [isGalleryOpen, setIsGalleryOpen] = useState(false)
   const [isSingleOpen, setIsSingleOpen] = useState(false)
   const [modalImg, setModalImg] = useState('')
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (!id) return
@@ -130,7 +131,12 @@ export default function PropertyDetailsPage() {
             ${property.price.toLocaleString()} per night
           </div>
 
-          <button className="nav-button mt-4">Reserve</button>
+        <button
+          className="nav-button mt-4"
+          onClick={() => navigate('/cart', { state: { property } })}
+        >
+          Reserve
+        </button>
         </div>
       </section>
     </>
