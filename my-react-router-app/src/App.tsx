@@ -44,7 +44,6 @@ export function AppErrorBoundary() {
   );
 }
 
-
 // Main Application Component - provides layout and renders routes via Outlet
 export default function App() {
   return (
@@ -90,4 +89,3 @@ export default function App() {
     </div>
   );
 }
-
