@@ -44,7 +44,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
 
   // --- Load Google Maps API Script ---
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: import.meta.env.VITE_Maps_API_KEY || "", // Get key from environment
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_KEY || "", // Get key from environment
     libraries: libraries,
   });
 

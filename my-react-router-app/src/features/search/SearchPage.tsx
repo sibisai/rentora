@@ -93,14 +93,6 @@ const SearchPage: React.FC = () => {
   // --- Main Render ---
   return (
     <div className="search-page-container">
-      {/* Header with navigation */}
-      <header className="search-page-header">
-        <nav className="search-page-nav">
-          <a href="/" className="nav-link">Home</a>
-          <a href="/search" className="nav-link active">Search</a>
-          <a href="/login" className="nav-link">Login</a>
-        </nav>
-      </header>
 
       {/* Search Bar Section */}
       <section className="search-bar-container">
