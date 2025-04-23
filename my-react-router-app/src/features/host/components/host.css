@@ -1,0 +1,45 @@
+.host {
+    padding: 24px;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #f7f7f7;
+}
+
+.propert-text {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+.property-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px
+}
+
+.input {
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.input-text {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.submission-btn {
+    background-color: #ff385c;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    transition: 0.3s;    
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.submission-btn:hover {
+    background-color: #e02e4d;
+}

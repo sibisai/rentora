@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Password is required.']
   },
+  host: { type: Boolean, default: true }
   // Add any other user fields if needed later
 }, { timestamps: true });
 

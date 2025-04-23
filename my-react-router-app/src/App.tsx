@@ -1,4 +1,5 @@
 import React from 'react';
+import Header from './components/Header';
 
 import {
   Link,
@@ -48,19 +49,7 @@ export function AppErrorBoundary() {
 export default function App() {
   return (
     <div className="flex flex-col min-h-screen">
-
-      {/* Navigation */}
-      <nav className="p-4 bg-gray-100 shadow-md">
-        <Link to="/" className="mr-4 text-blue-600 hover:text-blue-800">Home</Link>
-        <Link to="/search" className="mr-4 text-blue-600 hover:text-blue-800">Search</Link>
-        <Link to="/login" className="text-blue-600 hover:text-blue-800">Login</Link>
-        <Link to="/contact" className="text-blue-600 hover:text-blue-800">Contact</Link>
-        <Link to="/cart" className="text-blue-600 hover:text-blue-800">Cart</Link>
-        <Link to="/services" className="text-blue-600 hover:text-blue-800">Services</Link>
-        
-        {/* Add other navigation links as needed */}
-      </nav>
-
+        <Header />
       {/* Main content area - Outlet renders the matched route component */}
       <main className="flex-grow p-6">
          {/* Note: The ErrorBoundary component itself is usually configured as
@@ -88,4 +77,8 @@ export default function App() {
 
     </div>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> bcb871fe9be5cd485de96421eeadd537fc087939

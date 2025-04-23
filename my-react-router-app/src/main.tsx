@@ -2,23 +2,36 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {
   createBrowserRouter,
+  Navigate,
   RouterProvider,
 } from 'react-router-dom';
-
+import { AuthProvider, useAuth } from './features/auth/AuthContext';
 import App, { AppErrorBoundary } from './App';
 
 // Import your page components from their feature folders
 import HomePage from './features/home/HomePage';
 import LoginPage from './features/auth/LoginPage';
+import HostPage from './features/host/HostPage';
 import SearchPage from './features/search/SearchPage';
 import AccountPage from './features/account/AccountPage';
 import CartPage from './features/cart/CartPage';
-import PropertyDetailsPage from './features/property/PropertyDetailsPage';
+import PropertyDetailsPage from './features/property/pages/PropertyDetailsPage';
+import PropertyListPage from './features/property/pages/PropertyListPage';
+import EditPropertyPage    from './features/property/pages/EditPropertyPage';
+import CreatePropertyPage  from './features/property/pages/CreatePropertyPage';
 import NotFoundPage from './pages/NotFoundPage';
 import ContactPage from './features/contact/ContactPage';
 import ServicesPage from './features/services/ServicesPage';
 
 import './styles/index.css';
+
+/* ---------- simple auth‑guard ---------- */
+function RequireAuth({ children }: { children: JSX.Element }) {
+  const { user, loading } = useAuth();
+  if (loading) return <p>Loading…</p>;
+  return user ? children : <Navigate to="/login" replace />;
+}
+
 // Define the application routes using the createBrowserRouter API
 const router = createBrowserRouter([
   {
@@ -39,29 +52,33 @@ const router = createBrowserRouter([
         element: <LoginPage />,
       },    
       {
+        path: "host/properties",
+        element: <RequireAuth><PropertyListPage /></RequireAuth>
+      },
+      {
+        path: 'host/properties/new',
+        element: <RequireAuth><CreatePropertyPage /></RequireAuth>,
+      },
+      {
+        path: 'host/properties/:id/edit',
+        element: <RequireAuth><EditPropertyPage /></RequireAuth>,
+      },
+      {
         path: "search",
         element: <SearchPage />,
       },
-      {
-        path: "account",
-        element: <AccountPage />,
-      },
+      // {
+      //   path: "account",
+      //   element: <RequireAuth><AccountPage /></RequireAuth>,
+      // },
       {
         path: "cart",
-        element: <CartPage />,
+        element: <RequireAuth><CartPage /></RequireAuth>,
       },
       {
-        // Incase the property details page needs an ID parameter
-        // Adjust path and component as needed
-        path: "property-details/", // Example with URL param
+        path: "properties/:id",
         element: <PropertyDetailsPage />,
       },
-      // {
-      //   // Incase the property details page needs an ID parameter
-      //   // Adjust path and component as needed
-      //   path: "property-details/:propertyId", // Example with URL param
-      //   element: <PropertyDetailsPage />,
-      // },
       // Add a catch-all route for 404 pages
       {
         path: "*",
@@ -84,7 +101,9 @@ const rootElement = document.getElementById('root');
 if (rootElement) {
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </React.StrictMode>
   );
 } else {

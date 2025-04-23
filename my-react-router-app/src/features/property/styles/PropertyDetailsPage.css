@@ -1,0 +1,207 @@
+.property-section {
+  padding: 60px 40px;
+  background-color: #fff;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.property-header-row {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.property-header {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.property-title {
+  font-size: 32px;
+  font-weight: 600;
+  color: #222;
+  margin: 0;
+}
+
+
+/* Unified grid layout for master + 2x2 image block */
+.property-gallery-wrapper {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 12px;
+  margin-bottom: 30px;
+  max-height: 460px;
+}
+
+/* Ensure both sides match height */
+.main-photo,
+.grid-photo-group {
+  height: 460px;
+}
+
+.main-photo img,
+.grid-photo-group img,
+.photo-with-button img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.main-photo img:hover,
+.grid-photo-group img:hover,
+.photo-with-button img:hover {
+  filter: brightness(75%);
+  cursor: pointer;
+}
+
+
+/* Right side 2x2 grid layout */
+.grid-photo-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px;
+}
+
+.photo-with-button {
+  position: relative;
+}
+
+.show-all-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  padding: 6px 12px;
+  background-color: white;
+  border: none;
+  font-size: 14px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+/* Property info section */
+.property-info {
+  background-color: #fdfdfd;
+  padding: 25px;
+  /* border: 1px solid #eee; */
+  border-radius: 12px;
+}
+
+.property-info h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.property-info p,
+.property-info ul {
+  color: #444;
+  font-size: 15px;
+  margin: 10px 0;
+}
+
+.property-info ul {
+  padding-left: 20px;
+}
+
+/* Price box */
+.price-box {
+  background-color: #fff0f3;
+  border: 1px solid #ff385c;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-top: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ff385c;
+}
+
+.price-dates {
+  display: block;
+  margin-top: 5px;
+  font-weight: normal;
+  color: #555;
+}
+
+/* Reserve button */
+.nav-button {
+  background-color: #ff385c;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.nav-button:hover {
+  background-color: #e62e50;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  cursor: zoom-out;
+}
+
+.modal-img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+  object-fit: contain;
+}
+
+.gallery-overlay {
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  overflow-y: auto;
+  padding: 40px;
+  z-index: 1001;
+}
+
+.gallery-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.close-gallery {
+  font-size: 32px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.gallery-grid img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+  transition: filter 0.2s ease;
+}
+
+.gallery-grid img:hover {
+  filter: brightness(75%);
+  cursor: zoom-in;
+}

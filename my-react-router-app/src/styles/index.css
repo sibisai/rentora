@@ -9,12 +9,15 @@
 
 body {
   background-color: #f7f7f7;
+  padding-top: 80px;
 }
 
 header {
-  position: relative;
+  position: fixed;
+  top: 0;
   width: 100%;
   background: white;
+  z-index: 999;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
@@ -26,6 +29,7 @@ header {
   position: absolute;
   left: 20px;
   top: 50%;
+  margin: 2rem auto;
   transform: translateY(-50%);
 }
 
@@ -51,20 +55,6 @@ header {
 .top-banner .title {
   font-size: 28px;
   font-weight: bold;
-}
-
-.login-button {
-  text-decoration: none;
-  background-color: #ff385c;
-  color: white;
-  padding: 8px 15px;
-  border-radius: 20px;
-  font-weight: bold;
-  transition: 0.3s;
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
 }
 
 .login-button:hover {
@@ -97,7 +87,7 @@ nav ul li a:hover {
 .hero {
   position: relative;
   width: 100%;
-  height: 50vh;
+  height: 70vh;
   background: url('../assets/images/bg2.jpg') center center no-repeat;
   background-size: cover;
   background-attachment: fixed;
@@ -106,18 +96,15 @@ nav ul li a:hover {
   justify-content: center;
 }
 
-
 .hero-overlay {
-  background: rgba(0, 0, 0, 0.5);
+  background: transparent;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.hero-overlay h2 {
-  color: white;
-  font-size: 36px;
-  text-align: center;
-}
 
 .button-links {
   margin-top: 20px;
@@ -135,10 +122,20 @@ nav ul li a:hover {
   text-decoration: none;
   font-weight: bold;
   transition: background-color 0.3s ease;
+  border: none;
+  outline: none;
+  box-shadow: none;
 }
 
 .nav-button:hover {
   background-color: #e02e4d;
+}
+
+.nav-button:focus,
+.nav-button:active {
+  border: none;
+  outline: none;
+  box-shadow: none;
 }
 
 .property-section {
@@ -222,6 +219,383 @@ nav ul li a:hover {
   transition: color 0.2s;
 }
 
+/* container for signed‑in user */
+.auth-info {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* keep the email from running away */
+.user-email {
+  font-weight: bold;
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* style only your logout button */
+.logout-button {
+  background-color: #e2e8f0;
+  color: #4a5568;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.logout-button:hover {
+  background-color: #cbd5e0;
+}
+
+/* Host Dashboard — Property List */
+.property-list-container {
+  overflow-x: auto;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+}
+
+.property-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+  /* so it doesn’t get too squeezed */
+}
+
+.property-table th,
+.property-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: middle;
+}
+
+.property-table thead th {
+  background-color: #f8f9fa;
+  color: #4a5568;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.property-table th.title,
+.property-table td.title {
+  text-align: left;
+}
+
+.property-table th.price,
+.property-table td.price {
+  text-align: right;
+  min-width: 120px;
+}
+
+.property-table th.rooms,
+.property-table td.rooms {
+  text-align: center;
+  min-width: 80px;
+}
+
+.property-table th.actions,
+.property-table td.actions {
+  text-align: center;
+  min-width: 140px;
+}
+
+.property-table tr:hover {
+  background-color: #f1f5f9;
+}
+
+.btn-primary {
+  display: inline-block;
+  background: #ff385c;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background: #e02e4d;
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+.btn-danger {
+  background: #f87171;
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.property-card .btn-secondary+.btn-danger {
+  margin-left: 0.5rem;
+}
+
+.btn-danger:hover {
+  background: #ef4444;
+}
+
+.host-dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* container for signed‑in user */
+.auth-info {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* keep the email from running away */
+.user-email {
+  font-weight: bold;
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* style only your logout button */
+.logout-button {
+  background-color: #e2e8f0;
+  color: #4a5568;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.logout-button:hover {
+  background-color: #cbd5e0;
+}
+
+/* Host Dashboard — Property List */
+.property-list-container {
+  overflow-x: auto;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+}
+
+.property-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+  /* so it doesn’t get too squeezed */
+}
+
+.property-table th,
+.property-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: middle;
+}
+
+.property-table thead th {
+  background-color: #f8f9fa;
+  color: #4a5568;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.property-table th.title,
+.property-table td.title {
+  text-align: left;
+}
+
+.property-table th.price,
+.property-table td.price {
+  text-align: right;
+  min-width: 120px;
+}
+
+.property-table th.rooms,
+.property-table td.rooms {
+  text-align: center;
+  min-width: 80px;
+}
+
+.property-table th.actions,
+.property-table td.actions {
+  text-align: center;
+  min-width: 140px;
+}
+
+.property-table tr:hover {
+  background-color: #f1f5f9;
+}
+
+.btn-primary {
+  display: inline-block;
+  background: #ff385c;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background: #e02e4d;
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+.btn-danger {
+  background: #f87171;
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.property-card .btn-secondary+.btn-danger {
+  margin-left: 0.5rem;
+}
+
+.btn-danger:hover {
+  background: #ef4444;
+}
+
+.host-dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
 html {
   scroll-behavior: smooth;
+}
+button {
+  font-size: 16px;
+  position: relative;
+  margin: auto;
+  padding: 1em 2.5em 1em 2.5em;
+  border: none;
+  background: #fff;
+  transition: all 0.1s linear;
+  box-shadow: 0 0.4em 1em rgba(0, 0, 0, 0.1);
+ }
+ 
+ button:active {
+  transform: scale(0.95);
+ }
+ 
+ button span {
+  color: #ffffff;
+ }
+ 
+ button .border {
+  position: absolute;
+  border: 0.15em solid #fff;
+  transition: all 0.3s 0.08s linear;
+  top: 50%;
+  left: 50%;
+  width: 9em;
+  height: 3em;
+  transform: translate(-50%, -50%);
+ }
+ 
+ button:hover .border {
+  display: block;
+  width: 9.9em;
+  height: 3.7em;
+ }
+ 
+ .full-rounded {
+  border-radius: 2em;
+ }
+
+ .cssbuttons-io {
+  position: relative;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: 0.8em;
+  cursor: pointer;
+  border: none;
+  background: linear-gradient(to right, #27c39f, #40e495);
+  color: ghostwhite;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.cssbuttons-io svg {
+  width: 1.2em;
+  height: 1.2em;
+  margin-left: 0.7em;
+  stroke-width: 2px;
+}
+
+.cssbuttons-io span {
+  position: relative;
+  z-index: 10;
+  transition: color 0.4s;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.6em 0.9em 0.6em 1em;
+  text-decoration: none;
+}
+
+.cssbuttons-io::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -10%;
+  width: 120%;
+  height: 100%;
+  z-index: 0;
+  background: #000;
+  transform: skew(30deg);
+  transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
+}
+
+.cssbuttons-io:hover::before {
+  transform: translate3d(100%, 0, 0);
+}
+
+.cssbuttons-io:active {
+  transform: scale(0.95);
 }

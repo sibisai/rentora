@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import propertyImage from "../../assets/images/familyvacation.webp";
+import Header from '../../components/Header';
 
 import "./ServicesPage.css";
 
@@ -40,21 +41,6 @@ const ServicesPage: React.FC = () => {
 
   return (
     <>
-      <header>
-        <div className="top-banner">
-          <h1 className="title">[placeholder]</h1>
-          <nav>
-            <ul>
-              <li><Link to="/history" className="nav-link">History</Link></li>
-              <li><Link to="/contact" className="nav-link">Contact</Link></li>
-              <li><Link to="/services" className="nav-link">Services</Link></li>
-              <li><Link to="/#browse" className="nav-link">Browse</Link></li>
-              <li><Link to="/login" className="login-button">Login</Link></li>
-            </ul>
-          </nav>
-        </div>
-      </header>
-
       <div
         className="services-hero"
         style={{
