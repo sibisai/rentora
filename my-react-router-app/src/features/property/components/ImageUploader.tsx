@@ -108,6 +108,7 @@ export default function ImageUploader({ propertyId, value, onChange }: Props) {
                   width: 24,
                   height: 24,
                   cursor: 'pointer',
+                  padding: 0
                 }}
                 aria-label="Remove image"
               >

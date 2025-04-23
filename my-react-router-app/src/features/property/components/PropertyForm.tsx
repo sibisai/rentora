@@ -2,7 +2,7 @@ import React from 'react'
 import { useForm, Controller, type SubmitHandler } from 'react-hook-form'
 import { yupResolver }  from '@hookform/resolvers/yup'
 import * as yup         from 'yup'
-
+import HostCalendar from 'src/features/host/components/HostCalendar'
 import LocationPicker   from './LocationPicker'
 import ImageUploader    from './ImageUploader'
 import { useAuth }      from '../../auth/AuthContext'
@@ -161,6 +161,7 @@ export default function PropertyForm({ initialValues, onSubmit }: Props) {
             />
             {errors.images && <p className="error">{errors.images.message}</p>}
           </div>
+         <HostCalendar propertyId={initialValues?._id} />
         </div>
       </div>
 
