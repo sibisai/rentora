@@ -210,7 +210,7 @@ body {
 .property-card {
   background-color: white;
   border-radius: 1rem;
-  overflow: hidden;
+  /* overflow: hidden; */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
@@ -272,9 +272,9 @@ body {
   margin-bottom: 0.75rem;
 }
 
-.property-info {
+/* .property-info {
   margin-bottom: 1rem;
-}
+} */
 
 .property-rooms {
   font-size: 0.9rem;

@@ -87,7 +87,7 @@
 .property-info {
   background-color: #fdfdfd;
   padding: 25px;
-  border: 1px solid #eee;
+  /* border: 1px solid #eee; */
   border-radius: 12px;
 }
 
