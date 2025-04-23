@@ -128,7 +128,7 @@ const Home: React.FC = () => {
             {properties.map(p => (
               <Link
                 key={p._id}
-                to={`/property-details/${p._id}`}
+                to={`/properties/${p._id}`}
                 className="property-card"
                 style={{ textDecoration: 'none', color: 'inherit' }}
               >

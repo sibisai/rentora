@@ -15,7 +15,7 @@ import HostPage from './features/host/HostPage';
 import SearchPage from './features/search/SearchPage';
 import AccountPage from './features/account/AccountPage';
 import CartPage from './features/cart/CartPage';
-import PropertyDetailsPage from './features/property/PropertyDetailsPage';
+import PropertyDetailsPage from './features/property/pages/PropertyDetailsPage';
 import PropertyListPage from './features/property/pages/PropertyListPage';
 import EditPropertyPage    from './features/property/pages/EditPropertyPage';
 import CreatePropertyPage  from './features/property/pages/CreatePropertyPage';
@@ -76,17 +76,9 @@ const router = createBrowserRouter([
         element: <RequireAuth><CartPage /></RequireAuth>,
       },
       {
-        // Incase the property details page needs an ID parameter
-        // Adjust path and component as needed
-        path: "property-details/:propertyId",
+        path: "properties/:id",
         element: <PropertyDetailsPage />,
       },
-      // {
-      //   // Incase the property details page needs an ID parameter
-      //   // Adjust path and component as needed
-      //   path: "property-details/:propertyId", // Example with URL param
-      //   element: <PropertyDetailsPage />,
-      // },
       // Add a catch-all route for 404 pages
       {
         path: "*",
