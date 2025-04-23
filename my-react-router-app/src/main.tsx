@@ -67,10 +67,10 @@ const router = createBrowserRouter([
         path: "search",
         element: <SearchPage />,
       },
-      {
-        path: "account",
-        element: <RequireAuth><AccountPage /></RequireAuth>,
-      },
+      // {
+      //   path: "account",
+      //   element: <RequireAuth><AccountPage /></RequireAuth>,
+      // },
       {
         path: "cart",
         element: <RequireAuth><CartPage /></RequireAuth>,

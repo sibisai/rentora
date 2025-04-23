@@ -1,12 +1,19 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from '../features/auth/AuthContext'
 import "../styles/index.css";
 import "./header.css";
 
 const Header: React.FC = () => {
-  const userEmail = localStorage.getItem("userEmail");
-  const isLoggedIn = Boolean(userEmail);
-  const initial = userEmail?.charAt(0).toUpperCase() || "";
+  const { user, logout } = useAuth();
+  const initial = user?.email.charAt(0).toUpperCase() || "";
+  const navigate = useNavigate()
+
+  const handleSignOut = () => {
+    logout()
+    // send them home
+    navigate('/', { replace: true })
+  }
 
   return (
     <header className="header">
@@ -19,16 +26,16 @@ const Header: React.FC = () => {
         {/* Center Navigation */}
         <nav className="nav-container">
           <ul className="nav-list">
-            <li><Link to="/account" className="nav-link">Account</Link></li>
-            <li><Link to="/contact" className="nav-link">Contact</Link></li>
-            <li><Link to="/services" className="nav-link">Services</Link></li>
             <li><Link to="/#browse" className="nav-link">Browse</Link></li>
             <li><Link to="/host/properties" className="nav-link">Host</Link></li>
+            <li><Link to="/services" className="nav-link">Services</Link></li>
+            <li><Link to="/contact" className="nav-link">Contact</Link></li>
+            {/* <li><Link to="/account" className="nav-link">Account</Link></li> */}
           </ul>
         </nav>
-
-        {/* Right Side - Cart + Login or Avatar */}
+        {/* Right Side */}
         <div className="auth-container">
+          {/* Cart */}
           <Link to="/cart" className="CartBtn">
             <span className="IconContainer">
               <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512" fill="rgb(17, 17, 17)" className="icon">
@@ -38,10 +45,21 @@ const Header: React.FC = () => {
             <p className="text">Cart</p>
           </Link>
 
-          {isLoggedIn ? (
-            <div className="user-avatar">{initial}</div>
+          {/* Login / Sign Out */}
+          {user ? (
+            <>
+              <div className="user-avatar">{initial}</div>
+              <button
+                onClick={handleSignOut}
+                className="login-button"
+              >
+                Sign Out
+              </button>
+            </>
           ) : (
-            <Link to="/login" className="login-button">Login</Link>
+            <Link to="/login" className="login-button">
+              Login
+            </Link>
           )}
         </div>
       </div>
