@@ -23,7 +23,7 @@ const Header: React.FC = () => {
             <li><Link to="/contact" className="nav-link">Contact</Link></li>
             <li><Link to="/services" className="nav-link">Services</Link></li>
             <li><Link to="/#browse" className="nav-link">Browse</Link></li>
-            <li><Link to="/host" className="nav-link">Host</Link></li>
+            <li><Link to="/host/properties" className="nav-link">Host</Link></li>
           </ul>
         </nav>
 

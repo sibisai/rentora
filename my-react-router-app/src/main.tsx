@@ -2,28 +2,27 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {
   createBrowserRouter,
-  RouterProvider,
   Navigate,
+  RouterProvider,
 } from 'react-router-dom';
-
 import { AuthProvider, useAuth } from './features/auth/AuthContext';
 import App, { AppErrorBoundary } from './App';
 
-/* ---------- pages ---------- */
-import HomePage            from './features/home/HomePage';
+// Import your page components from their feature folders
+import HomePage from './features/home/HomePage';
+import LoginPage from './features/auth/LoginPage';
 import HostPage from './features/host/HostPage';
-import LoginPage           from './features/auth/LoginPage';
-import HostPage from './features/host/HostPage';
-import SearchPage          from './features/search/SearchPage';
-import AccountPage         from './features/account/AccountPage';
-import CartPage            from './features/cart/CartPage';
+import SearchPage from './features/search/SearchPage';
+import AccountPage from './features/account/AccountPage';
+import CartPage from './features/cart/CartPage';
 import PropertyDetailsPage from './features/property/PropertyDetailsPage';
-
-import PropertyListPage    from './features/property/pages/PropertyListPage';
-import CreatePropertyPage  from './features/property/pages/CreatePropertyPage';
+import PropertyListPage from './features/property/pages/PropertyListPage';
 import EditPropertyPage    from './features/property/pages/EditPropertyPage';
+import CreatePropertyPage  from './features/property/pages/CreatePropertyPage';
+import NotFoundPage from './pages/NotFoundPage';
+import ContactPage from './features/contact/ContactPage';
+import ServicesPage from './features/services/ServicesPage';
 
-import NotFoundPage        from './pages/NotFoundPage';
 import './styles/index.css';
 
 /* ---------- simple auth‑guard ---------- */
@@ -33,12 +32,15 @@ function RequireAuth({ children }: { children: JSX.Element }) {
   return user ? children : <Navigate to="/login" replace />;
 }
 
-/* ---------- router ---------- */
+// Define the application routes using the createBrowserRouter API
 const router = createBrowserRouter([
   {
-    path: '/',
+    // Root route: Uses App component for layout
+    path: "/",
     element: <App />,
+    // Sets the error boundary for the root layout and all child routes
     errorElement: <AppErrorBoundary />,
+    // Child routes that will render inside App's <Outlet />
     children: [
       {
         // Index route (renders at "/")
@@ -51,25 +53,7 @@ const router = createBrowserRouter([
       },    
       {
         path: "host/properties",
-        element: <HostPage />,
-      },
-      {
-        path: "search",
-        element: <SearchPage />,
-      },
-      {
-        path: "account",
-        element: <AccountPage />,
-      },
-      {
-        path: "cart",
-        element: <CartPage />,
-      },
-      {
-        // Incase the property details page needs an ID parameter
-        // Adjust path and component as needed
-        path: "property-details/:propertyId",
-        element: <PropertyDetailsPage />,
+        element: <RequireAuth><PropertyListPage /></RequireAuth>
       },
       {
         path: 'host/properties/new',
@@ -79,22 +63,57 @@ const router = createBrowserRouter([
         path: 'host/properties/:id/edit',
         element: <RequireAuth><EditPropertyPage /></RequireAuth>,
       },
-
-      /* public property details */
-      { path: 'properties/:id', element: <PropertyDetailsPage /> },
-
-      /* 404 */
-      { path: '*', element: <NotFoundPage /> },
+      {
+        path: "search",
+        element: <SearchPage />,
+      },
+      {
+        path: "account",
+        element: <RequireAuth><AccountPage /></RequireAuth>,
+      },
+      {
+        path: "cart",
+        element: <RequireAuth><CartPage /></RequireAuth>,
+      },
+      {
+        // Incase the property details page needs an ID parameter
+        // Adjust path and component as needed
+        path: "property-details/:propertyId",
+        element: <PropertyDetailsPage />,
+      },
+      // {
+      //   // Incase the property details page needs an ID parameter
+      //   // Adjust path and component as needed
+      //   path: "property-details/:propertyId", // Example with URL param
+      //   element: <PropertyDetailsPage />,
+      // },
+      // Add a catch-all route for 404 pages
+      {
+        path: "*",
+        element: <NotFoundPage />,
+      },
+      {
+        path: "/contact",
+        element: <ContactPage />
+      },
+      {
+        path: "/services",
+        element: <ServicesPage />
+      }
     ],
   },
 ]);
 
-/* ---------- bootstrap ---------- */
-const root = document.getElementById('root')!;
-ReactDOM.createRoot(root).render(
-  <React.StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
-  </React.StrictMode>,
-);
+// Render the application using the RouterProvider
+const rootElement = document.getElementById('root');
+if (rootElement) {
+  ReactDOM.createRoot(rootElement).render(
+    <React.StrictMode>
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+    </React.StrictMode>
+  );
+} else {
+  console.error("Failed to find the root element");
+}
