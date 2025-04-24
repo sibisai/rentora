@@ -47,6 +47,8 @@ For traveling families & friends or land owners who want to utilize their unoccu
 
 ![Requirement_Modeling](Requirement_Modeling.png)
 
+To run the program entirely, two terminals must be opened up within the project directory and follows the rest of the user guide!
+
 # Welcome to React Router Portion!
 
 A modern, production-ready template for building full-stack React applications using React Router.
