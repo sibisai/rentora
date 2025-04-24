@@ -47,290 +47,183 @@ For traveling families & friends or land owners who want to utilize their unoccu
 
 ![Requirement_Modeling](Requirement_Modeling.png)
 
-To run the program entirely, two terminals must be opened up within the project directory and follows the rest of the user guide!
+# Full-Stack Rental App
 
-# Welcome to React Router Portion!
-
-A modern, production-ready template for building full-stack React applications using React Router.
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
-
-## Features
-
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
-
-## Getting Started
-
-Change Directories to the my-react-router-app:
-
-```bash
-cd my-react-router-app
-```
-
-### Installation
-
-Install the dependencies:
-
-```bash
-npm install
-```
-
-### Development
-
-Start the development server with HMR:
-
-```bash
-npm run dev
-```
-
-Your application will be available at `http://localhost:5173`.
-
-## Building for Production
-
-Create a production build:
-
-```bash
-npm run build
-```
-
-## Deployment
-
-### Docker Deployment
-
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+A full-stack rental application built with React, Node.js, MongoDB, Amazon S3, and OpenStreetMap Geocoding. Users can list properties, search/filter, book stays, and upload images.
 
 ---
 
-Built with ❤️ using React Router.
+## Tech Stack
 
-# Project Server Setup and Docker Configuration
+- **Frontend:** React, React Router, TypeScript, Tailwind CSS, Vite
+- **Backend:** Node.js, Express
+- **Database:** MongoDB (Atlas)
+- **File Storage:** AWS S3
+- **Geocoding:** OpenStreetMap Nominatim (via fetch)
+- **Authentication:** JWT (JSON Web Tokens)
+- **Testing:** Jest, Supertest
 
-This project uses a multi-container Docker setup for the backend (server) and frontend.
+---
 
-### Prerequisites
+## Prerequisites
 
-- [Docker Desktop](https://www.docker.com/products/docker-desktop) installed and running.
-- Node.js and npm (for local development).
+- Node.js & npm
+- Docker & Docker Compose (for containerized setup)
+- AWS account with an S3 bucket
+- MongoDB Atlas cluster
 
-### Environment Variables
+---
 
-Create a `.env` file in the **server/** directory with the following content:
+## Environment Variables
+
+Create a `.env` in the **server/** directory:
 
 ```dotenv
-MONGO_URI="mongodb+srv://<username>:<password>@cluster0.yfrzaxs.mongodb.net/yourDatabaseName?retryWrites=true&w=majority"
+MONGO_URI="mongodb+srv://<user>:<pass>@cluster0.../productionDB?retryWrites=true&w=majority"
+MONGO_URI_TEST="mongodb+srv://<user>:<pass>@cluster0.../test?retryWrites=true&w=majority"
 PORT=3001
+JWT_SECRET="your_jwt_secret"
+AWS_ACCESS_KEY_ID="..."
+AWS_SECRET_ACCESS_KEY="..."
+AWS_REGION="us-east-2"
+AWS_BUCKET="your-s3-bucket"
 ```
 
-Make sure to update the MONGO_URI with your actual credentials and desired database name.
+---
 
-### Docker Configuration
+## Running Locally
 
-1. **Dockerfile for the Backend (Server)**
+Open **two** terminals in the project root:
 
-The Dockerfile in the server folder should look like this:
+### 1. Frontend
 
-```dockerfile
-FROM node:20-alpine
-WORKDIR /app
-
-# Copy dependency files and install dependencies
-COPY package*.json ./
-RUN npm install
-
-# Copy the rest of the application code
-COPY . .
-
-# Expose the port your application listens on
-EXPOSE 3001
-
-# Start the application
-CMD ["node", "index.js"]
+```bash
+cd my-react-router-app
+npm install
+npm run dev
 ```
 
-2. **Docker Compose File**
+Available at `http://localhost:5173`.
 
-The docker-compose.yml in your project root should be configured as follows:
-
-```yaml
-services:
-  server:
-    build:
-      context: ./server
-    ports:
-      - "3001:3001"
-    env_file:
-      - ./server/.env
-  frontend:
-    build:
-      context: ./my-react-router-app
-    ports:
-      - "3000:3000"
-```
-
-Notes:
-
-- The `env_file` property tells Docker Compose to load environment variables from the specified file (e.g., your MongoDB URI in .env).
-- Ensure your .env file is in the proper directory (e.g., in server/) and is included in your .gitignore so it isn't pushed to GitHub.
-
-### Running the Application
-
-#### Using Docker Compose
-
-1. **Build and Start Containers:**
-   Navigate to the project root and run:
-
-   ```bash
-   docker compose up
-   ```
-
-2. **Access the Endpoints:**
-   - The backend API will be available at http://localhost:3001
-   - The React frontend will be available at http://localhost:3000
-
-#### Local Development
-
-If you prefer to run locally without Docker, from the server/ folder run:
+### 2. Backend
 
 ```bash
 cd server
 npm install
-npm start
+npm run start
 ```
 
-### Testing the API Endpoints
-
-Use Postman or any similar API tool to test the following endpoints:
-
-- **User Signup:**
-
-  ```
-  POST http://localhost:3001/auth/signup
-  Body (JSON):
-  {
-    "email": "user@example.com",
-    "password": "yourpassword"
-  }
-  ```
-
-- **User Login:**
-
-  ```
-  POST http://localhost:3001/auth/login
-  Body (JSON):
-  {
-    "email": "user@example.com",
-    "password": "yourpassword"
-  }
-  ```
-
-- **Create Property:**
-
-  ```
-  POST http://localhost:3001/properties
-  Body (JSON):
-  {
-    "title": "Cozy Cottage",
-    "description": "A beautiful cottage with a stunning view."
-  }
-  ```
-
-- **Get All Properties:**
-
-  ```
-  GET http://localhost:3001/properties
-  ```
-
-- **Get a Specific Property:**
-
-  ```
-  GET http://localhost:3001/properties/{{propertyId}}
-  ```
-
-- **Update Property:**
-
-  ```
-  PUT http://localhost:3001/properties/{{propertyId}}
-  Body (JSON):
-  {
-    "title": "Renovated Cozy Cottage",
-    "description": "A renovated cottage with modern amenities."
-  }
-  ```
-
-- **Delete Property:**
-  ```
-  DELETE http://localhost:3001/properties/{{propertyId}}
-  ```
-
-Replace `{{propertyId}}` with the actual property ID received from the create endpoint.
+API runs at `http://localhost:3001`.
 
 ---
 
-### Booking Endpoints
+## Docker Setup
 
-#### Create a Booking
-
-```
-POST http://localhost:3001/bookings
-Body (JSON):
-{
-  "propertyId": "property_id_here",
-  "userId": "user_id_here",
-  "startDate": "2025-05-01",
-  "endDate": "2025-05-05"
-}
+```bash
+docker compose up
 ```
 
-#### Get All Bookings
+- Frontend on `http://localhost:3000`
+- Backend on `http://localhost:3001`
 
-```
-GET http://localhost:3001/bookings
+---
+
+## API Endpoints
+
+### Authentication
+
+- **Signup**  
+  `POST /auth/signup`  
+  Body:
+
+  ```json
+  { "email": "...", "password": "..." }
+  ```
+
+- **Login**  
+  `POST /auth/login`  
+  Body:
+  ```json
+  { "email": "...", "password": "..." }
+  ```
+  Response includes a JWT token.
+
+---
+
+### Properties
+
+- **Create Property**  
+  `POST /properties`  
+  Body includes title, description, location (address, city, state, zip, country), price, rooms, propertyType, hostId.
+
+- **Get All Properties**  
+  `GET /properties`  
+  Optional query params:
+
+  - `checkIn`, `checkOut`
+  - `latitude`, `longitude`, `radius` (miles)
+  - `minPrice`, `maxPrice`
+  - `propertyType`
+
+- **Get Property by ID**  
+  `GET /properties/:id`
+
+- **Update Property**  
+  `PUT /properties/:id`  
+  Body can include any fields above; geocoding runs if address changes.
+
+- **Delete Property**  
+  `DELETE /properties/:id`
+
+---
+
+### Bookings
+
+- **Create Booking**  
+  `POST /bookings`  
+  Body:
+
+  ```json
+  {
+    "propertyId": "...",
+    "userId": "...",
+    "startDate": "YYYY-MM-DD",
+    "endDate": "YYYY-MM-DD"
+  }
+  ```
+
+- **Get All Bookings**  
+  `GET /bookings`
+
+- **Get Bookings for a Property**  
+  `GET /properties/:id/bookings`
+
+---
+
+### Image Upload
+
+- **Upload Image(s) for Property**  
+  `POST /image/upload/:propertyId`  
+  Form field: `images` (one or multiple image files)
+  - On success, images are stored in S3 and URLs are pushed into the property's `images` array.
+
+---
+
+## Testing
+
+From the **server/** directory:
+
+```bash
+npm test
 ```
 
-#### Get Bookings for a Property
+- Runs Jest & Supertest against a test MongoDB (`MONGO_URI_TEST`).
+- Coverage report generated automatically.
 
-```
-GET http://localhost:3001/properties/:id/bookings
-```
+---
 
-Replace `:id` with the actual `propertyId`.
+## Notes
+
+- Ensure `.env` is added to `.gitignore`.
+- The frontend requires a running backend (and vice versa) for full functionality.
+  """
