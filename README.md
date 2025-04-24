@@ -226,4 +226,3 @@ npm test
 
 - Ensure `.env` is added to `.gitignore`.
 - The frontend requires a running backend (and vice versa) for full functionality.
-  """
