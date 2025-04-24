@@ -1,5 +1,5 @@
 import React, { useState, type FormEvent } from 'react';
-import { useNavigate }   from 'react-router-dom';
+import { useLocation, useNavigate }   from 'react-router-dom';
 import { useAuth }       from './AuthContext';
 import { login, signup } from '../../services/authService';
 import loginBg           from '../../assets/images/loginbg.jpg';
@@ -11,6 +11,8 @@ export default function LoginPage() {
   /* KEEP ALL HOOKS AT THE TOP LEVEL */
   const auth     = useAuth();
   const navigate = useNavigate();
+  const location  = useLocation();
+  const fromPath  = (location.state as any)?.from?.pathname || '/';
 
   const [isLogin,   setIsLogin]   = useState(true);
   const [showPwd,   setShowPwd]   = useState(false);
@@ -38,7 +40,7 @@ export default function LoginPage() {
       auth.login(token, { id: userId, email: savedEmail });
 
       setSuccess('Success! Redirecting…');
-      navigate('/host/properties', { replace: true });
+      navigate(fromPath, { replace: true });
     } catch (err: any) {
       setError(err.message ?? 'Authentication failed');
     }

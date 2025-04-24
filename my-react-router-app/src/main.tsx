@@ -4,6 +4,7 @@ import {
   createBrowserRouter,
   Navigate,
   RouterProvider,
+  useLocation,
 } from 'react-router-dom';
 import { AuthProvider, useAuth } from './features/auth/AuthContext';
 import App, { AppErrorBoundary } from './App';
@@ -29,8 +30,14 @@ import './styles/index.css';
 /* ---------- simple auth‑guard ---------- */
 function RequireAuth({ children }: { children: JSX.Element }) {
   const { user, loading } = useAuth();
-  if (loading) return <p>Loading…</p>;
-  return user ? children : <Navigate to="/login" replace />;
+  const location = useLocation()
+
+  if (loading) return <p>Loading…</p>
+  if (!user) {
+    // send them to /login and remember where they came from
+    return <Navigate to="/login" state={{ from: location }} replace />
+  }
+  return children
 }
 
 // Define the application routes using the createBrowserRouter API
