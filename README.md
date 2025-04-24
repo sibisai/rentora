@@ -1,4 +1,4 @@
-# Rent-A-Room
+# Home Rental
 
 ## Markdown
 
@@ -6,7 +6,7 @@
 
 **Who:** People who need a place to stay during trip or vacation and those who want to rent out their property for short periods of time.
 
-**The:** Rent-A-Room
+**The:** Home Rental
 
 **That:** More space and comfortability than a hotel room while giving proprty owners a chance to utilize their unoccupied space.
 
@@ -16,7 +16,7 @@
 
 ### Vision Statement
 
-For traveling families & friends or land owners who want to utilize their unoccupied space who need a place to stay during trip or vacation and those who want to rent out their property for short periods of time. The Rent-A-Room allows for more space and comfortability than a hotel room while giving proprty owners a chance to utilize their unoccupied space. Unlike Airbnb, our product allows for ease of use for both rentors and property owners to change availability of property as well as for scheduling future trips as a group.
+For traveling families & friends or land owners who want to utilize their unoccupied space who need a place to stay during trip or vacation and those who want to rent out their property for short periods of time. The Home Rental allows for more space and comfortability than a hotel room while giving proprty owners a chance to utilize their unoccupied space. Unlike Airbnb, our product allows for ease of use for both rentors and property owners to change availability of property as well as for scheduling future trips as a group.
 
 ## Requirements
 
@@ -47,53 +47,75 @@ For traveling families & friends or land owners who want to utilize their unoccu
 
 ![Requirement_Modeling](Requirement_Modeling.png)
 
-# Full-Stack Rental App
+# Home Rental
 
-A full-stack rental application built with React, Node.js, MongoDB, Amazon S3, and OpenStreetMap Geocoding. Users can list properties, search/filter, book stays, and upload images.
+A full-stack short-term-rental app: travelers can search, filter, book and pay; hosts can list, manage availability, and upload images.
 
 ---
 
-## Tech Stack
+## 📋 Overview
 
-- **Frontend:** React, React Router, TypeScript, Tailwind CSS, Vite
+Home Rental provides a marketplace where:
+
+- **Hosts** list rooms, homes or apartments for short stays
+- **Guests** search by location, dates and filters, then book
+- **Guests & hosts** chat, rate, and manage their bookings (Work in progress)
+
+Unlike Airbnb, our MVP focuses on simplicity and gets you up-and-running with:
+
+- Property CRUD
+- Rich search & filtering (date availability, geolocation, price)
+- Booking engine (no overlaps, date validation)
+- Image upload to S3
+- JWT-backed auth
+- Geocoding via Nominatim
+
+---
+
+## 🚀 Tech Stack
+
+- **Frontend:** React, React Router, TypeScript, Vite, Tailwind CSS
 - **Backend:** Node.js, Express
-- **Database:** MongoDB (Atlas)
+- **Database:** MongoDB Atlas
 - **File Storage:** AWS S3
-- **Geocoding:** OpenStreetMap Nominatim (via fetch)
-- **Authentication:** JWT (JSON Web Tokens)
+- **Geocoding:** OpenStreetMap Nominatim
+- **Auth:** JWT (JSON Web Tokens)
 - **Testing:** Jest, Supertest
 
 ---
 
-## Prerequisites
+## ⚙️ Prerequisites
 
-- Node.js & npm
-- Docker & Docker Compose (for containerized setup)
-- AWS account with an S3 bucket
+- Node.js ≥ 16 + npm
+- Docker & Docker Compose (optional, for containerized dev)
+- An AWS account & S3 bucket
 - MongoDB Atlas cluster
+- (Optional) Google Maps API key if you swap in Google geocoding
 
 ---
 
-## Environment Variables
+## 🔒 Environment Variables
 
-Create a `.env` in the **server/** directory:
+Create a `.env` file in `/server`:
 
 ```dotenv
-MONGO_URI="mongodb+srv://<user>:<pass>@cluster0.../productionDB?retryWrites=true&w=majority"
-MONGO_URI_TEST="mongodb+srv://<user>:<pass>@cluster0.../test?retryWrites=true&w=majority"
 PORT=3001
-JWT_SECRET="your_jwt_secret"
-AWS_ACCESS_KEY_ID="..."
-AWS_SECRET_ACCESS_KEY="..."
+MONGO_URI="mongodb+srv://<user>:<pass>@cluster0/productionDB?retryWrites=true&w=majority"
+MONGO_URI_TEST="mongodb+srv://<user>:<pass>@cluster0/testDB?retryWrites=true&w=majority"
+JWT_SECRET="your_jwt_secret_here"
+AWS_ACCESS_KEY_ID="YOUR_AWS_KEY"
+AWS_SECRET_ACCESS_KEY="YOUR_AWS_SECRET"
 AWS_REGION="us-east-2"
-AWS_BUCKET="your-s3-bucket"
+AWS_BUCKET="your-s3-bucket-name"
 ```
+
+> **Never** commit `.env`—it’s in `.gitignore`.
 
 ---
 
-## Running Locally
+## 🏃 Running Locally
 
-Open **two** terminals in the project root:
+You’ll need **two** terminals:
 
 ### 1. Frontend
 
@@ -103,7 +125,7 @@ npm install
 npm run dev
 ```
 
-Available at `http://localhost:5173`.
+Visit: `http://localhost:5173`
 
 ### 2. Backend
 
@@ -113,116 +135,79 @@ npm install
 npm run start
 ```
 
-API runs at `http://localhost:3001`.
+API root: `http://localhost:3001`
 
 ---
 
-## Docker Setup
+## 🐳 Docker
 
 ```bash
-docker compose up
+docker compose up --build
 ```
 
-- Frontend on `http://localhost:3000`
-- Backend on `http://localhost:3001`
+- Frontend → http://localhost:5173
+- Backend → http://localhost:3001
 
 ---
 
-## API Endpoints
+## 🧪 Testing
 
-### Authentication
-
-- **Signup**  
-  `POST /auth/signup`  
-  Body:
-
-  ```json
-  { "email": "...", "password": "..." }
-  ```
-
-- **Login**  
-  `POST /auth/login`  
-  Body:
-  ```json
-  { "email": "...", "password": "..." }
-  ```
-  Response includes a JWT token.
-
----
-
-### Properties
-
-- **Create Property**  
-  `POST /properties`  
-  Body includes title, description, location (address, city, state, zip, country), price, rooms, propertyType, hostId.
-
-- **Get All Properties**  
-  `GET /properties`  
-  Optional query params:
-
-  - `checkIn`, `checkOut`
-  - `latitude`, `longitude`, `radius` (miles)
-  - `minPrice`, `maxPrice`
-  - `propertyType`
-
-- **Get Property by ID**  
-  `GET /properties/:id`
-
-- **Update Property**  
-  `PUT /properties/:id`  
-  Body can include any fields above; geocoding runs if address changes.
-
-- **Delete Property**  
-  `DELETE /properties/:id`
-
----
-
-### Bookings
-
-- **Create Booking**  
-  `POST /bookings`  
-  Body:
-
-  ```json
-  {
-    "propertyId": "...",
-    "userId": "...",
-    "startDate": "YYYY-MM-DD",
-    "endDate": "YYYY-MM-DD"
-  }
-  ```
-
-- **Get All Bookings**  
-  `GET /bookings`
-
-- **Get Bookings for a Property**  
-  `GET /properties/:id/bookings`
-
----
-
-### Image Upload
-
-- **Upload Image(s) for Property**  
-  `POST /image/upload/:propertyId`  
-  Form field: `images` (one or multiple image files)
-  - On success, images are stored in S3 and URLs are pushed into the property's `images` array.
-
----
-
-## Testing
-
-From the **server/** directory:
+From the **server/** folder:
 
 ```bash
 npm test
 ```
 
-- Runs Jest & Supertest against a test MongoDB (`MONGO_URI_TEST`).
-- Coverage report generated automatically.
+- Uses `MONGO_URI_TEST`
+- Runs Jest & Supertest
+- Generates a coverage report (aim ≥ 90%)
 
 ---
 
-## Notes
+## 🔗 API Reference
 
-- Ensure `.env` is added to `.gitignore`.
-- The frontend requires a running backend (and vice versa) for full functionality.
+### Auth
+
+| Method | Path           | Body                  | Success Response                        |
+| ------ | -------------- | --------------------- | --------------------------------------- |
+| POST   | `/auth/signup` | `{ email, password }` | `201 { message, userId, email }`        |
+| POST   | `/auth/login`  | `{ email, password }` | `200 { message, token, userId, email }` |
+
+---
+
+### Properties
+
+| Method | Path              | Query                                                                                    | Body                                                                                                                         |
+| ------ | ----------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| POST   | `/properties`     | —                                                                                        | `{ title, description, location:{address,city,state,zip,country}, price, rooms, propertyType, hostId, images?, amenities? }` |
+| GET    | `/properties`     | `?checkIn&checkOut`, `?latitude&longitude&radius`, `?minPrice&maxPrice`, `?propertyType` | —                                                                                                                            |
+| GET    | `/properties/:id` | —                                                                                        | —                                                                                                                            |
+| PUT    | `/properties/:id` | —                                                                                        | Any subset of the create-body fields; geocoding runs if location changed                                                     |
+| DELETE | `/properties/:id` | —                                                                                        | —                                                                                                                            |
+
+---
+
+### Bookings
+
+| Method | Path                       | Body                                         |
+| ------ | -------------------------- | -------------------------------------------- |
+| POST   | `/bookings`                | `{ propertyId, userId, startDate, endDate }` |
+| GET    | `/bookings`                | —                                            |
+| GET    | `/properties/:id/bookings` | —                                            |
+
+---
+
+### Image Upload
+
+| Method | Path                        | Form-Data Field(s)     | Description                                              |
+| ------ | --------------------------- | ---------------------- | -------------------------------------------------------- |
+| POST   | `/image/upload/:propertyId` | `images` (one or many) | Saves files to S3 and pushes URLs onto `property.images` |
+
+---
+
+## 🎯 Next Steps
+
+- Add review/rating system
+- Chat support
+- Payment integration
+- CI/CD & production deployment
