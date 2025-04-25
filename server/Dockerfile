@@ -1,15 +1,13 @@
 FROM node:20-alpine
 WORKDIR /app
 
-# Copy dependency files and install dependencies
+# install only prod deps
 COPY package*.json ./
-RUN npm ci
+RUN npm ci --omit=dev
 
-# Copy the rest of the application code
+# copy app
 COPY . .
 
-# Expose the port your application listens on
-EXPOSE 3001
-
-# Start the application with dotenv preload
+# tell Express to bind to the injected PORT
+ENV NODE_ENV=production
 CMD ["node", "index.js"]
