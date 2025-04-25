@@ -1,4 +1,5 @@
 // require('dotenv').config();
+// removed dotenv import—Railway passes env-vars automatically
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
