@@ -5,7 +5,7 @@ export interface AuthResponse {
   email: string;
 }
 
-const API = import.meta.env.local.VITE_API_URL
+const API = import.meta.env.VITE_API_URL
 
 export const login = async (email: string, password: string): Promise<AuthResponse> => {
   const response = await fetch(`${API}/auth/login`, {
