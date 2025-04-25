@@ -4,7 +4,10 @@ const multer = require('multer');
 const multerS3 = require('multer-s3-v3');
 const mongoose = require('mongoose');
 const Property = require('../models/property');
-// require('dotenv').config();
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
 const router = express.Router();
 

@@ -1,5 +1,3 @@
-// require('dotenv').config();
-// removed dotenv import—Railway passes env-vars automatically
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -10,6 +8,10 @@ const uploadRoute   = require('./routes/imageUpload');
 const propertyRoutes = require('./routes/property');
 
 const app = express();
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
 // CORS
 app.use(cors({
