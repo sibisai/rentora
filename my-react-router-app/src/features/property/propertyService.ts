@@ -2,7 +2,8 @@
 import axios from "axios";
 import type { FormValues, Property } from "./types";
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:3001";
+// const API = import.meta.env.VITE_API_URL || "http://localhost:3001";
+const API = import.meta.env.VITE_API_URL;
 
 export async function getHostProperties(hostId: string): Promise<Property[]> {
   const { data } = await axios.get<Property[]>(`${API}/properties?hostId=${hostId}`);

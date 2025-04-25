@@ -13,7 +13,8 @@ const app = express();
 
 // CORS
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  // origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: 'https://cpsc-362-activity-1-production.up.railway.app',
   methods: ['GET','POST','PUT','DELETE'],
 }));
 app.use(express.json({ limit: '5mb' }));
