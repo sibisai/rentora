@@ -12,4 +12,4 @@ COPY . .
 EXPOSE 3001
 
 # Start the application with dotenv preload
-CMD ["node", "-r", "dotenv/config", "index.js"]
+CMD ["node", "index.js"]
