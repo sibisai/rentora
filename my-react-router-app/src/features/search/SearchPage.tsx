@@ -28,6 +28,8 @@ interface Property {
   updatedAt?: string;
 }
 
+const API = import.meta.env.VITE_API_URL
+
 function formatLocation(location: Property["location"]): string {
   const { city, state, country } = location;
   const cityTrimmed = city.trim().toLowerCase();
@@ -67,7 +69,7 @@ const SearchPage: React.FC = () => {
     console.log("Frontend sending query:", query);
 
     try {
-      const res = await fetch(`http://localhost:3001/properties?${query}`);
+      const res = await fetch(`${API}/properties?${query}`);
       if (!res.ok) { throw new Error('Fetch failed'); }
       const data = await res.json();
       if (!Array.isArray(data)) { throw new Error('Invalid data'); }
