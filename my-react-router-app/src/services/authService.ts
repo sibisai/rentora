@@ -21,7 +21,7 @@ export const login = async (email: string, password: string): Promise<AuthRespon
 };
 
 export const signup = async (email: string, password: string): Promise<AuthResponse> => {
-  const response = await fetch('http://localhost:3001/auth/signup', {
+  const response = await fetch(`${API}/auth/signup`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password }),

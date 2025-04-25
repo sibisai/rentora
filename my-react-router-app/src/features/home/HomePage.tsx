@@ -31,6 +31,8 @@ interface Property {
   updatedAt?: string
 }
 
+const API = import.meta.env.VITE_API_URL;
+
 function formatLocation(location: Property['location']): string {
   const { city, state, country } = location
   const c = city.trim(), s = state.trim()
@@ -55,8 +57,8 @@ const Home: React.FC = () => {
     setError('')
     try {
       const url = query
-        ? `http://localhost:3001/properties?${query}`
-        : 'http://localhost:3001/properties'
+        ? `${API}/properties?${query}`
+        : `${API}/properties`
       const res = await fetch(url)
       if (!res.ok) throw new Error(`Status ${res.status}`)
       const data: Property[] = await res.json()

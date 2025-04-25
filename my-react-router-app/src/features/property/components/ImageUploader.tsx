@@ -3,7 +3,8 @@ import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
 import '../styles/property-forms.css';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3001';
+// const API = import.meta.env.VITE_API_URL ?? 'http://localhost:3001';
+const API = import.meta.env.VITE_API_URL;
 
 type Props = {
   propertyId?: string;
@@ -54,7 +55,7 @@ export default function ImageUploader({ propertyId, value, onChange }: Props) {
           const formData = new FormData();
           formData.append('images', file);
           const { data } = await axios.post<{ location: string }>(
-            `${API_BASE}/image/upload/${propertyId}`,
+            `${API}/image/upload/${propertyId}`,
             formData
           );
           // drop that preview
