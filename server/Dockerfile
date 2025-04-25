@@ -3,7 +3,7 @@ WORKDIR /app
 
 # Copy dependency files and install dependencies
 COPY package*.json ./
-RUN npm ci
+RUN npm ci --omit=dev
 
 # Copy the rest of the application code
 COPY . .

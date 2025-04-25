@@ -3,7 +3,7 @@ const { S3Client } = require('@aws-sdk/client-s3');
 const multer = require('multer');
 const multerS3 = require('multer-s3-v3');
 const mongoose = require('mongoose');
-const Property = require('../models/Property');
+const Property = require('../models/property');
 require('dotenv').config();
 
 const router = express.Router();
