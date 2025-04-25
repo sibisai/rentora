@@ -26,18 +26,11 @@ mongoose.connect(
 ).then(() => console.log("Connected to MongoDB"))
  .catch(err => console.error("MongoDB error:", err));
 
-// JSON
-app.use(express.json());
-
 // Auth
 app.use('/auth', authRoutes);
 
-// Properties (no auth in test/ci; auth in prod)
-if (process.env.NODE_ENV === 'production') {
-  app.use('/properties', authenticate, propertyRoutes);
-} else {
-  app.use('/properties', propertyRoutes);
-}
+//Propertiees
+app.use('/properties', propertyRoutes);
 
 // Bookings & Image upload
 app.use('/', bookingRoutes);
