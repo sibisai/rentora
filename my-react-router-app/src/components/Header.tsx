@@ -20,7 +20,7 @@ const Header: React.FC = () => {
       <div className="top-banner">
         {/* Logo Button */}
         <div className="logo-container">
-          <Link to="/" className="logo button2">Homiee</Link>
+          <Link to="/" className="logo button2">rentora</Link>
         </div>
 
         {/* Center Navigation */}

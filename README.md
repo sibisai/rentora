@@ -1,4 +1,4 @@
-# Home Rental
+# rentora
 
 ## Markdown
 
@@ -6,7 +6,7 @@
 
 **Who:** People who need a place to stay during trip or vacation and those who want to rent out their property for short periods of time.
 
-**The:** Home Rental
+**The:** rentora
 
 **That:** More space and comfortability than a hotel room while giving proprty owners a chance to utilize their unoccupied space.
 
@@ -16,7 +16,7 @@
 
 ### Vision Statement
 
-For traveling families & friends or land owners who want to utilize their unoccupied space who need a place to stay during trip or vacation and those who want to rent out their property for short periods of time. The Home Rental allows for more space and comfortability than a hotel room while giving proprty owners a chance to utilize their unoccupied space. Unlike Airbnb, our product allows for ease of use for both rentors and property owners to change availability of property as well as for scheduling future trips as a group.
+For traveling families & friends or land owners who want to utilize their unoccupied space who need a place to stay during trip or vacation and those who want to rent out their property for short periods of time. The rentora allows for more space and comfortability than a hotel room while giving proprty owners a chance to utilize their unoccupied space. Unlike Airbnb, our product allows for ease of use for both rentors and property owners to change availability of property as well as for scheduling future trips as a group.
 
 ## Requirements
 
@@ -47,7 +47,7 @@ For traveling families & friends or land owners who want to utilize their unoccu
 
 ![Requirement_Modeling](Requirement_Modeling.png)
 
-# Home Rental
+# rentora
 
 A full-stack short-term-rental app: travelers can search, filter, book and pay; hosts can list, manage availability, and upload images.
 
@@ -55,7 +55,7 @@ A full-stack short-term-rental app: travelers can search, filter, book and pay; 
 
 ## 📋 Overview
 
-Home Rental provides a marketplace where:
+rentora provides a marketplace where:
 
 - **Hosts** list rooms, homes or apartments for short stays
 - **Guests** search by location, dates and filters, then book
@@ -72,7 +72,7 @@ Unlike Airbnb, our MVP focuses on simplicity and gets you up-and-running with:
 
 ---
 
-## 🚀 Tech Stack
+## 🛠️ Tech Stack
 
 - **Frontend:** React, React Router, TypeScript, Vite, Tailwind CSS
 - **Backend:** Node.js, Express
@@ -81,6 +81,12 @@ Unlike Airbnb, our MVP focuses on simplicity and gets you up-and-running with:
 - **Geocoding:** OpenStreetMap Nominatim
 - **Auth:** JWT (JSON Web Tokens)
 - **Testing:** Jest, Supertest
+
+---
+
+## 🌐 Live Demo
+
+[🚀 View the Live App](https://cpsc-362-activity-1-production.up.railway.app)
 
 ---
 

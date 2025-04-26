@@ -11,7 +11,7 @@ export default function NavBar() {
     <header>
       <div className="top-banner">
         {/* logo / home */}
-        <Link to="/" className="title">[placeholder]</Link>
+        <Link to="/" className="title">rentora</Link>
 
         {/* nav links */}
         <nav>
