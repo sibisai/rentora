@@ -211,8 +211,9 @@ npm test
 
 ---
 
-## 🎯 Upcoming Enhancements
+## 🎯 Future Enhancements
 
+- Cross-platform compatibility (web & mobile)
 - Reliable second-image upload during edits
 - Improved calendar usability on the Edit Page
 - Responsive UI/UX
