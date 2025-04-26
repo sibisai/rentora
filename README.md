@@ -74,7 +74,7 @@ Unlike Airbnb, our MVP focuses on simplicity and gets you up-and-running with:
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** React, React Router, TypeScript, Vite, Tailwind CSS
+- **Frontend:** React, TypeScript, Vite, Tailwind CSS, Google Maps Places API
 - **Backend:** Node.js, Express
 - **Database:** MongoDB Atlas
 - **File Storage:** AWS S3
@@ -96,7 +96,7 @@ Unlike Airbnb, our MVP focuses on simplicity and gets you up-and-running with:
 - Docker & Docker Compose (optional, for containerized dev)
 - An AWS account & S3 bucket
 - MongoDB Atlas cluster
-- (Optional) Google Maps API key if you swap in Google geocoding
+- Google Maps API key if you swap in Google geocoding
 
 ---
 
@@ -105,7 +105,6 @@ Unlike Airbnb, our MVP focuses on simplicity and gets you up-and-running with:
 Create a `.env` file in `/server`:
 
 ```dotenv
-PORT=3001
 MONGO_URI="mongodb+srv://<user>:<pass>@cluster0/productionDB?retryWrites=true&w=majority"
 MONGO_URI_TEST="mongodb+srv://<user>:<pass>@cluster0/testDB?retryWrites=true&w=majority"
 JWT_SECRET="your_jwt_secret_here"
@@ -166,7 +165,8 @@ npm test
 
 - Uses `MONGO_URI_TEST`
 - Runs Jest & Supertest
-- Generates a coverage report (aim ≥ 90%)
+- Generates a coverage report (aim ≥ 80%)
+- Currently at 83.89% coverage
 
 ---
 
@@ -211,9 +211,11 @@ npm test
 
 ---
 
-## 🎯 Next Steps
+## 🎯 Upcoming Enhancements
 
-- Add review/rating system
-- Chat support
-- Payment integration
-- CI/CD & production deployment
+- Reliable second-image upload during edits
+- Improved calendar usability on the Edit Page
+- Review & rating system
+- In-app chat support
+- Seamless payment integration
+- CI/CD pipeline & production deployment
