@@ -215,6 +215,7 @@ npm test
 
 - Reliable second-image upload during edits
 - Improved calendar usability on the Edit Page
+- Responsive UI/UX
 - Review & rating system
 - In-app chat support
 - Seamless payment integration
