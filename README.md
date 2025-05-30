@@ -35,9 +35,8 @@ Unlike Airbnb, our MVP focuses on simplicity and gets you up-and-running with:
 
 ---
 
-## 🌐 Live Demo & Demo Video
+## ▶️ Demo Video
 
-- [🚀 View the Live App](https://cpsc-362-activity-1-production.up.railway.app)
 - [▶️ Watch the Demo on YouTube](https://youtu.be/8v7s5UwhEvo)
 
 ---
