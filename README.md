@@ -37,7 +37,7 @@ Unlike Airbnb, our MVP focuses on simplicity and gets you up-and-running with:
 
 ## ▶️ Demo Video
 
-- [▶️ Watch the Demo on YouTube](https://youtu.be/8v7s5UwhEvo)
+- [Watch the Demo on YouTube](https://youtu.be/8v7s5UwhEvo)
 
 ---
 
